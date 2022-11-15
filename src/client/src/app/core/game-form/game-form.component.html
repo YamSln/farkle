@@ -1,0 +1,80 @@
+<div fxFlex fxLayout="row" fxLayoutAlign="center center">
+  <form
+    (ngSubmit)="submit()"
+    [formGroup]="gameForm"
+    fxFlex="30%"
+    fxFlex.sm="50%"
+    fxFlex.xs="90%"
+  >
+    <mat-card>
+      <div
+        *ngIf="!create"
+        style="width: 100%; display: flex; justify-content: center"
+      >
+        <img src="assets/logo.svg" alt="logo" style="max-width: 50%" />
+      </div>
+      <mat-card-title style="display: flex; align-items: center">
+        <img
+          *ngIf="create"
+          src="assets/logo.svg"
+          alt="logo"
+          style="height: 4rem; margin-right: 1vh"
+        />
+        <h1 style="font-weight: bold">{{ formHeading }}</h1>
+      </mat-card-title>
+      <mat-card-content>
+        <mat-form-field class="full-width">
+          <mat-label> Nick </mat-label>
+          <input
+            matInput
+            appInputTrim
+            type="text"
+            placeholder="In-game nick"
+            formControlName="nick"
+          />
+          <mat-error *ngIf="gameForm.controls['nick'].hasError('required')">
+            Nick is <b>required</b>
+          </mat-error>
+          <mat-error *ngIf="gameForm.controls['nick'].hasError('minLength')">
+            Nick must contain at least 2 characters
+          </mat-error>
+          <mat-error *ngIf="gameForm.controls['nick'].hasError('maxLength')">
+            Nick cannot contain more than 15 characters
+          </mat-error>
+        </mat-form-field>
+        <app-password-field formControlName="password"> </app-password-field>
+        <mat-label *ngIf="create"> Max Players </mat-label>
+        <div fxLayout="row" *ngIf="create">
+          <mat-slider
+            [value]="maxPlayersSlider"
+            (input)="maxPlayersSlider = $event.value || 4"
+            class="full-width"
+            min="4"
+            max="8"
+            step="1"
+            value="4"
+          ></mat-slider>
+          <span style="font-size: 1.5rem">{{ maxPlayersSlider }}</span>
+        </div>
+        <mat-label *ngIf="create"> Max Points </mat-label>
+        <div fxLayout="row" *ngIf="create">
+          <mat-slider
+            [value]="maxPointsSlider"
+            (input)="maxPointsSlider = $event.value || 1000"
+            class="full-width"
+            min="1000"
+            max="5000"
+            step="1000"
+            value="1000"
+          ></mat-slider>
+          <span style="font-size: 1rem">{{ maxPointsSlider }}</span>
+        </div>
+      </mat-card-content>
+      <mat-card-actions fxLayout="row" fxLayoutAlign="center center">
+        <button fxFlex="50" mat-raised-button color="primary" type="submit">
+          {{ formButtonText }}
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </form>
+</div>

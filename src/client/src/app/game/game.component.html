@@ -1,0 +1,93 @@
+<div *ngIf="gameState | async as game">
+  <div fxFlex="5" fxFlex.gt-lg="20"></div>
+  <div fxFlex fxLayout="column" fxLayoutGap="20px">
+    <div
+      fxFlex="10"
+      fxLayout="column"
+      fxLayoutAlign="center center"
+      fxLayoutGap="20px"
+    >
+      <div style="font-size: 2rem">00:00</div>
+      <div style="font-size: 1rem">Current + Available = Total</div>
+    </div>
+    <div
+      fxFlex="90"
+      fxLayoutGap="20px"
+      fxLayout.lt-md="column"
+      fxLayout.gt-sm="row"
+    >
+      <mat-card
+        fxFlexOrder.lt-md="2"
+        fxFlexOrder.gt-sm="1"
+        fxFlex.gt-sm="30"
+        fxFlex.lt-md="40"
+        >Points Board</mat-card
+      >
+      <div
+        fxFlex.gt-sm="60"
+        fxFlex.gt-md="60"
+        fxFlexOrder.lt-md="1"
+        fxFlexOrder.gt-sm="2"
+        fxLayout="column"
+        fxLayoutGap="20px"
+      >
+        <div fxFlex="80" fxLayout="column" fxLayoutAlign="center">
+          <mat-grid-list fxFlex fxFlexFill cols="3" [gutterSize]="'10px'">
+            <mat-grid-tile>
+              <img
+                src="../../assets/dice/dice_1.png"
+                style="max-height: 100%; max-width: 100%"
+              />
+            </mat-grid-tile>
+            <mat-grid-tile>
+              <img
+                src="../../assets/dice/dice_2.png"
+                style="max-height: 100%; max-width: 100%"
+              />
+            </mat-grid-tile>
+            <mat-grid-tile>
+              <img
+                src="../../assets/dice/dice_3.png"
+                style="max-height: 100%; max-width: 100%"
+              />
+            </mat-grid-tile>
+            <mat-grid-tile>
+              <img
+                src="../../assets/dice/dice_4.png"
+                style="max-height: 100%; max-width: 100%"
+              />
+            </mat-grid-tile>
+            <mat-grid-tile>
+              <img
+                src="../../assets/dice/dice_5.png"
+                style="max-height: 100%; max-width: 100%"
+              />
+            </mat-grid-tile>
+            <mat-grid-tile>
+              <img
+                src="../../assets/dice/jdice_1.png"
+                style="max-height: 100%; max-width: 100%"
+              />
+            </mat-grid-tile>
+          </mat-grid-list>
+        </div>
+        <div
+          fxFlex
+          fxLayout="row"
+          fxLayoutGap="20px"
+          fxLayoutAlign="space-between"
+        >
+          <button mat-raised-button fxFlex="50">Confirm Choice</button>
+          <button mat-raised-button fxFlex="50">Bank / Bust!</button>
+        </div>
+        <button fxFlex mat-raised-button>Roll!</button>
+      </div>
+      <div fxFlex="30" fxFlexOrder="3" fxLayout="column" fxLayoutGap="20px">
+        <mat-card fxHide.lt-md="true" fxFlex="60">Plays</mat-card>
+        <mat-card fxHide.lt-md="true" fxFlex="40">Chat</mat-card>
+      </div>
+    </div>
+  </div>
+
+  <div fxFlex="5" fxFlex.gt-lg="20"></div>
+</div>
