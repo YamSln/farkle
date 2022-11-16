@@ -1,0 +1,11 @@
+mat-grid-tile:hover{
+    transition: 0.5s;
+    border: 2px solid #66afe9;
+    border-radius: 10%;
+    box-shadow: 0 0 8px rgba(0,255,0, 0.6);
+  }
+  mat-grid-tile{
+    border-radius: 10%;
+    border: 2px solid transparent;
+  }
+  
