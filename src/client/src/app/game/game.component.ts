@@ -9,6 +9,15 @@ import { Role } from '../model/role.model';
 import { GameFacade } from './state/game.facade';
 import { GameState } from './state/game.state';
 
+const ELEMENT_DATA = [
+  {name: 'Jam', score: 3000},
+  {name: 'Bobby', score: 3000},
+  {name: 'Niba', score: 3000},
+  {name: 'Jam', score: 3000},
+  {name: 'Bobby', score: 3000},
+  {name: 'Niba', score: 3000},
+];
+
 @Component({
   selector: 'app-game',
   templateUrl: './game.component.html',
@@ -16,6 +25,8 @@ import { GameState } from './state/game.state';
   animations: [flipInXOnEnterAnimation(), flipOutXOnLeaveAnimation()],
 })
 export class GameComponent implements OnInit {
+  displayedColumns: string[] = ['name', 'score'];
+  dataSource = ELEMENT_DATA;
   gameState!: Observable<GameState>;
   user!: Participant;
   role = Role;

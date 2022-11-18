@@ -47,12 +47,12 @@
         <div fxLayout="row" *ngIf="create">
           <mat-slider
             [value]="maxPlayersSlider"
-            (input)="maxPlayersSlider = $event.value || 4"
+            (input)="maxPlayersSlider = $event.value || 2"
             class="full-width"
-            min="4"
-            max="8"
+            min="2"
+            max="6"
             step="1"
-            value="4"
+            value="2"
           ></mat-slider>
           <span style="font-size: 1.5rem">{{ maxPlayersSlider }}</span>
         </div>
@@ -60,12 +60,12 @@
         <div fxLayout="row" *ngIf="create">
           <mat-slider
             [value]="maxPointsSlider"
-            (input)="maxPointsSlider = $event.value || 1000"
+            (input)="maxPointsSlider = $event.value || 3000"
             class="full-width"
-            min="1000"
-            max="5000"
+            min="3000"
+            max="12000"
             step="1000"
-            value="1000"
+            value="3000"
           ></mat-slider>
           <span style="font-size: 1rem">{{ maxPointsSlider }}</span>
         </div>

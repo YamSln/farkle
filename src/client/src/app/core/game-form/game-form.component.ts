@@ -15,8 +15,8 @@ export class GameFormComponent implements OnInit {
   create!: boolean;
   formHeading!: string;
   formButtonText!: string;
-  maxPlayersSlider: number = 4;
-  maxPointsSlider: number = 1000;
+  maxPlayersSlider: number = 2;
+  maxPointsSlider: number = 3000;
 
   constructor(
     private formBuilder: FormBuilder,
