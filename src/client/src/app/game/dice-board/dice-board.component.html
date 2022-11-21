@@ -1,0 +1,9 @@
+<div fxLayout="column" fxLayoutAlign="center">
+  <!-- 6 dice in 2 row 3 columns style grid -->
+  <mat-grid-list fxFlex fxFlexFill cols="3" [gutterSize]="'10px'">
+    <!-- Render each dice and count index -->
+    <mat-grid-tile *ngFor="let die of dice; let i = index">
+      <app-die [die]="die" (click)="onDieClicked(i)"></app-die>
+    </mat-grid-tile>
+  </mat-grid-list>
+</div>

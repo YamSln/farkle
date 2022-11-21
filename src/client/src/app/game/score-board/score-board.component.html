@@ -1,0 +1,34 @@
+<mat-card fxFlex fxLayout="column" fxLayoutAlign="start" style="height: 100%">
+  <!-- Current Player Name -->
+  <div fxFlex="0 1 auto" fxLayoutAlign="center start" *ngIf="playing">
+    {{ playing }} is Playing
+  </div>
+  <!-- Score Board Table -->
+  <div
+    fxFlex
+    fxFlex.lt-md="1 0 auto"
+    class="table-container"
+    [ngStyle.lt-md]="{ height: '200px' }"
+  >
+    <table fxFlex mat-table [dataSource]="players" *ngIf="players">
+      <!-- Name Column -->
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef>Name</th>
+        <td mat-cell *matCellDef="let player">
+          <span [ngClass]="playing == player.nick ? 'playing' : 'player'">{{
+            player.nick
+          }}</span>
+          <span *ngIf="player.host"> 👑</span>
+        </td>
+      </ng-container>
+      <!-- Score Column-->
+      <ng-container matColumnDef="score">
+        <th mat-header-cell *matHeaderCellDef>Score</th>
+        <td mat-cell *matCellDef="let player">{{ player.points }}</td>
+      </ng-container>
+      <!-- Columns Definition -->
+      <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+  </div>
+</mat-card>

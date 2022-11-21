@@ -1,0 +1,5 @@
+@use '../../../theme.scss' as theme;
+
+.bust-button {
+    background-color: theme.$accent-color;
+}

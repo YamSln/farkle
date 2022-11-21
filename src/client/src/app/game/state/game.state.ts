@@ -1,3 +1,4 @@
+import { Die } from 'src/app/model/die.model';
 import { Role } from 'src/app/model/role.model';
 import { WordsPack } from 'src/app/model/words-pack.mode';
 import { Participant } from '../../model/participant.model';
@@ -7,7 +8,7 @@ import { Word } from '../../model/word.model';
 export interface GameState {
   roomId: string;
   participants: Participant[];
-  words: Word[];
+  dice: Die[];
   wordsPacks: WordsPack[];
   currentTeam: Team;
   blueTeamPoints: number;
@@ -24,7 +25,7 @@ export interface GameState {
 export const initialState: GameState = {
   roomId: '',
   participants: [],
-  words: [],
+  dice: [],
   wordsPacks: [],
   currentTeam: Team.SAPPHIRE,
   blueTeamPoints: 0,

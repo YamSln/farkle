@@ -1,0 +1,26 @@
+<div fxFlex fxLayout="column" fxLayoutGap="20px">
+  <div fxFlex fxLayout="row" fxLayoutGap="20px" fxLayoutAlign="space-between">
+    <button
+      mat-raised-button
+      fxFlex="50"
+      [disabled]="gamePhase != _gamePhaseConstant.PICK"
+    >
+      Confirm
+    </button>
+    <button
+      mat-raised-button
+      fxFlex="50"
+      [disabled]="gamePhase != _gamePhaseConstant.BANK"
+      [ngClass]="{ 'bust-button': bust }"
+    >
+      {{ bust ? "Bust!" : "Bank" }}
+    </button>
+  </div>
+  <button
+    fxFlex
+    mat-raised-button
+    [disabled]="gamePhase != _gamePhaseConstant.ROLL"
+  >
+    Roll!
+  </button>
+</div>

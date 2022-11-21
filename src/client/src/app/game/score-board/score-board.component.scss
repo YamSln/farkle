@@ -1,0 +1,33 @@
+@use '../../../theme.scss' as theme;
+
+$border-padding: 4px;
+$border-width: 2px;
+$border-radius: 10%;
+$border-style: solid;
+
+.player-name {
+    padding: $border-padding;
+    border-radius: $border-radius;
+}
+
+.playing {
+    @extend .player-name;
+    border: $border-width $border-style theme.$accent-color;  
+    color: theme.$accent-color;
+}
+
+.player {
+    @extend .player-name;
+    border: $border-width $border-style transparent;
+}
+
+.table-container {
+    overflow-y: auto; 
+    min-height: 0;
+    -ms-overflow-style: none;
+    scrollbar-width: none; 
+}
+
+.table-container::-webkit-scrollbar {
+    display: none;
+  }

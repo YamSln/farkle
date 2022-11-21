@@ -1,6 +1,7 @@
 export enum GamePhase {
-  ROLL = "roll",
-  PICK = "pick",
-  WAIT = "wait",
-  PAUSE = "pause",
+  ROLL = "Roll",
+  PICK = "Pick",
+  BANK = "Bank",
+  WAIT = "Wait",
+  PAUSE = "Pause",
 }

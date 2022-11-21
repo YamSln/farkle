@@ -1,0 +1,32 @@
+@use '../../../theme.scss' as theme;
+
+.die-image {
+    border-radius: 10%;
+    border: 2px solid transparent;
+    width: 90%;
+    height: 90%;
+}
+
+.unconfirmed-die {
+    @extend .die-image;
+    cursor: pointer;
+}
+
+.die-border-glow {
+    border: 2px solid theme.$accent-color;
+    border-radius: 10%;
+}
+
+.selected-die {
+    @extend .die-border-glow;
+}
+
+.unconfirmed-die:hover {
+    @extend .die-border-glow;
+    transition: 0.5s;
+}
+
+.confirmed-die {
+    @extend .die-image;
+    opacity: 0.25;
+  }

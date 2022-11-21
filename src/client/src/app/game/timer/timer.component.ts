@@ -7,7 +7,6 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { headShakeAnimation } from 'angular-animations';
-import { Team } from 'src/app/model/team.model';
 
 @Component({
   selector: 'app-timer',
@@ -19,12 +18,14 @@ import { Team } from 'src/app/model/team.model';
 export class TimerComponent implements OnInit, OnChanges {
   @Input() time!: number;
   @Input() display: boolean = false;
-  @Input() currentTeam!: Team;
-  team = Team;
+
   constructor() {}
   warningState = false;
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.time = 0;
+    this.display = true;
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (this.time <= 10) {
