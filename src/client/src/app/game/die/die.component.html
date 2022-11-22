@@ -1,28 +1,6 @@
 <img
-  *ngIf="die.selected && !die.confirmed"
-  [@flipInXOnEnter]
-  [ngClass]="{
-    'unconfirmed-die': !die.confirmed,
-    'confirmed-die': die.confirmed,
-    'selected-die': die.selected
-  }"
-  (click)="onDieClick()"
-  [src]="die | dieFace"
-/>
-<img
-  *ngIf="!die.selected && die.confirmed"
-  [@headShakeOnEnter]
-  [ngClass]="{
-    'unconfirmed-die': !die.confirmed,
-    'confirmed-die': die.confirmed,
-    'selected-die': die.selected
-  }"
-  (click)="onDieClick()"
-  [src]="die | dieFace"
-/>
-<img
-  *ngIf="!die.selected && !die.confirmed"
   [@bounceInOnEnter]
+  [@.disabled]="die.selected || die.confirmed"
   [ngClass]="{
     'unconfirmed-die': !die.confirmed,
     'confirmed-die': die.confirmed,

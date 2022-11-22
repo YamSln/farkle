@@ -19,6 +19,38 @@
 
 .selected-die {
     @extend .die-border-glow;
+    visibility: visible;
+    opacity: 1;
+    -webkit-animation: fadeIn 0.3s ease-in;
+    -moz-animation: fadeIn 0.3s ease-in;
+    -o-animation: fadeIn 0.3s ease-in;
+    -ms-animation: fadeIn 0.3s ease-in;
+    animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+    0% { opacity: 0.3; }
+    100% { opacity: 1; }
+}
+
+@-webkit-keyframes fadeIn {
+    0% { opacity: 0.3; }
+    100% { opacity: 1; }
+}
+
+@-moz-keyframes fadeIn {
+    0% { opacity: 0.3; }
+    100% { opacity: 1; }
+}
+
+@-o-keyframes fadeIn {
+    0% { opacity: 0.3; }
+    100% { opacity: 1; }
+}
+
+@-ms-keyframes fadeIn {
+    0% { opacity: 0.3; }
+    100% { opacity: 1; }
 }
 
 .unconfirmed-die:hover {
@@ -26,7 +58,39 @@
     transition: 0.5s;
 }
 
+// Confirmed die + fade out transition for all browsers
+
 .confirmed-die {
     @extend .die-image;
     opacity: 0.25;
+    -webkit-animation: fadeOut 0.5s ease-out;
+    -moz-animation: fadeOut 0.5s ease-out;
+    -o-animation: fadeOut 0.5s ease-out;
+    -ms-animation: fadeOut 0.5s ease-out;
+    animation: fadeOut 0.5s ease-out;
+  }
+
+  @keyframes fadeOut {
+    0% { opacity: 1; }
+    100% { opacity: 0.25; }
+  }
+
+  @-webkit-keyframes fadeOut {
+    0% { opacity: 1; }
+    100% { opacity: 0.25; }
+  }
+
+  @-moz-keyframes fadeOut {
+    0% { opacity: 1; }
+    100% { opacity: 0.25; }
+  }
+
+  @-o-keyframes fadeOut {
+    0% { opacity: 1; }
+    100% { opacity: 0.25; }
+  }
+
+  @-ms-keyframes fadeOut {
+    0% { opacity: 1; }
+    100% { opacity: 0.25; }
   }

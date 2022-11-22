@@ -22,7 +22,16 @@ export class DiceBoardComponent implements OnInit {
 
   constructor() {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    setTimeout(() => {
+      this.dice[1] = { ...this.dice[1], selected: true };
+      this.dice[4] = { ...this.dice[4], selected: true };
+      this.dice[5] = { ...this.dice[5], selected: false, confirmed: true };
+    }, 2000);
+    setTimeout(() => {
+      this.dice[1] = { ...this.dice[1], number: 2 };
+    }, 4000);
+  }
 
   onDieClicked($event: number): DieIndex {
     return $event as DieIndex;

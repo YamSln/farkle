@@ -6,11 +6,7 @@ import {
   ChangeDetectionStrategy,
   EventEmitter,
 } from '@angular/core';
-import {
-  bounceInOnEnterAnimation,
-  flipInXOnEnterAnimation,
-  headShakeOnEnterAnimation,
-} from 'angular-animations';
+import { bounceInOnEnterAnimation } from 'angular-animations';
 import { Die } from 'src/app/model/die.model';
 
 @Component({
@@ -18,11 +14,7 @@ import { Die } from 'src/app/model/die.model';
   templateUrl: './die.component.html',
   styleUrls: ['./die.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  animations: [
-    flipInXOnEnterAnimation(),
-    headShakeOnEnterAnimation(),
-    bounceInOnEnterAnimation(),
-  ],
+  animations: [bounceInOnEnterAnimation({ duration: 1000 })],
 })
 export class DieComponent implements OnInit {
   @Input() die!: Die;
