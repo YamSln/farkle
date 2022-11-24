@@ -1,11 +1,13 @@
-<img
-  [@bounceInOnEnter]
-  [@.disabled]="die.selected || die.confirmed"
-  [ngClass]="{
-    'unconfirmed-die': !die.confirmed,
-    'confirmed-die': die.confirmed,
-    'selected-die': die.selected
-  }"
-  (click)="onDieClick()"
-  [src]="die | dieFace"
-/>
+<div style="text-align: center">
+  <img
+    [@bounceInOnEnter]
+    [@.disabled]="die.selected || die.confirmed"
+    [ngClass]="{
+      'unconfirmed-die mat-elevation-z4': !die.confirmed,
+      'confirmed-die': die.confirmed,
+      'selected-die': die.selected
+    }"
+    (click)="onDieClick()"
+    [src]="die | dieFace"
+  />
+</div>

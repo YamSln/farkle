@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { ClipboardService } from 'ngx-clipboard';
 import { Observable } from 'rxjs';
 import { GameFacade } from 'src/app/game/state/game.facade';
 import { environment } from 'src/environments/environment';
@@ -18,10 +17,7 @@ export class LayoutComponent implements OnInit {
   isLightTheme!: boolean;
   roomUrl!: Observable<string>;
 
-  constructor(
-    private gameFacade: GameFacade,
-    private clipboardService: ClipboardService
-  ) {}
+  constructor(private gameFacade: GameFacade) {}
 
   ngOnInit(): void {
     this.roomUrl = this.gameFacade.getRoomUrl();
@@ -31,17 +27,5 @@ export class LayoutComponent implements OnInit {
   themeToggleChanged(): void {
     this.isLightTheme = !this.isLightTheme;
     localStorage.setItem(PREF_THEME, this.isLightTheme ? LIGHT : DARK);
-  }
-
-  copyUrlToClipboard(url: string): void {
-    this.clipboardService.copy(url);
-  }
-
-  hasGithubLink(): boolean {
-    return !!environment.github;
-  }
-
-  openGithub(): void {
-    window.open(environment.github, '_blank');
   }
 }

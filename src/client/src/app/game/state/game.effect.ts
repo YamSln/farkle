@@ -18,8 +18,6 @@ import { JoinType } from 'src/app/model/join.type';
 import { GameEvent } from 'src/app/model/game.event';
 import { GameState } from './game.state';
 import { io, Socket } from 'socket.io-client';
-import { Participant } from 'src/app/model/participant.model';
-import { WordClicked } from 'src/app/model/word.clicked.mode';
 import { Observable, of } from 'rxjs';
 import { displayErrorMessage } from 'src/app/shared/state/shared.action';
 import {
@@ -40,7 +38,7 @@ import {
   PASSWORD_REQUIRED,
 } from '../../../../../validation/validation.messages';
 import { PlayerAction } from 'src/app/model/player.action.payload';
-import { Team } from 'src/app/model/team.model';
+import { Player } from 'src/app/model/player.model';
 
 @Injectable()
 export class GameEffect {
@@ -161,13 +159,13 @@ export class GameEffect {
   private handleSocketActions(socket: Socket): void {
     socket.on(
       GameEvent.CREATE_GAME,
-      (game: GameState, room: string, player: Participant) => {
+      (game: GameState, room: string, player: Player) => {
         this.gameFacade.gameLoaded(game, room, player);
       }
     );
     socket.on(
       GameEvent.JOIN_GAME,
-      (game: GameState, room: string, player: Participant) => {
+      (game: GameState, room: string, player: Player) => {
         this.gameFacade.gameReceived(game, room, player);
       }
     );

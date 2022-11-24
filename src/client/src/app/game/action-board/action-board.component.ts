@@ -1,14 +1,23 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { GamePhase } from 'src/app/model/game.phase.model';
 
 @Component({
   selector: 'app-action-board',
   templateUrl: './action-board.component.html',
   styleUrls: ['./action-board.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ActionBoardComponent implements OnInit {
   @Input() bust: boolean = false;
   @Input() gamePhase: GamePhase = GamePhase.WAIT;
+  @Input() firstRoll: boolean = true;
 
   @Output() confirmClick: EventEmitter<any> = new EventEmitter<any>();
   @Output() bankBustClick: EventEmitter<any> = new EventEmitter<any>();
@@ -27,7 +36,10 @@ export class ActionBoardComponent implements OnInit {
   }
 
   onBankBustClick(): void {
-    if (this.gamePhase == GamePhase.BANK) {
+    if (
+      (this.gamePhase == GamePhase.ROLL || this.gamePhase == GamePhase.PICK) &&
+      !this.firstRoll
+    ) {
       this.bankBustClick.emit();
     }
   }

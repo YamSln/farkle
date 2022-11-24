@@ -1,4 +1,11 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Input,
+  Output,
+  EventEmitter,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { DieFace } from 'src/app/model/die-face.type';
 import { DieIndex } from 'src/app/model/die-index.type';
 import { Die } from 'src/app/model/die.model';
@@ -7,10 +14,11 @@ import { Die } from 'src/app/model/die.model';
   selector: 'app-dice-board',
   templateUrl: './dice-board.component.html',
   styleUrls: ['./dice-board.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DiceBoardComponent implements OnInit {
   @Input() dice: Die[] = [
-    { number: 1, confirmed: true, joker: false, selected: false },
+    { number: 1, confirmed: false, joker: false, selected: false },
     { number: 1, confirmed: false, joker: true, selected: false },
     { number: 2, confirmed: false, joker: false, selected: false },
     { number: 4, confirmed: false, joker: false, selected: true },

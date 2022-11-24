@@ -4,8 +4,7 @@ import {
   flipOutXOnLeaveAnimation,
 } from 'angular-animations';
 import { Observable } from 'rxjs';
-import { Participant } from '../model/participant.model';
-import { Role } from '../model/role.model';
+import { Player } from '../model/player.model';
 import { GameFacade } from './state/game.facade';
 import { GameState } from './state/game.state';
 
@@ -17,8 +16,7 @@ import { GameState } from './state/game.state';
 })
 export class GameComponent implements OnInit {
   gameState!: Observable<GameState>;
-  user!: Participant;
-  role = Role;
+  player!: Player;
 
   constructor(private gameFacade: GameFacade) {}
 

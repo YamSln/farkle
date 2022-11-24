@@ -1,7 +1,5 @@
 import { createReducer, on } from '@ngrx/store';
-import { Participant } from '../../model/participant.model';
-import { Role } from '../../model/role.model';
-import { Team } from '../../model/team.model';
+import { Player } from 'src/app/model/player.model';
 import {
   clearState,
   createGameSuccess,
@@ -50,13 +48,11 @@ const _gameReducer = createReducer(
   on(newGameSuccess, (state: GameState, action: any): GameState => {
     const game: GameState = action.game;
     const player = game.participants.find(
-      (player: Participant) => player.id == state.playerId
+      (player: Player) => player.id == state.playerId
     );
     return {
       ...game,
       playerId: player ? player.id : '',
-      playerRole: player ? player.role : Role.OPERATIVE,
-      playerTeam: player ? player.team : Team.SAPPHIRE,
     };
   }),
   on(playerDisconnect, (state: GameState, action: any): GameState => {
@@ -71,8 +67,6 @@ const changeTurn = (state: GameState): GameState => {
   // change current turn
   return {
     ...state,
-    currentTeam:
-      state.currentTeam === Team.SAPPHIRE ? Team.RUBY : Team.SAPPHIRE,
     currentTime: state.turnTime ? state.turnTime : 0,
   };
 };

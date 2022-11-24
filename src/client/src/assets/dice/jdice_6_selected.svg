@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_2" data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 367.36 367.36">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #e78b8b;
+        stroke: #e78b8b;
+      }
+
+      .cls-1, .cls-2 {
+        stroke-miterlimit: 10;
+        stroke-width: 10px;
+      }
+
+      .cls-2 {
+        stroke: #000;
+      }
+    </style>
+  </defs>
+  <g id="black_dice" data-name="black dice">
+    <g id="six">
+      <g>
+        <rect class="cls-2" x="5" y="5" width="357.36" height="357.36" rx="60" ry="60"/>
+        <g>
+          <circle class="cls-1" cx="103.56" cy="100.77" r="27.55" transform="translate(-20.38 26.49) rotate(-13.28)"/>
+          <circle class="cls-1" cx="103.56" cy="183.68" r="27.55"/>
+          <circle class="cls-1" cx="103.56" cy="266.59" r="27.55" transform="translate(-173.68 336.8) rotate(-82.98)"/>
+          <circle class="cls-1" cx="265.61" cy="100.77" r="27.55" transform="translate(-18.34 109.32) rotate(-22.5)"/>
+          <circle class="cls-1" cx="265.61" cy="183.68" r="27.55"/>
+          <circle class="cls-1" cx="265.61" cy="266.59" r="27.55" transform="translate(-40.08 486.07) rotate(-80.78)"/>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

@@ -3,14 +3,18 @@
     <button
       mat-raised-button
       fxFlex="50"
-      [disabled]="gamePhase != _gamePhaseConstant.PICK"
+      [disabled]="gamePhase != _gamePhaseConstant.PICK || bust"
     >
       Confirm
     </button>
     <button
       mat-raised-button
       fxFlex="50"
-      [disabled]="gamePhase != _gamePhaseConstant.BANK"
+      [disabled]="
+        (gamePhase != _gamePhaseConstant.ROLL &&
+          gamePhase != _gamePhaseConstant.PICK) ||
+        firstRoll
+      "
       [ngClass]="{ 'bust-button': bust }"
     >
       {{ bust ? "Bust!" : "Bank" }}

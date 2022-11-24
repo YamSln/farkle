@@ -1,10 +1,11 @@
 @use '../../../theme.scss' as theme;
 
 .die-image {
-    border-radius: 10%;
+    border-radius: 18%;
     border: 2px solid transparent;
     width: 90%;
     height: 90%;
+    transition: 0.5s;
 }
 
 .unconfirmed-die {
@@ -14,7 +15,7 @@
 
 .die-border-glow {
     border: 2px solid theme.$accent-color;
-    border-radius: 10%;
+    border-radius: 18%;
 }
 
 .selected-die {
@@ -56,6 +57,11 @@
 .unconfirmed-die:hover {
     @extend .die-border-glow;
     transition: 0.5s;
+}
+
+.unconfirmed-die:hover {
+  @extend .die-border-glow;
+  transition: 0.5s;
 }
 
 // Confirmed die + fade out transition for all browsers

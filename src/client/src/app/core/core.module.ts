@@ -12,9 +12,17 @@ import { StoreModule } from '@ngrx/store';
 import { GAME_STATE_NAME } from '../game/state/game.selector';
 import { GameReducer } from '../game/state/game.reducer';
 import { ClipboardModule } from 'ngx-clipboard';
+import { FooterComponent } from './footer/footer.component';
+import { HeaderComponent } from './header/header.component';
 
 @NgModule({
-  declarations: [LayoutComponent, GameFormComponent, ThemeToggleComponent],
+  declarations: [
+    LayoutComponent,
+    GameFormComponent,
+    ThemeToggleComponent,
+    FooterComponent,
+    HeaderComponent,
+  ],
   imports: [
     CommonModule,
     CoreRoutingModule,

@@ -15,7 +15,7 @@ export class DieFacePipe implements PipeTransform {
       'dice_' +
       die.number +
       (die.selected ? '_selected' : '') +
-      '.png'
+      '.svg'
     );
   }
 }

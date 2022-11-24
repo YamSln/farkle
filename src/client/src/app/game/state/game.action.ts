@@ -1,9 +1,8 @@
 import { createAction, props } from '@ngrx/store';
-import { PlayerAction } from 'src/app/model/player.action.payload';
+import { Player } from 'src/app/model/player.model';
 import { CreateGamePayload } from '../../model/create-game.payload';
 import { CreateGameResponse } from '../../model/create-game.response';
 import { JoinGamePayload } from '../../model/join-game.payload';
-import { Participant } from '../../model/participant.model';
 import { GameState } from './game.state';
 
 const GAME_PAGE = '[game page]';
@@ -36,11 +35,11 @@ export const joinGameApproved = createAction(
 );
 export const joinGameSuccess = createAction(
   JOIN_GAME_SUCCESS,
-  props<{ game: GameState; room: string; player: Participant }>()
+  props<{ game: GameState; room: string; player: Player }>()
 );
 export const playerJoinedGame = createAction(
   PLAYER_JOINED,
-  props<{ players: Participant[] }>()
+  props<{ players: Player[] }>()
 );
 
 export const createGame = createAction(CREATE_GAME, props<CreateGamePayload>());
@@ -50,7 +49,7 @@ export const createGameApproved = createAction(
 );
 export const createGameSuccess = createAction(
   CREATE_GAME_SUCCESS,
-  props<{ game: GameState; room: string; player: Participant }>()
+  props<{ game: GameState; room: string; player: Player }>()
 );
 
 export const timeChanged = createAction(
@@ -74,7 +73,7 @@ export const newGameSuccess = createAction(
 
 export const playerDisconnect = createAction(
   PLAYER_DISCONNECT,
-  props<{ players: Participant[] }>()
+  props<{ players: Player[] }>()
 );
 
 export const quitGame = createAction(QUIT_GAME);

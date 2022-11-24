@@ -1,0 +1,34 @@
+<mat-toolbar fxLayout="row" fxLayoutAlign="end center">
+  <div *ngIf="roomUrl | async as url; then url; else home"></div>
+  <ng-template #url>
+    <button
+      *ngIf="roomUrl | async as url"
+      mat-icon-button
+      [matTooltip]="'Get invitation link'"
+      (click)="copyUrlToClipboard(url)"
+    >
+      <mat-icon matSuffix>link</mat-icon>
+    </button>
+  </ng-template>
+  <ng-template #home>
+    <button mat-icon-button [matTooltip]="'Home'" routerLink="/">
+      <img src="assets/logo.svg" alt="logo" style="max-width: 100%" />
+    </button>
+  </ng-template>
+
+  <div style="width: 100%" fxFlex fxLayout="row" fxLayoutAlign="end center">
+    <button
+      *ngIf="hasGithubLink()"
+      [matTooltip]="'Github'"
+      style="top: -1px; margin-right: 5px"
+      mat-icon-button
+      (click)="openGithub()"
+    >
+      <mat-icon svgIcon="github" matSuffix></mat-icon>
+    </button>
+    <app-theme-toggle
+      [lightTheme]="isLightTheme"
+      (themeToggle)="onThemeToggleClick()"
+    ></app-theme-toggle>
+  </div>
+</mat-toolbar>

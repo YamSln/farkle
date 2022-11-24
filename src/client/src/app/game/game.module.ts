@@ -17,7 +17,19 @@ import { PlaysComponent } from './plays/plays.component';
 import { ChatComponent } from './chat/chat.component';
 
 @NgModule({
-  declarations: [GameComponent, TimerComponent, TimerPipe, ScoreBoardComponent, ScorePotentialComponent, DieComponent, DieFacePipe, DiceBoardComponent, ActionBoardComponent, PlaysComponent, ChatComponent],
+  declarations: [
+    GameComponent,
+    TimerComponent,
+    TimerPipe,
+    ScoreBoardComponent,
+    ScorePotentialComponent,
+    DieComponent,
+    DieFacePipe,
+    DiceBoardComponent,
+    ActionBoardComponent,
+    PlaysComponent,
+    ChatComponent,
+  ],
   imports: [CommonModule, GameRoutingModule, SharedModule, FormsModule],
 })
 export class GameModule {}
