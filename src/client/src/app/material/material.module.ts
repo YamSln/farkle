@@ -9,6 +9,7 @@ import { MatSliderModule } from '@angular/material/slider';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 // Material Navigation
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatSidenavModule } from '@angular/material/sidenav';
 // Material Layout
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
@@ -27,12 +28,14 @@ import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatMenuModule } from '@angular/material/menu';
 // Material Data tables
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatTableModule } from '@angular/material/table';
+import { MatListModule } from '@angular/material/list';
 
 @NgModule({
   declarations: [],
@@ -63,7 +66,10 @@ import { MatTableModule } from '@angular/material/table';
     MatTooltipModule,
     FlexLayoutModule,
     MatGridListModule,
-    MatTableModule
+    MatTableModule,
+    MatSidenavModule,
+    MatListModule,
+    MatMenuModule,
   ],
   exports: [
     MatCheckboxModule,
@@ -91,7 +97,10 @@ import { MatTableModule } from '@angular/material/table';
     MatTooltipModule,
     FlexLayoutModule,
     MatGridListModule,
-    MatTableModule
+    MatTableModule,
+    MatSidenavModule,
+    MatListModule,
+    MatMenuModule,
   ],
 })
 export class MaterialModule {
@@ -99,8 +108,12 @@ export class MaterialModule {
 
   private icons: IconData[] = [
     {
-      name: 'github',
-      path: `${this.iconsUrl}github.svg`,
+      name: 'github_light',
+      path: `${this.iconsUrl}github_light.svg`,
+    },
+    {
+      name: 'github_dark',
+      path: `${this.iconsUrl}github_dark.svg`,
     },
   ];
 

@@ -1,0 +1,28 @@
+<button
+  fxHide.lt-md="true"
+  *ngIf="hasGithubLink()"
+  [matTooltip]="'Github'"
+  mat-icon-button
+  (click)="openGithub()"
+>
+  <ng-container *ngTemplateOutlet="icon"> </ng-container>
+</button>
+
+<a
+  style="cursor: pointer"
+  mat-list-item
+  fxHide.gt-sm="true"
+  *ngIf="hasGithubLink()"
+  (click)="openGithub()"
+>
+  <ng-container *ngTemplateOutlet="icon"> </ng-container>
+  <div matListItemTitle>Visit Our Repo!</div>
+</a>
+
+<ng-template #icon>
+  <mat-icon
+    matListIcon
+    style="vertical-align: middle"
+    [svgIcon]="'github_' + (isLightTheme ? 'light' : 'dark')"
+  ></mat-icon>
+</ng-template>

@@ -15,6 +15,7 @@ const DARK = 'dark';
 export class LayoutComponent implements OnInit {
   version: string = environment.version;
   isLightTheme!: boolean;
+  isMenuOpen: boolean = false;
   roomUrl!: Observable<string>;
 
   constructor(private gameFacade: GameFacade) {}
@@ -27,5 +28,13 @@ export class LayoutComponent implements OnInit {
   themeToggleChanged(): void {
     this.isLightTheme = !this.isLightTheme;
     localStorage.setItem(PREF_THEME, this.isLightTheme ? LIGHT : DARK);
+  }
+
+  menuToggleChanged(): void {
+    this.isMenuOpen = !this.isMenuOpen;
+  }
+
+  menuClosed(): void {
+    this.isMenuOpen = false;
   }
 }

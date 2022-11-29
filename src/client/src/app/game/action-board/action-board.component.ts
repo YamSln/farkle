@@ -16,8 +16,8 @@ import { GamePhase } from 'src/app/model/game.phase.model';
 })
 export class ActionBoardComponent implements OnInit {
   @Input() bust: boolean = false;
-  @Input() gamePhase: GamePhase = GamePhase.WAIT;
-  @Input() firstRoll: boolean = true;
+  @Input() gamePhase: GamePhase = GamePhase.ROLL;
+  @Input() firstRoll: boolean = false;
 
   @Output() confirmClick: EventEmitter<any> = new EventEmitter<any>();
   @Output() bankBustClick: EventEmitter<any> = new EventEmitter<any>();

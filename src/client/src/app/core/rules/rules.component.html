@@ -1,0 +1,19 @@
+<!-- Desktop -->
+<button
+  fxHide.lt-md="true"
+  mat-icon-button
+  matTooltip="Rules"
+  (click)="onRulesClick()"
+>
+  <mat-icon>library_books</mat-icon>
+</button>
+<!-- Mobile -->
+<a
+  style="cursor: pointer"
+  mat-list-item
+  fxHide.gt-sm="true"
+  (click)="onRulesClick()"
+>
+  <mat-icon matListIcon>library_books</mat-icon>
+  <div matListItemTitle>Game Rules</div>
+</a>

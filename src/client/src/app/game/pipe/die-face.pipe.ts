@@ -7,15 +7,8 @@ import { Die } from 'src/app/model/die.model';
 export class DieFacePipe implements PipeTransform {
   basePath: string = 'assets/dice/';
   transform(die: Die, ...args: string[]): string {
-    return (
-      this.basePath +
-      (die.joker
-        ? 'j' // Joker
-        : '') +
-      'dice_' +
-      die.number +
-      (die.selected ? '_selected' : '') +
-      '.svg'
-    );
+    return `${this.basePath}${die.joker ? 'j' : ''}dice_${die.number}${
+      die.selected ? '_selected' : ''
+    }.svg`;
   }
 }

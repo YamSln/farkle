@@ -1,15 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-plays',
   templateUrl: './plays.component.html',
-  styleUrls: ['./plays.component.scss']
+  styleUrls: ['./plays.component.scss'],
 })
 export class PlaysComponent implements OnInit {
+  constructor() {}
 
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
+  ngOnInit(): void {}
 }

@@ -1,0 +1,36 @@
+<!-- Mobile -->
+<div fxHide.gt-sm="true">
+  <ng-container *ngTemplateOutlet="timer"> </ng-container>
+</div>
+<!-- Desktop -->
+<div fxHide.lt-md="true">
+  <button mat-icon-button [matMenuTriggerFor]="times">
+    <mat-icon>timer</mat-icon>
+  </button>
+  <mat-menu #times>
+    <div
+      [ngStyle.gt-sm]="{ margin: '20px' }"
+      (click)="$event.stopPropagation()"
+    >
+      <ng-container *ngTemplateOutlet="timer"> </ng-container>
+    </div>
+  </mat-menu>
+</div>
+<!-- Slider -->
+<ng-template #timer>
+  <a mat-list-item>
+    <mat-icon matListIcon fxHide.gt-sm="true">timer</mat-icon>
+    <div matListItemTitle>Timer: {{ time }} seconds</div>
+  </a>
+  <div *ngIf="host" fxLayout="row" fxLayoutAlign="center center">
+    <mat-slider
+      [value]="time"
+      (input)="time = $event.value || 30"
+      style="width: 80%"
+      min="30"
+      max="60"
+      step="10"
+      value="30"
+    ></mat-slider>
+  </div>
+</ng-template>

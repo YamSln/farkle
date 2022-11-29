@@ -7,10 +7,7 @@
     fxFlex.xs="90%"
   >
     <mat-card>
-      <div
-        *ngIf="!create"
-        style="width: 100%; display: flex; justify-content: center"
-      >
+      <div *ngIf="!create">
         <img src="assets/logo.svg" alt="logo" style="max-width: 50%" />
       </div>
       <mat-card-title style="display: flex; align-items: center">
@@ -18,9 +15,9 @@
           *ngIf="create"
           src="assets/logo.svg"
           alt="logo"
-          style="height: 4rem; margin-right: 1vh"
+          style="height: 4rem"
         />
-        <h1 style="font-weight: bold">{{ formHeading }}</h1>
+        <h1>{{ formHeading }}</h1>
       </mat-card-title>
       <mat-card-content>
         <mat-form-field class="full-width">
@@ -71,7 +68,7 @@
         </div>
       </mat-card-content>
       <mat-card-actions fxLayout="row" fxLayoutAlign="center center">
-        <button fxFlex="50" mat-raised-button color="primary" type="submit">
+        <button fxFlex="50" mat-stroked-button type="submit">
           {{ formButtonText }}
         </button>
       </mat-card-actions>

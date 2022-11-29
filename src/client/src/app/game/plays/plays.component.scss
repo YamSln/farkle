@@ -1,0 +1,10 @@
+.table-container {
+    overflow-y: auto; 
+    min-height: 0;
+    -ms-overflow-style: none;
+    scrollbar-width: none; 
+}
+
+.table-container::-webkit-scrollbar {
+    display: none;
+}

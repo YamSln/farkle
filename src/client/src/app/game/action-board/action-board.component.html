@@ -15,7 +15,7 @@
           gamePhase != _gamePhaseConstant.PICK) ||
         firstRoll
       "
-      [ngClass]="{ 'bust-button': bust }"
+      [color]="bust ? 'warn' : ''"
     >
       {{ bust ? "Bust!" : "Bank" }}
     </button>

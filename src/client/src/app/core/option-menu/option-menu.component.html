@@ -1,0 +1,24 @@
+<div fxFill fxLayout="column" fxLayoutAlign="space-between">
+  <mat-list>
+    <mat-list-item class="list-item" fxLayoutAlign="center">
+      <app-theme-toggle
+        [lightTheme]="isLightTheme"
+        (themeToggle)="onThemeToggleClick()"
+      ></app-theme-toggle>
+    </mat-list-item>
+    <mat-divider></mat-divider>
+    <div class="list-item">
+      <app-time-selector></app-time-selector>
+    </div>
+    <mat-divider></mat-divider>
+    <div class="list-item">
+      <app-rules></app-rules>
+    </div>
+    <mat-divider></mat-divider>
+    <div class="list-item">
+      <app-github [isLightTheme]="isLightTheme"></app-github>
+    </div>
+  </mat-list>
+  <span fxFlex></span>
+  <app-footer></app-footer>
+</div>

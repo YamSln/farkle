@@ -14,7 +14,7 @@ import { Die } from 'src/app/model/die.model';
   selector: 'app-dice-board',
   templateUrl: './dice-board.component.html',
   styleUrls: ['./dice-board.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  //changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DiceBoardComponent implements OnInit {
   @Input() dice: Die[] = [

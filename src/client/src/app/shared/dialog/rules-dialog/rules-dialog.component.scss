@@ -1,0 +1,13 @@
+@use '../../../../theme.scss' as theme;
+
+mat-dialog-content {
+    scrollbar-width: none; 
+}
+
+mat-dialog-content::-webkit-scrollbar {
+    display: none;
+} 
+
+.bust {
+    color: theme.$accent-color;
+}

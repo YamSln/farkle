@@ -14,6 +14,10 @@ import { GameReducer } from '../game/state/game.reducer';
 import { ClipboardModule } from 'ngx-clipboard';
 import { FooterComponent } from './footer/footer.component';
 import { HeaderComponent } from './header/header.component';
+import { OptionMenuComponent } from './option-menu/option-menu.component';
+import { RulesComponent } from './rules/rules.component';
+import { GithubComponent } from './github/github.component';
+import { TimeSelectorComponent } from './time-selector/time-selector.component';
 
 @NgModule({
   declarations: [
@@ -22,6 +26,10 @@ import { HeaderComponent } from './header/header.component';
     ThemeToggleComponent,
     FooterComponent,
     HeaderComponent,
+    OptionMenuComponent,
+    RulesComponent,
+    GithubComponent,
+    TimeSelectorComponent,
   ],
   imports: [
     CommonModule,

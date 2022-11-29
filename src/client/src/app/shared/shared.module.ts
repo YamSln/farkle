@@ -9,6 +9,8 @@ import { LoadingComponent } from './loading/loading.component';
 import { PlayerActionComponent } from './player-action/player-action.component';
 import { TruncatedTooltipDirective } from './tooltip/truncated-tooltip.directive';
 import { InputTrimDirective } from './input-trim/input-trim.directive';
+import { RulesDialogComponent } from './dialog/rules-dialog/rules-dialog.component';
+import { DieScoreComponent } from './dialog/die-score/die-score.component';
 
 @NgModule({
   declarations: [
@@ -19,6 +21,8 @@ import { InputTrimDirective } from './input-trim/input-trim.directive';
     PlayerActionComponent,
     TruncatedTooltipDirective,
     InputTrimDirective,
+    RulesDialogComponent,
+    DieScoreComponent,
   ],
   imports: [CommonModule, MaterialModule, FormsModule, ReactiveFormsModule],
   exports: [

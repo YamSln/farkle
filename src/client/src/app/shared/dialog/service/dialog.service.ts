@@ -1,8 +1,10 @@
+import { ComponentType } from '@angular/cdk/portal';
 import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
 import { GeneralDialogComponent } from '../general-dialog/general-dialog.component';
 import { MatDialogData } from '../model/mat-dialog.data';
+import { RulesDialogComponent } from '../rules-dialog/rules-dialog.component';
 
 @Injectable({
   providedIn: 'root',
@@ -10,12 +12,16 @@ import { MatDialogData } from '../model/mat-dialog.data';
 export class DialogService {
   constructor(private dialog: MatDialog) {}
 
-  openDialog(dialogData: MatDialogData): Observable<any> {
+  openGeneralDialog(dialogData: MatDialogData): Observable<any> {
     const dialogRef = this.dialog.open(GeneralDialogComponent, {
       data: dialogData.data,
       panelClass: dialogData.panelClass,
       autoFocus: false,
     });
     return dialogRef.afterClosed();
+  }
+
+  openRulesDialog(): void {
+    this.dialog.open(RulesDialogComponent, { panelClass: 'theme-dark' });
   }
 }

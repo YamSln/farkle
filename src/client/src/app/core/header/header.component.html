@@ -15,20 +15,29 @@
       <img src="assets/logo.svg" alt="logo" style="max-width: 100%" />
     </button>
   </ng-template>
-
-  <div style="width: 100%" fxFlex fxLayout="row" fxLayoutAlign="end center">
-    <button
-      *ngIf="hasGithubLink()"
-      [matTooltip]="'Github'"
-      style="top: -1px; margin-right: 5px"
-      mat-icon-button
-      (click)="openGithub()"
-    >
-      <mat-icon svgIcon="github" matSuffix></mat-icon>
+  <div
+    fxFlex
+    fxLayout="row"
+    fxLayoutAlign="end center"
+    fxLayoutGap="10px"
+    fxHide.lt-md="true"
+  >
+    <button *ngIf="timer != undefined" mat-icon-button matTooltip="Timer">
+      <app-time-selector></app-time-selector>
     </button>
+    <span *ngIf="timer != undefined">|</span>
+    <app-rules></app-rules>
+    <span>|</span>
     <app-theme-toggle
       [lightTheme]="isLightTheme"
       (themeToggle)="onThemeToggleClick()"
     ></app-theme-toggle>
+    <span>|</span>
+    <app-github [isLightTheme]="isLightTheme"></app-github>
+  </div>
+  <div fxFlex fxHide.gt-sm="true" fxLayout="row" fxLayoutAlign="end center">
+    <button mat-icon-button (click)="onMenuToggleClick()">
+      <mat-icon>menu</mat-icon>
+    </button>
   </div>
 </mat-toolbar>

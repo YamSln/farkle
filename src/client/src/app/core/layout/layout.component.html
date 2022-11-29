@@ -9,9 +9,25 @@
     [isLightTheme]="isLightTheme"
     [roomUrl]="roomUrl"
     (themeToggle)="themeToggleChanged()"
+    (menuToggle)="menuToggleChanged()"
   ></app-header>
-  <div fxFlex="auto" fxLayout="column" fxLayoutAlign="center">
-    <router-outlet></router-outlet>
-  </div>
-  <app-footer fxFlex="0 1 auto" [version]="version"></app-footer>
+  <mat-drawer-container fxFlex>
+    <mat-drawer
+      style="width: 70%"
+      position="end"
+      [opened]="isMenuOpen"
+      (closed)="menuClosed()"
+    >
+      <app-option-menu
+        [isLightTheme]="isLightTheme"
+        (themeToggle)="themeToggleChanged()"
+      ></app-option-menu>
+    </mat-drawer>
+    <mat-drawer-content fxLayout="column">
+      <div fxFlex="auto" fxLayout="column" fxLayoutAlign="center">
+        <router-outlet></router-outlet>
+      </div>
+      <app-footer fxFlex="0 1 auto" [version]="version"></app-footer>
+    </mat-drawer-content>
+  </mat-drawer-container>
 </div>
