@@ -3,20 +3,24 @@
   <defs>
     <style>
       .cls-1 {
-        fill: #fff;
+        fill: #f9f9f9;
       }
 
       .cls-1, .cls-2 {
-        stroke: #000;
+        stroke: #141414;
         stroke-miterlimit: 10;
         stroke-width: 10px;
+      }
+
+      .cls-2 {
+        fill: #141414;
       }
     </style>
   </defs>
   <g id="black_dice" data-name="black dice">
-    <g id="six">
+    <g id="one">
       <g>
-        <rect class="cls-1" x="5" y="5" width="357.36" height="357.36" rx="60" ry="60"/>
+        <rect class="cls-1" x="5" y="5" width="357.36" height="357.36" rx="30" ry="30"/>
         <circle class="cls-2" cx="183.68" cy="183.68" r="29.04"/>
       </g>
     </g>

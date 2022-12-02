@@ -15,6 +15,7 @@ export interface GameState {
   dice: Die[];
   currentThrowPicks: Die[][]; // Plays confirmed by current player
   currentTurnScores: number[];
+  potentialScore: number;
   currentPlayer: number;
   gamePhase: GamePhase;
   bust: boolean;
@@ -24,15 +25,19 @@ export interface GameState {
   currentTime: number;
   turnInterval?: NodeJS.Timeout;
 
+  start(): number | null;
   /**
    * Performs roll action on the game state:
    * rolls all unconfirmed/unselected dice and moves to pick phase.
    * Returns null if roll is not allowed i.e. game is not in ROLL phase
    */
   roll(): Die[] | null;
-  pick(dieIndices: DieIndex[]): Die[] | null;
+  pick(dieIndex: DieIndex): number | null;
+  confirm(): number | null;
+  bank(): number | null;
   pause(): boolean | null;
   resume(): boolean | null;
+  timeSet(time: number): number | null;
 }
 
 export class Game implements GameState {
@@ -44,6 +49,7 @@ export class Game implements GameState {
   dice: Die[] = [];
   currentThrowPicks: Die[][] = [];
   currentTurnScores: number[] = [];
+  potentialScore: number = 0;
   currentPlayer: number = 0;
   gamePhase: GamePhase = GamePhase.WAIT;
   bust: boolean = false;
@@ -68,12 +74,21 @@ export class Game implements GameState {
   }
 
   public roll(): Die[] | null {
-    if (this.gamePhase !== GamePhase.ROLL) {
-      return null; // Illegal action
+    const roll: boolean = this.changeGamePhase(GamePhase.PICK);
+    if (roll) {
+      this.reRollDice();
+      return [...this.dice];
     }
-    this.reRollDice();
-    this.changeGamePhase(GamePhase.PICK);
-    return [...this.dice];
+    return null; // Illegal action
+  }
+
+  public pause(): boolean | null {
+    this.prevPhase = this.gamePhase;
+    return this.changeGamePhase(GamePhase.PAUSE);
+  }
+
+  public resume(): boolean | null {
+    return this.prevPhase ? this.changeGamePhase(this.prevPhase) : null;
   }
 
   private reRollDice(): void {
@@ -85,12 +100,13 @@ export class Game implements GameState {
     }
   }
 
-  private changeGamePhase(newPhase: GamePhase): void {
+  private changeGamePhase(newPhase: GamePhase): boolean {
     if (this.gamePhase === GamePhase.PAUSE || newPhase === GamePhase.PAUSE) {
       // Change to PAUSE or from PAUSE is always allowed
       if (this.gamePhase !== GamePhase.WAIT) {
         // Except from WAIT
         this.gamePhase = newPhase;
+        return true;
       }
     }
     switch (newPhase) {
@@ -100,13 +116,14 @@ export class Game implements GameState {
           this.gamePhase === GamePhase.WAIT
         ) {
           this.gamePhase = newPhase;
+          return true;
         }
-        break;
       case GamePhase.PICK: // Change to PICK is allowed from ROLL
         if (this.gamePhase === GamePhase.ROLL) {
           this.gamePhase = newPhase;
         }
-        break;
+        return true;
     }
+    return false;
   }
 }

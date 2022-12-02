@@ -1,7 +1,7 @@
 @use '../../../theme.scss' as theme;
 
 .die-image {
-    border-radius: 18%;
+    border-radius: 10%;
     border: 2px solid transparent;
     width: 90%;
     height: 90%;
@@ -15,18 +15,18 @@
 
 .die-border-glow {
     border: 2px solid theme.$accent-color;
-    border-radius: 18%;
+    border-radius: 10%;
 }
 
 .selected-die {
     @extend .die-border-glow;
     visibility: visible;
     opacity: 1;
-    -webkit-animation: fadeIn 0.3s ease-in;
-    -moz-animation: fadeIn 0.3s ease-in;
-    -o-animation: fadeIn 0.3s ease-in;
-    -ms-animation: fadeIn 0.3s ease-in;
-    animation: fadeIn 0.3s ease-in;
+    -webkit-animation: fadeIn 0.3s ease-out;
+    -moz-animation: fadeIn 0.3s ease-out;
+    -o-animation: fadeIn 0.3s ease-out;
+    -ms-animation: fadeIn 0.3s ease-out;
+    animation: fadeIn 0.3s ease-out;
 }
 
 @keyframes fadeIn {
@@ -69,11 +69,11 @@
 .confirmed-die {
     @extend .die-image;
     opacity: 0.25;
-    -webkit-animation: fadeOut 0.5s ease-out;
-    -moz-animation: fadeOut 0.5s ease-out;
-    -o-animation: fadeOut 0.5s ease-out;
-    -ms-animation: fadeOut 0.5s ease-out;
-    animation: fadeOut 0.5s ease-out;
+    -webkit-animation: fadeOut 0.5s ease-in;
+    -moz-animation: fadeOut 0.5s ease-in;
+    -o-animation: fadeOut 0.5s ease-in;
+    -ms-animation: fadeOut 0.5s ease-in;
+    animation: fadeOut 0.5s ease-in;
   }
 
   @keyframes fadeOut {

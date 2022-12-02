@@ -5,9 +5,10 @@ import {
   ViewChildren,
   OnChanges,
   SimpleChanges,
+  OnInit,
   OnDestroy,
 } from '@angular/core';
-import * as confetti from 'canvas-confetti';
+import JSConfetti from 'js-confetti';
 
 @Component({
   selector: 'app-confetti',
@@ -15,7 +16,7 @@ import * as confetti from 'canvas-confetti';
   styleUrls: ['./confetti.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ConfettiComponent implements OnChanges, OnDestroy {
+export class ConfettiComponent implements OnChanges, OnDestroy, OnInit {
   @Input() winningTeam: boolean = false;
 
   winningConfetti: any;
@@ -23,6 +24,13 @@ export class ConfettiComponent implements OnChanges, OnDestroy {
   @ViewChildren('confetti') confettiCanvas: any;
 
   constructor() {}
+
+  ngOnInit(): void {
+    this.winningConfetti = new JSConfetti({
+      canvas: this.confettiCanvas,
+    });
+    this.triggerConfetti();
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.winningTeam.currentValue) {
@@ -32,43 +40,24 @@ export class ConfettiComponent implements OnChanges, OnDestroy {
     }
   }
 
-  /* Credit to the js confetti project on the confetti design */
-
   triggerConfetti(): void {
-    this.winningConfetti = confetti.create(this.confettiCanvas.nativeElement, {
-      resize: true,
-      disableForReducedMotion: true,
-    });
-    const duration = 15 * 1000;
-    const animationEnd = Date.now() + duration;
-    const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
-
-    function randomInRange(min: number, max: number) {
-      return Math.random() * (max - min) + min;
-    }
-
+    this.throwConfetti();
+    let i = 1;
     this.confettiInterval = setInterval(() => {
-      var timeLeft = animationEnd - Date.now();
-
-      if (timeLeft <= 0) {
-        return clearInterval(this.confettiInterval);
+      this.throwConfetti();
+      i++;
+      if (i > 2) {
+        this.clearConfetti();
       }
+    }, 1500);
+  }
 
-      const particleCount = 50 * (timeLeft / duration);
-      // since particles fall down, start a bit higher than random
-      this.winningConfetti(
-        Object.assign({}, defaults, {
-          particleCount,
-          origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 },
-        })
-      );
-      this.winningConfetti(
-        Object.assign({}, defaults, {
-          particleCount,
-          origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 },
-        })
-      );
-    }, 250);
+  throwConfetti(): void {
+    this.winningConfetti.addConfetti({
+      emojis: ['🎲'],
+      emojiSize: 40,
+      confettiNumber: 75,
+    });
   }
 
   ngOnDestroy(): void {

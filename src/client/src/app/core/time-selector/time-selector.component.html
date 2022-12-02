@@ -25,12 +25,12 @@
   <div *ngIf="host" fxLayout="row" fxLayoutAlign="center center">
     <mat-slider
       [value]="time"
-      (input)="time = $event.value || 30"
+      (input)="time = $event.value || 0"
       style="width: 80%"
-      min="30"
+      min="0"
       max="60"
-      step="10"
-      value="30"
+      step="15"
+      value="0"
     ></mat-slider>
   </div>
 </ng-template>

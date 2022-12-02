@@ -14,7 +14,7 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TimeSelectorComponent implements OnInit {
-  @Input() time: number = 30;
+  @Input() time: number = 0;
   @Input() host: boolean = true;
 
   @Output() timeSet: EventEmitter<number> = new EventEmitter<number>();
