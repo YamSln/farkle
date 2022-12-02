@@ -1,5 +1,6 @@
 <div fxFill fxLayout="column" fxLayoutAlign="space-between">
   <mat-list>
+    <!-- Theme Toggle -->
     <mat-list-item class="list-item" fxLayoutAlign="center">
       <app-theme-toggle
         [lightTheme]="isLightTheme"
@@ -7,18 +8,22 @@
       ></app-theme-toggle>
     </mat-list-item>
     <mat-divider></mat-divider>
+    <!-- Timer Slider and Display -->
     <div class="list-item">
       <app-time-selector></app-time-selector>
     </div>
     <mat-divider></mat-divider>
+    <!-- Rules Modal Button -->
     <div class="list-item">
       <app-rules></app-rules>
     </div>
     <mat-divider></mat-divider>
+    <!-- Github Link -->
     <div class="list-item">
       <app-github [isLightTheme]="isLightTheme"></app-github>
     </div>
   </mat-list>
   <span fxFlex></span>
+  <!-- Footer -->
   <app-footer></app-footer>
 </div>

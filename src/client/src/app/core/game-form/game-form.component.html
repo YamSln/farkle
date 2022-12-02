@@ -6,11 +6,13 @@
     fxFlex.sm="50%"
     fxFlex.xs="90%"
   >
+    <!-- Form -->
     <mat-card>
       <div *ngIf="!create">
         <img src="assets/logo.svg" alt="logo" style="max-width: 50%" />
       </div>
       <mat-card-title style="display: flex; align-items: center">
+        <!-- Form Heading -->
         <img
           *ngIf="create"
           src="assets/logo.svg"
@@ -19,8 +21,10 @@
         />
         <h1>{{ formHeading }}</h1>
       </mat-card-title>
+      <!-- Form Inputs -->
       <mat-card-content>
         <mat-form-field class="full-width">
+          <!-- Nick Input -->
           <mat-label> Nick </mat-label>
           <input
             matInput
@@ -39,7 +43,9 @@
             Nick cannot contain more than 15 characters
           </mat-error>
         </mat-form-field>
+        <!-- Room Password Input -->
         <app-password-field formControlName="password"> </app-password-field>
+        <!-- Max Players Slider -->
         <mat-label *ngIf="create"> Max Players </mat-label>
         <div fxLayout="row" *ngIf="create">
           <mat-slider
@@ -53,6 +59,7 @@
           ></mat-slider>
           <span style="font-size: 1.5rem">{{ maxPlayersSlider }}</span>
         </div>
+        <!-- Max Points Slider -->
         <mat-label *ngIf="create"> Max Points </mat-label>
         <div fxLayout="row" *ngIf="create">
           <mat-slider
@@ -67,6 +74,7 @@
           <span style="font-size: 1rem">{{ maxPointsSlider }}</span>
         </div>
       </mat-card-content>
+      <!-- Submit Button -->
       <mat-card-actions fxLayout="row" fxLayoutAlign="center center">
         <button fxFlex="50" mat-stroked-button type="submit">
           {{ formButtonText }}

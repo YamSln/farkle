@@ -1,3 +1,4 @@
+<!-- Desktop -->
 <button
   fxHide.lt-md="true"
   *ngIf="hasGithubLink()"
@@ -7,7 +8,7 @@
 >
   <ng-container *ngTemplateOutlet="icon"> </ng-container>
 </button>
-
+<!-- Mobile -->
 <a
   style="cursor: pointer"
   mat-list-item
@@ -18,7 +19,7 @@
   <ng-container *ngTemplateOutlet="icon"> </ng-container>
   <div matListItemTitle>Visit Our Repo!</div>
 </a>
-
+<!-- Github Icon -->
 <ng-template #icon>
   <mat-icon
     matListIcon
