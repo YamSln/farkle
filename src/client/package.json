@@ -29,7 +29,7 @@
     "@ngrx/store": "^14.3.2",
     "@ngrx/store-devtools": "^14.3.2",
     "angular-animations": "^0.11.0",
-    "canvas-confetti": "^1.6.0",
+    "js-confetti": "^0.11.0",
     "ngx-clipboard": "^15.1.0",
     "rxjs": "~7.5.7",
     "socket.io-client": "^4.5.3",
@@ -38,7 +38,6 @@
     "zone.js": "^0.12.0"
   },
   "devDependencies": {
-    "@types/canvas-confetti": "^1.4.3",
     "@types/jasmine": "~4.3.0",
     "@types/node": "^18.11.9",
     "codelyzer": "^6.0.2",

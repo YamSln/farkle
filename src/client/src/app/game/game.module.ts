@@ -15,6 +15,7 @@ import { DiceBoardComponent } from './dice-board/dice-board.component';
 import { ActionBoardComponent } from './action-board/action-board.component';
 import { PlaysComponent } from './plays/plays.component';
 import { ChatComponent } from './chat/chat.component';
+import { ConfettiComponent } from './confetti/confetti.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { ChatComponent } from './chat/chat.component';
     ActionBoardComponent,
     PlaysComponent,
     ChatComponent,
+    ConfettiComponent,
   ],
   imports: [CommonModule, GameRoutingModule, SharedModule, FormsModule],
 })

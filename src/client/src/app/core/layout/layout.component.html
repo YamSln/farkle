@@ -4,6 +4,7 @@
   [ngClass]="{ 'theme-dark': !isLightTheme }"
   fxLayout="column"
 >
+  <!-- Toolbar -->
   <app-header
     fxFlex="0 1 auto"
     [isLightTheme]="isLightTheme"
@@ -18,12 +19,14 @@
       [opened]="isMenuOpen"
       (closed)="menuClosed()"
     >
+      <!-- Mobile Menu -->
       <app-option-menu
         [isLightTheme]="isLightTheme"
         (themeToggle)="themeToggleChanged()"
       ></app-option-menu>
     </mat-drawer>
     <mat-drawer-content fxLayout="column">
+      <!-- App Content -->
       <div fxFlex="auto" fxLayout="column" fxLayoutAlign="center">
         <router-outlet></router-outlet>
       </div>

@@ -12,6 +12,7 @@ import { CreateGamePayload } from "../model/create-game.payload";
 import { JoinPayload } from "../model/join.payload";
 import handler from "./game.handler";
 import log from "../config/log";
+import { DieIndex } from "../model/die-index.type";
 
 const REQUESTOR = "SOCKET_HANDLER";
 
@@ -37,22 +38,41 @@ const onConnection = (socket: Socket, io: Server) => {
       disconnect(socket, NOT_FOUND);
   }
 
-  socket.on(GameEvent.TIME_SET, (timeSpan: number) => {
-    const room = getSocketRoom(socket);
-    const time = handler.onTimerSet(room, timeSpan, io);
-    io.to(room).emit(GameEvent.TIME_SET, time);
-  });
+  const room = getSocketRoom(socket);
 
   socket.on(GameEvent.NEW_GAME, () => {
-    const room = getSocketRoom(socket);
     const newGame = handler.onNewGame(room);
     io.to(room).emit(GameEvent.NEW_GAME, newGame);
   });
 
+  socket.on(GameEvent.START_GAME, () => {
+    const start = handler.onGameStart(room); // TODO : Implement
+    io.to(room).emit(GameEvent.START_GAME, start);
+  });
+
+  socket.on(GameEvent.ROLL, () => {
+    const dice = handler.onRoll(room); // TODO : Implement
+    io.to(room).emit(dice.bust ? GameEvent.BUST : GameEvent.ROLL, dice.payload);
+  });
+
+  socket.on(GameEvent.PICK, (dieIndex: DieIndex) => {
+    const picked = handler.onPick(room, dieIndex); // TODO : Implement
+    io.to(room).emit(GameEvent.PICK, picked);
+  });
+
+  socket.on(GameEvent.CONFIRM, () => {
+    const result = handler.onConfirm(room);
+    io.to(room).emit(GameEvent.CONFIRM, result);
+  });
+
   socket.on(GameEvent.BANK, () => {
-    const room = getSocketRoom(socket);
-    const nextPlayer = handler.onBank(socket.id, room);
-    io.to(room).emit(GameEvent.BANK, nextPlayer);
+    const score = handler.onBank(room); // TODO : Implement
+    io.to(room).emit(GameEvent.BANK, score);
+  });
+
+  socket.on(GameEvent.TIME_SET, (timeSpan: number) => {
+    const time = handler.onTimerSet(room, timeSpan, io); // TODO : Implement
+    io.to(room).emit(GameEvent.TIME_SET, time);
   });
 
   socket.on(GameEvent.DISCONNECT_SELF, () => {

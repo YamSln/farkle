@@ -13,14 +13,15 @@
       }
 
       .cls-2 {
-        stroke: #000;
+        fill: #141414;
+        stroke: #141414;
       }
     </style>
   </defs>
   <g id="black_dice" data-name="black dice">
     <g id="six">
       <g>
-        <rect class="cls-2" x="5" y="5" width="357.36" height="357.36" rx="60" ry="60"/>
+        <rect class="cls-2" x="5" y="5" width="357.36" height="357.36" rx="30" ry="30"/>
         <g>
           <circle class="cls-1" cx="103.56" cy="100.76" r="27.55" transform="translate(-30.68 47.3) rotate(-22.5)"/>
           <circle class="cls-1" cx="183.92" cy="183.68" r="27.55"/>

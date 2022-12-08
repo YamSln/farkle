@@ -1,21 +1,19 @@
 export enum GameEvent {
   CONNECT = "connect",
-  JOIN_GAME = "joinGame",
-  PLAYER_JOINED = "playerJoined",
-  CREATE_GAME = "createGame",
+  JOIN_GAME = "join_game",
+  PLAYER_JOINED = "player_joined",
+  CREATE_GAME = "create_game",
   DISCONNECT = "disconnect",
   DISCONNECTING = "disconnecting",
   DISCONNECT_SELF = "disconnect_self",
-
-  // TODO : NEW EVENTS
-
   BANK = "bank",
   ROLL = "roll",
   BUST = "bust",
   PICK = "pick",
-
-  NEW_GAME = "newGame",
-  TIME_SET = "timeSet",
-  TIME_TICK = "timeTick",
-  PLAYER_DISCONNECTED = "playerDisconnected",
+  CONFIRM = "confirm",
+  START_GAME = "start_game",
+  NEW_GAME = "new_game",
+  TIME_SET = "time_set",
+  TIME_TICK = "time_tick",
+  PLAYER_DISCONNECTED = "player_disconnected",
 }

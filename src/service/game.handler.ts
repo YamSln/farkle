@@ -61,18 +61,18 @@ const onCreateGame = (
   socketId: string,
   createGamePayload: CreateGamePayload
 ): GameState => {
-  const state = service.createGame(
-    createGamePayload.password,
-    createGamePayload.maxPlayers,
-    createGamePayload.maxPoints
-  );
   const host: Player = {
     id: socketId,
     nick: createGamePayload.nick,
     points: 0,
     host: true,
   };
-  state.players.push(host);
+  const state = service.createGame(
+    createGamePayload.password,
+    createGamePayload.maxPlayers,
+    createGamePayload.maxPoints,
+    [host]
+  );
   rooms.set(createGamePayload.room, state);
   log.info(REQUESTOR, `Room ${createGamePayload.room} created`);
   return state;
@@ -97,22 +97,21 @@ const onJoinGame = (socketId: string, joinPayload: JoinPayload): JoinEvent => {
 
 const onNewGame = (room: string): GameState => {
   const state = getGame(room);
-  clearTimer(state);
-  const newGame = service.newGame({
-    ...state,
-    roomId: room,
-  });
+  const newGame = service.newGame(state);
   rooms.set(room, newGame);
   return newGame;
 };
 
-const winGame = (state: GameState, player: string): void => {
-  state.winningPlayer = player;
-  clearTimer(state, true);
-};
-
-const onTimerSet = (room: string, timeSpan: number, io: any): number => {
+const onTimerSet = (
+  socketId: string,
+  room: string,
+  timeSpan: number,
+  io: any
+): number => {
   const state = getGame(room);
+  if (!state.isHost(socketId)) {
+    return 0;
+  }
   state.turnTime = timeSpan;
   state.currentTime = state.turnTime;
   // Clear timer interval
@@ -134,17 +133,10 @@ const onTimerSet = (room: string, timeSpan: number, io: any): number => {
 
 const onBank = (socketId: string, room: string): number | null => {
   const state = getGame(room);
-  const playerIndex = getPlayerIndex(socketId, state);
-  if (
-    state.gamePhase !== GamePhase.PICK ||
-    playerIndex !== state.currentPlayer
-  ) {
+  if (!state.isPlaying(socketId)) {
     return null;
   }
-
-  // TODO : Implement banking process
-
-  return nextTurn(state);
+  return state.bank();
 };
 
 const clearTimer = (state: GameState, erase: boolean = false): void => {

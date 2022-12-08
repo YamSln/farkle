@@ -5,10 +5,13 @@
   fxLayoutGap="2rem"
   [ngSwitch]="dialogData.dialogDefinition"
 >
+  <!-- Dialog Icon -->
   <mat-icon color="warn">{{ dialogIcon }}</mat-icon>
+  <!-- Dialog Message-->
   <div style="font-size: 2vh; display: inline-block; line-height: 50px">
     {{ dialogData.dialogMessage }}
   </div>
+  <!-- Dialog Buttons -->
   <button
     *ngSwitchCase="dialogDefinition.OK"
     fxFlexAlign="stretch"
