@@ -8,6 +8,7 @@ import { DialogService } from 'src/app/shared/dialog/service/dialog.service';
 })
 export class RulesComponent implements OnInit {
   @Input() isLightTheme: boolean = false;
+  @Input() menu: boolean = false;
 
   constructor(private dialogService: DialogService) {}
 

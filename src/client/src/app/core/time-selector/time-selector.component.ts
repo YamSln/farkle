@@ -16,6 +16,7 @@ import {
 export class TimeSelectorComponent implements OnInit {
   @Input() time: number = 0;
   @Input() host: boolean = true;
+  @Input() menu: boolean = false;
 
   @Output() timeSet: EventEmitter<number> = new EventEmitter<number>();
 

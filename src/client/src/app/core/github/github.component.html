@@ -1,7 +1,6 @@
 <!-- Desktop -->
 <button
-  fxHide.lt-md="true"
-  *ngIf="hasGithubLink()"
+  *ngIf="hasGithubLink() && !menu"
   [matTooltip]="'Github'"
   mat-icon-button
   (click)="openGithub()"
@@ -12,8 +11,7 @@
 <a
   style="cursor: pointer"
   mat-list-item
-  fxHide.gt-sm="true"
-  *ngIf="hasGithubLink()"
+  *ngIf="hasGithubLink() && menu"
   (click)="openGithub()"
 >
   <ng-container *ngTemplateOutlet="icon"> </ng-container>

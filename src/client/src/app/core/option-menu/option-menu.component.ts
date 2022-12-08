@@ -6,6 +6,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
   styleUrls: ['./option-menu.component.scss'],
 })
 export class OptionMenuComponent implements OnInit {
+  @Input() version!: string;
   @Input() isLightTheme!: boolean;
 
   @Output() themeToggle: EventEmitter<any> = new EventEmitter<any>();

@@ -11,7 +11,7 @@
       <div *ngIf="!create">
         <img src="assets/logo.svg" alt="logo" style="max-width: 50%" />
       </div>
-      <mat-card-title style="display: flex; align-items: center">
+      <mat-card-title fxLayout="row">
         <!-- Form Heading -->
         <img
           *ngIf="create"
@@ -23,7 +23,7 @@
       </mat-card-title>
       <!-- Form Inputs -->
       <mat-card-content>
-        <mat-form-field class="full-width">
+        <mat-form-field fxLayout="column">
           <!-- Nick Input -->
           <mat-label> Nick </mat-label>
           <input

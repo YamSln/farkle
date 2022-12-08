@@ -1,4 +1,8 @@
-<mat-toolbar fxLayout="row" fxLayoutAlign="end center">
+<mat-toolbar
+  fxLayout="row"
+  fxLayoutAlign="end center"
+  [color]="isLightTheme ? '' : 'primary'"
+>
   <!-- Home / Invitation Link Button -->
   <div *ngIf="roomUrl | async as url; then url; else home"></div>
   <ng-template #url>

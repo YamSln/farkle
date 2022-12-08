@@ -3,10 +3,10 @@ import { DICE_COUNT, MIN_PLAYERS, MIN_POINTS } from "../util/game.constants";
 import { GamePhase } from "./game.phase.model";
 import { Player } from "./player.model";
 import { DieIndex } from "./die-index.type";
+import util from "../util/game.util";
 
 export interface GameState {
   // Room properties
-  roomId?: string;
   password: string;
   maxPlayers: number;
   maxPoints: number;
@@ -25,23 +25,25 @@ export interface GameState {
   currentTime: number;
   turnInterval?: NodeJS.Timeout;
 
-  start(): number | null;
+  start(): Player[] | null;
+  newGame(): Game | null;
   /**
    * Performs roll action on the game state:
    * rolls all unconfirmed/unselected dice and moves to pick phase.
    * Returns null if roll is not allowed i.e. game is not in ROLL phase
    */
   roll(): Die[] | null;
-  pick(dieIndex: DieIndex): number | null;
+  select(dieIndex: DieIndex): number | null;
   confirm(): number | null;
   bank(): number | null;
   pause(): boolean | null;
   resume(): boolean | null;
   timeSet(time: number): number | null;
+  isPlaying(playerId: string): boolean;
+  isHost(playerId: string): boolean;
 }
 
 export class Game implements GameState {
-  roomId?: string;
   password: string = "";
   maxPlayers: number = MIN_PLAYERS;
   maxPoints: number = MIN_POINTS;
@@ -60,20 +62,72 @@ export class Game implements GameState {
 
   private prevPhase: GamePhase = GamePhase.WAIT;
 
-  /**
-   * Returns and initial game state with given room properties
-   * @param roomId id of the game room
-   * @param password password of the game room
-   * @param host host player, also first player in the game room
-   */
-  constructor(roomId: string, password: string, host: Player) {
-    this.roomId = roomId;
+  constructor(
+    password: string,
+    players: Player[],
+    maxPoints: number,
+    maxPlayers: number
+  ) {
     this.password = password;
-    this.players = [host];
+    this.players = players;
+    this.maxPoints = maxPoints;
+    this.maxPlayers = maxPlayers;
     this.dice = getRandomDice(DICE_COUNT);
   }
 
-  public roll(): Die[] | null {
+  start(): Player[] | null {
+    const phaseChanged: boolean = this.changeGamePhase(GamePhase.ROLL);
+    if (!phaseChanged) {
+      return null;
+    }
+    this.shufflePlayers();
+    return this.players;
+  }
+
+  newGame(): Game | null {
+    const game: Game = new Game(
+      this.password,
+      this.players,
+      this.maxPoints,
+      this.maxPlayers
+    );
+    game.shufflePlayers();
+    game.start();
+    return game;
+  }
+
+  select(dieIndex: DieIndex): number | null {
+    this.dice[dieIndex].selected = !this.dice[dieIndex].selected;
+    // Get potential score
+  }
+
+  confirm(): number | null {
+    // Get potential score
+    // Add to current scores
+    // Proceed to ROLL / BANK
+  }
+
+  bank(): number | null {
+    // Increase player score
+    this.players[this.currentPlayer].points += util.sumArray(
+      this.currentTurnScores
+    );
+    this.currentTurnScores = []; // Reset turn scores
+    // Check if player won game
+    if (this.players[this.currentPlayer].points >= this.maxPoints) {
+      this.winGame();
+      return null;
+    } // Otherwise next turn
+    this.nextTurn();
+    return this.players[this.currentPlayer].points;
+  }
+
+  timeSet(time: number): number | null {
+    this.turnTime = time;
+    return time;
+  }
+
+  roll(): Die[] | null {
     const roll: boolean = this.changeGamePhase(GamePhase.PICK);
     if (roll) {
       this.reRollDice();
@@ -82,13 +136,37 @@ export class Game implements GameState {
     return null; // Illegal action
   }
 
-  public pause(): boolean | null {
+  pause(): boolean | null {
     this.prevPhase = this.gamePhase;
     return this.changeGamePhase(GamePhase.PAUSE);
   }
 
-  public resume(): boolean | null {
+  resume(): boolean | null {
     return this.prevPhase ? this.changeGamePhase(this.prevPhase) : null;
+  }
+
+  isPlaying(playerId: string): boolean {
+    return this.players[this.currentPlayer].id === playerId;
+  }
+
+  isHost(playerId: string): boolean {
+    const player = this.players.findIndex((player) => player.id === playerId);
+    return this.players[player].host;
+  }
+
+  private shufflePlayers(): void {
+    this.players = util.shuffleArray(this.players);
+  }
+
+  private winGame(): number {
+    this.gameWon = true;
+    return this.currentPlayer;
+  }
+
+  private nextTurn(): number {
+    this.gamePhase = GamePhase.ROLL;
+    this.currentPlayer++;
+    return this.currentPlayer;
   }
 
   private reRollDice(): void {

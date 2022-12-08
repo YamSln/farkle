@@ -10,20 +10,20 @@
     <mat-divider></mat-divider>
     <!-- Timer Slider and Display -->
     <div class="list-item">
-      <app-time-selector></app-time-selector>
+      <app-time-selector [menu]="true"></app-time-selector>
     </div>
     <mat-divider></mat-divider>
     <!-- Rules Modal Button -->
     <div class="list-item">
-      <app-rules></app-rules>
+      <app-rules [menu]="true"></app-rules>
     </div>
     <mat-divider></mat-divider>
     <!-- Github Link -->
     <div class="list-item">
-      <app-github [isLightTheme]="isLightTheme"></app-github>
+      <app-github [menu]="true" [isLightTheme]="isLightTheme"></app-github>
     </div>
   </mat-list>
   <span fxFlex></span>
   <!-- Footer -->
-  <app-footer></app-footer>
+  <app-footer [version]="version"></app-footer>
 </div>

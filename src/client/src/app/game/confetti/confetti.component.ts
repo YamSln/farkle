@@ -10,6 +10,11 @@ import {
 } from '@angular/core';
 import JSConfetti from 'js-confetti';
 
+enum ConfettiType {
+  WIN,
+  BUST,
+}
+
 @Component({
   selector: 'app-confetti',
   templateUrl: './confetti.component.html',
@@ -20,6 +25,7 @@ export class ConfettiComponent implements OnChanges, OnDestroy, OnInit {
   @Input() winningTeam: boolean = false;
 
   winningConfetti: any;
+  bustConfetti: any;
   confettiInterval: any;
   @ViewChildren('confetti') confettiCanvas: any;
 
@@ -29,35 +35,53 @@ export class ConfettiComponent implements OnChanges, OnDestroy, OnInit {
     this.winningConfetti = new JSConfetti({
       canvas: this.confettiCanvas,
     });
-    this.triggerConfetti();
+    this.bustConfetti = new JSConfetti({
+      canvas: this.confettiCanvas,
+    });
+    this.triggerConfetti(ConfettiType.WIN);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.winningTeam.currentValue) {
-      this.triggerConfetti();
+      this.triggerConfetti(ConfettiType.WIN);
     } else {
       this.clearConfetti();
     }
   }
 
-  triggerConfetti(): void {
-    this.throwConfetti();
-    let i = 1;
-    this.confettiInterval = setInterval(() => {
-      this.throwConfetti();
-      i++;
-      if (i > 2) {
-        this.clearConfetti();
-      }
-    }, 1500);
+  triggerConfetti(type: ConfettiType): void {
+    this.throwConfetti(type);
+    switch (type) {
+      case ConfettiType.WIN:
+        let i = 1;
+        this.confettiInterval = setInterval(() => {
+          this.throwConfetti(type);
+          i++;
+          if (i > 2) {
+            this.clearConfetti();
+          }
+        }, 1500);
+        break;
+    }
   }
 
-  throwConfetti(): void {
-    this.winningConfetti.addConfetti({
-      emojis: ['🎲'],
-      emojiSize: 40,
-      confettiNumber: 75,
-    });
+  throwConfetti(type: ConfettiType): void {
+    switch (type) {
+      case ConfettiType.WIN:
+        this.winningConfetti.addConfetti({
+          emojis: ['🎲'],
+          emojiSize: 40,
+          confettiNumber: 75,
+        });
+        break;
+      case ConfettiType.BUST:
+        this.bustConfetti.addConfetti({
+          emojis: ['🤬', '😡', '❌'],
+          emojiSize: 40,
+          confettiNumber: 40,
+        });
+        break;
+    }
   }
 
   ngOnDestroy(): void {

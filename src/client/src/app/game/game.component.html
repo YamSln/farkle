@@ -1,32 +1,18 @@
 <div *ngIf="gameState | async as game">
   <div fxFlex="5" fxFlex.gt-lg="20"></div>
-  <div
-    fxFlex
-    fxLayout="column"
-    fxLayoutGap="20px"
-    [ngStyle.lt-md]="{ 'margin-top': '1.5rem' }"
-  >
-    <div
-      fxFlex="10"
-      fxLayout="column"
-      fxLayoutAlign="center center"
-      fxLayoutGap="20px"
-    >
+  <div fxFlex fxLayout="column" fxLayoutGap="20px">
+    <div fxFlex fxLayout="column" fxLayoutAlign="center center">
       <app-timer></app-timer>
       <app-score-potential></app-score-potential>
     </div>
-    <div
-      fxFlex="90"
-      fxLayoutGap="20px"
-      fxLayout.lt-md="column"
-      fxLayout.gt-sm="row"
-    >
+    <div fxFlex fxLayoutGap="20px" fxLayout.lt-md="column" fxLayout.gt-sm="row">
       <app-score-board
         fxFlexOrder.lt-md="2"
         fxFlexOrder.gt-sm="1"
         fxFlex.gt-sm="30"
         fxFlex.lt-md="40"
       ></app-score-board>
+
       <div
         fxFlex.gt-sm="60"
         fxFlex.gt-md="60"
@@ -38,7 +24,13 @@
         <app-dice-board fxFlex="80"></app-dice-board>
         <app-action-board fxFlex></app-action-board>
       </div>
-      <div fxFlex="30" fxFlexOrder="3" fxLayout="column" fxLayoutGap="20px">
+      <div
+        fxHide.lt-md="true"
+        fxFlex="30"
+        fxFlexOrder="3"
+        fxLayout="column"
+        fxLayoutGap="20px"
+      >
         <app-plays fxHide.lt-md="true" fxFlex="60">Plays</app-plays>
         <app-chat fxHide.lt-md="true" fxFlex="40">Chat</app-chat>
       </div>

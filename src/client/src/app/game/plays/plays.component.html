@@ -1,5 +1,5 @@
 <mat-card fxFlex fxLayout="column" fxLayoutAlign="start" style="height: 100%">
-  <div fxFlex="0 1 auto" fxLayoutAlign="center start">Picks</div>
+  <div fxFlex="0 1 auto" fxLayoutAlign="center start"></div>
   <!-- Plays Table -->
   <div fxFlex fxFlex.lt-md="1 0 auto" class="table-container">
     <table
@@ -17,12 +17,14 @@
       </ng-container>
       <!-- Dice Column -->
       <ng-container matColumnDef="dice">
-        <th mat-header-cell *matHeaderCellDef>Dice</th>
+        <th style="text-align: center" mat-header-cell *matHeaderCellDef>
+          Dice
+        </th>
         <td mat-cell *matCellDef="let plays">
           <img
             *ngFor="let die of plays"
             [src]="die | dieFace"
-            style="width: 20px; margin-right: 3px"
+            style="width: 20px; margin: 3px"
           />
         </td>
       </ng-container>
