@@ -1,6 +1,7 @@
+import { OverlayContainer } from '@angular/cdk/overlay';
 import { Component } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
-import { filter, Subscription } from 'rxjs';
+import { filter, Observable, Subscription } from 'rxjs';
 import { SharedFacade } from './shared/state/shared.facade';
 
 @Component({
@@ -11,10 +12,18 @@ import { SharedFacade } from './shared/state/shared.facade';
 export class AppComponent {
   title = 'farkle';
   events!: Subscription;
+  lightTheme!: Subscription;
 
-  constructor(private router: Router, private sharedFacade: SharedFacade) {}
+  isLightTheme!: Observable<boolean>;
+
+  constructor(
+    private router: Router,
+    private sharedFacade: SharedFacade,
+    private overlay: OverlayContainer
+  ) {}
 
   ngOnInit(): void {
+    this.isLightTheme = this.sharedFacade.getIsLightTheme();
     this.events = this.router.events
       .pipe(filter((event) => event instanceof NavigationEnd))
       .subscribe((event) => {
@@ -22,11 +31,21 @@ export class AppComponent {
           this.sharedFacade.hideLoading();
         }
       });
+    this.lightTheme = this.isLightTheme.subscribe((isLightTheme) => {
+      if (isLightTheme) {
+        this.overlay.getContainerElement().classList.remove('theme-dark');
+      } else {
+        this.overlay.getContainerElement().classList.add('theme-dark');
+      }
+    });
   }
 
   ngOnDestroy(): void {
     if (this.events) {
       this.events.unsubscribe();
+    }
+    if (this.lightTheme) {
+      this.lightTheme.unsubscribe();
     }
   }
 }

@@ -1,4 +1,3 @@
-import { ComponentType } from '@angular/cdk/portal';
 import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
@@ -15,13 +14,12 @@ export class DialogService {
   openGeneralDialog(dialogData: MatDialogData): Observable<any> {
     const dialogRef = this.dialog.open(GeneralDialogComponent, {
       data: dialogData.data,
-      panelClass: dialogData.panelClass,
       autoFocus: false,
     });
     return dialogRef.afterClosed();
   }
 
   openRulesDialog(): void {
-    this.dialog.open(RulesDialogComponent, { panelClass: 'theme-dark' });
+    this.dialog.open(RulesDialogComponent);
   }
 }

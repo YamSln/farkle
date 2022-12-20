@@ -1,13 +1,10 @@
-<div
-  class="mat-app-background"
-  style="min-height: 100%"
-  [ngClass]="{ 'theme-dark': !isLightTheme }"
-  fxLayout="column"
->
+<div class="mat-app-background" style="min-height: 100%" fxLayout="column">
   <!-- Toolbar -->
   <app-header
     fxFlex="0 1 auto"
-    [isLightTheme]="isLightTheme"
+    class="mat-elevation-z4"
+    style="z-index: 2"
+    [isLightTheme]="(isLightTheme | async) || false"
     [roomUrl]="roomUrl"
     (themeToggle)="themeToggleChanged()"
     (menuToggle)="menuToggleChanged()"
@@ -20,10 +17,25 @@
       (closed)="menuClosed()"
     >
       <!-- Mobile Menu -->
-      <app-option-menu
-        [isLightTheme]="isLightTheme"
-        (themeToggle)="themeToggleChanged()"
-      ></app-option-menu>
+      <mat-tab-group
+        mat-stretch-tabs
+        [selectedIndex]="(roomUrl | async) ? 0 : 1"
+        [dynamicHeight]="true"
+      >
+        <mat-tab label="Game" [disabled]="false">
+          <app-game-menu></app-game-menu>
+        </mat-tab>
+        <mat-tab
+          label="Options"
+          fxFill
+          fxLayout="column"
+          fxLayoutAlign="space-between"
+          ><app-option-menu
+            [isLightTheme]="(isLightTheme | async) || false"
+            (themeToggle)="themeToggleChanged()"
+          ></app-option-menu
+        ></mat-tab>
+      </mat-tab-group>
     </mat-drawer>
     <mat-drawer-content fxLayout="column">
       <!-- App Content -->

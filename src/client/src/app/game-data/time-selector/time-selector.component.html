@@ -19,15 +19,17 @@
     <mat-icon matListIcon *ngIf="menu">timer</mat-icon>
     <div matListItemTitle>Timer: {{ time }} seconds</div>
   </a>
-  <div *ngIf="host" fxLayout="row" fxLayoutAlign="center center">
+  <div fxLayout="row" fxLayoutAlign="center center">
     <mat-slider
       [value]="time"
+      [disabled]="!host"
       (input)="time = $event.value || 0"
       style="width: 80%"
       min="0"
       max="60"
       step="15"
       value="0"
-    ></mat-slider>
+    ></mat-slider
+    ><mat-icon style="position: absolute" *ngIf="!host">lock</mat-icon>
   </div>
 </ng-template>

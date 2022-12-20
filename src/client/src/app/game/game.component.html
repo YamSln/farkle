@@ -7,12 +7,14 @@
     </div>
     <div fxFlex fxLayoutGap="20px" fxLayout.lt-md="column" fxLayout.gt-sm="row">
       <app-score-board
-        fxFlexOrder.lt-md="2"
-        fxFlexOrder.gt-sm="1"
+        fxHide.lt-md="true"
+        fxFlexOrder="1"
         fxFlex.gt-sm="30"
         fxFlex.lt-md="40"
       ></app-score-board>
-
+      <mat-card fxHide.gt-sm="true" style="text-align: center"
+        >bebs is Playing</mat-card
+      >
       <div
         fxFlex.gt-sm="60"
         fxFlex.gt-md="60"

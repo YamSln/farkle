@@ -1,9 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { displayErrorMessage, displayLoading } from './shared.action';
+import {
+  displayErrorMessage,
+  displayLoading,
+  toggleTheme,
+} from './shared.action';
 import {
   getErrorMessage,
+  getIsLightTheme,
   getLoadingStatus,
   getPlayerAction,
 } from './shared.selector';
@@ -25,6 +30,10 @@ export class SharedFacade {
     return this.store.select(getPlayerAction);
   }
 
+  getIsLightTheme(): Observable<boolean> {
+    return this.store.select(getIsLightTheme);
+  }
+
   displayLoading(): void {
     this.alterLoadingStatus(true);
   }
@@ -39,6 +48,10 @@ export class SharedFacade {
 
   clearError(): void {
     this.store.dispatch(displayErrorMessage({ message: '' }));
+  }
+
+  toggleTheme(): void {
+    this.store.dispatch(toggleTheme());
   }
 
   private alterLoadingStatus(status: boolean) {

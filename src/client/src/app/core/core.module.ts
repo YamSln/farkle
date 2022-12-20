@@ -17,7 +17,7 @@ import { HeaderComponent } from './header/header.component';
 import { OptionMenuComponent } from './option-menu/option-menu.component';
 import { RulesComponent } from './rules/rules.component';
 import { GithubComponent } from './github/github.component';
-import { TimeSelectorComponent } from './time-selector/time-selector.component';
+import { GameDataModule } from '../game-data/game-data.module';
 
 @NgModule({
   declarations: [
@@ -29,7 +29,6 @@ import { TimeSelectorComponent } from './time-selector/time-selector.component';
     OptionMenuComponent,
     RulesComponent,
     GithubComponent,
-    TimeSelectorComponent,
   ],
   imports: [
     CommonModule,
@@ -38,6 +37,7 @@ import { TimeSelectorComponent } from './time-selector/time-selector.component';
     FormsModule,
     ReactiveFormsModule,
     ClipboardModule,
+    GameDataModule,
     EffectsModule.forFeature([GameEffect]),
     StoreModule.forFeature(GAME_STATE_NAME, GameReducer),
   ],

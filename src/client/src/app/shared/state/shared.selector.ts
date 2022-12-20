@@ -19,3 +19,8 @@ export const getPlayerAction = createSelector(
   getSharedState,
   (state: SharedState) => state.playerAction
 );
+
+export const getIsLightTheme = createSelector(
+  getSharedState,
+  (state: SharedState) => state.isLightTheme
+);

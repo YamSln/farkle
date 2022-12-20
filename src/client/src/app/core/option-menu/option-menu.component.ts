@@ -8,6 +8,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 export class OptionMenuComponent implements OnInit {
   @Input() version!: string;
   @Input() isLightTheme!: boolean;
+  @Input() inGame!: boolean;
 
   @Output() themeToggle: EventEmitter<any> = new EventEmitter<any>();
 
