@@ -1,12 +1,4 @@
 <mat-list>
-  <!-- Theme Toggle -->
-  <mat-list-item class="list-item" fxLayoutAlign="center">
-    <app-theme-toggle
-      [lightTheme]="isLightTheme"
-      (themeToggle)="onThemeToggleClick()"
-    ></app-theme-toggle>
-  </mat-list-item>
-  <mat-divider></mat-divider>
   <!-- Rules Modal Button -->
   <div class="list-item">
     <app-rules [menu]="true"></app-rules>
@@ -16,6 +8,10 @@
   <div class="list-item">
     <app-github [menu]="true"></app-github>
   </div>
+  <mat-divider></mat-divider>
+  <!-- Footer -->
+  <div class="list-item" style="text-align: center">
+    <app-footer [version]="version"></app-footer>
+  </div>
+  <mat-divider></mat-divider>
 </mat-list>
-<!-- Footer -->
-<app-footer [version]="version"></app-footer>

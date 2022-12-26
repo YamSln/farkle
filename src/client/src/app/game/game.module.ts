@@ -6,7 +6,6 @@ import { GameComponent } from './game.component';
 import { SharedModule } from '../shared/shared.module';
 import { FormsModule } from '@angular/forms';
 import { TimerComponent } from './timer/timer.component';
-import { ScoreBoardComponent } from '../game-data/score-board/score-board.component';
 import { ScorePotentialComponent } from './score-potential/score-potential.component';
 import { DieComponent } from './die/die.component';
 import { DiceBoardComponent } from './dice-board/dice-board.component';
@@ -34,6 +33,5 @@ import { GameDataModule } from '../game-data/game-data.module';
     GameDataModule,
     GameDataModule,
   ],
-  exports: [ScoreBoardComponent],
 })
 export class GameModule {}

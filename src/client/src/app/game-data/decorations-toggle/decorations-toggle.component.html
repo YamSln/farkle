@@ -1,0 +1,10 @@
+<div fxLayout="row" fxLayoutAlign="end center">
+  <mat-icon style="margin-right: 5px">gradient</mat-icon>
+  <span>Confetti</span>
+  <mat-slide-toggle
+    [(ngModel)]="decorations"
+    (toggleChange)="onToggleChange()"
+    matTooltip="Theme"
+    style="margin: 0 1rem"
+  ></mat-slide-toggle>
+</div>

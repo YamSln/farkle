@@ -1,0 +1,23 @@
+<mat-list>
+  <mat-list-item class="list-item" fxLayoutAlign="center">
+    <app-theme-toggle
+      [lightTheme]="isLightTheme"
+      (themeToggle)="onThemeToggleClick()"
+    ></app-theme-toggle>
+  </mat-list-item>
+  <mat-divider></mat-divider>
+  <mat-list-item class="list-item">
+    <app-decorations-toggle
+      [decorations]="true"
+      (decorationsToggle)="onDecorationsToggleClick()"
+    ></app-decorations-toggle>
+  </mat-list-item>
+  <mat-divider></mat-divider>
+  <mat-list-item class="list-item">
+    <app-popups-toggle
+      [popups]="true"
+      (popupsToggle)="onPopupsToggleClick()"
+    ></app-popups-toggle>
+  </mat-list-item>
+  <mat-divider></mat-divider>
+</mat-list>

@@ -22,18 +22,22 @@
         [selectedIndex]="(roomUrl | async) ? 0 : 1"
         [dynamicHeight]="true"
       >
-        <mat-tab label="Game" [disabled]="false">
+        <mat-tab [disabled]="false">
+          <ng-template mat-tab-label
+            ><mat-icon>videogame_asset</mat-icon></ng-template
+          >
           <app-game-menu></app-game-menu>
         </mat-tab>
-        <mat-tab
-          label="Options"
-          fxFill
-          fxLayout="column"
-          fxLayoutAlign="space-between"
-          ><app-option-menu
+        <mat-tab>
+          <ng-template mat-tab-label><mat-icon>settings</mat-icon></ng-template>
+          <app-settings-menu
             [isLightTheme]="(isLightTheme | async) || false"
             (themeToggle)="themeToggleChanged()"
-          ></app-option-menu
+          ></app-settings-menu>
+        </mat-tab>
+        <mat-tab fxFill fxLayout="column" fxLayoutAlign="space-between">
+          <ng-template mat-tab-label><mat-icon>info</mat-icon></ng-template>
+          <app-option-menu></app-option-menu
         ></mat-tab>
       </mat-tab-group>
     </mat-drawer>

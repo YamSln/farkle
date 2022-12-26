@@ -4,7 +4,6 @@ import { CoreRoutingModule } from './core-routing.module';
 import { LayoutComponent } from './layout/layout.component';
 import { GameFormComponent } from './game-form/game-form.component';
 import { SharedModule } from '../shared/shared.module';
-import { ThemeToggleComponent } from './theme-toggle/theme-toggle.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { EffectsModule } from '@ngrx/effects';
 import { GameEffect } from '../game/state/game.effect';
@@ -23,7 +22,6 @@ import { GameDataModule } from '../game-data/game-data.module';
   declarations: [
     LayoutComponent,
     GameFormComponent,
-    ThemeToggleComponent,
     FooterComponent,
     HeaderComponent,
     OptionMenuComponent,
@@ -41,6 +39,5 @@ import { GameDataModule } from '../game-data/game-data.module';
     EffectsModule.forFeature([GameEffect]),
     StoreModule.forFeature(GAME_STATE_NAME, GameReducer),
   ],
-  exports: [],
 })
 export class CoreModule {}

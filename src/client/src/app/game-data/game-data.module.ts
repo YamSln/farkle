@@ -7,6 +7,12 @@ import { PlaysComponent } from './plays/plays.component';
 import { GameMenuComponent } from './game-menu/game-menu.component';
 import { DieFacePipe } from './pipe/die-face.pipe';
 import { TimerPipe } from './pipe/timer.pipe';
+import { SettingsMenuComponent } from './settings-menu/settings-menu.component';
+import { CoreModule } from '../core/core.module';
+import { ThemeToggleComponent } from './theme-toggle/theme-toggle.component';
+import { FormsModule } from '@angular/forms';
+import { DecorationsToggleComponent } from './decorations-toggle/decorations-toggle.component';
+import { PopupsToggleComponent } from './popups-toggle/popups-toggle.component';
 
 @NgModule({
   declarations: [
@@ -16,8 +22,12 @@ import { TimerPipe } from './pipe/timer.pipe';
     GameMenuComponent,
     DieFacePipe,
     TimerPipe,
+    SettingsMenuComponent,
+    ThemeToggleComponent,
+    DecorationsToggleComponent,
+    PopupsToggleComponent,
   ],
-  imports: [CommonModule, MaterialModule],
+  imports: [CommonModule, MaterialModule, FormsModule],
   exports: [
     TimeSelectorComponent,
     ScoreBoardComponent,
@@ -25,6 +35,8 @@ import { TimerPipe } from './pipe/timer.pipe';
     GameMenuComponent,
     TimerPipe,
     DieFacePipe,
+    SettingsMenuComponent,
+    ThemeToggleComponent,
   ],
 })
 export class GameDataModule {}
