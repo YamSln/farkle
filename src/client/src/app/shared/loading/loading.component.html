@@ -1,3 +1,15 @@
-<div *ngIf="displayLoading | async" class="loading-container">
-  <mat-spinner></mat-spinner>
+<div
+  [@fadeInOnEnter]
+  [@fadeOutOnLeave]
+  *ngIf="displayLoading | async"
+  class="loading-container"
+  [ngStyle]="{
+    'background-color': (isLightTheme | async) ? '#00000080' : '#f2f2f280'
+  }"
+>
+  <mat-spinner
+    [@fadeInOnEnter]
+    [@fadeOutOnLeave]
+    [color]="(isLightTheme | async) ? 'accent' : 'primary'"
+  ></mat-spinner>
 </div>
