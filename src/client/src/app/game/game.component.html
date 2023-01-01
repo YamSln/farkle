@@ -9,12 +9,15 @@
       <app-score-board
         fxHide.lt-md="true"
         fxFlexOrder="1"
-        fxFlex.gt-sm="30"
-        fxFlex.lt-md="40"
+        fxFlex="27"
       ></app-score-board>
-      <mat-card fxHide.gt-sm="true" style="text-align: center"
-        >bebs is Playing</mat-card
+      <mat-card
+        fxHide.gt-sm="true"
+        style="text-align: center"
+        class="mat-elevation-z0"
       >
+        bebs is Playing
+      </mat-card>
       <div
         fxFlex.gt-sm="60"
         fxFlex.gt-md="60"
@@ -23,19 +26,13 @@
         fxLayout="column"
         fxLayoutGap="20px"
       >
-        <app-dice-board fxFlex="80"></app-dice-board>
+        <app-dice-board fxFlex></app-dice-board>
         <app-action-board fxFlex></app-action-board>
       </div>
-      <div
-        fxHide.lt-md="true"
-        fxFlex="30"
-        fxFlexOrder="3"
-        fxLayout="column"
-        fxLayoutGap="20px"
-      >
-        <app-plays fxHide.lt-md="true" fxFlex="60">Plays</app-plays>
-        <app-chat fxHide.lt-md="true" fxFlex="40">Chat</app-chat>
-      </div>
+
+      <app-plays fxFlex="27" fxHide.lt-md="true" fxFlexOrder="3">
+        Plays
+      </app-plays>
     </div>
   </div>
   <div fxFlex="5" fxFlex.gt-lg="20"></div>

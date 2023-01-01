@@ -1,33 +1,31 @@
-<div fxFlex fxLayout="column" fxLayoutGap="20px">
-  <div fxFlex fxLayout="row" fxLayoutGap="20px" fxLayoutAlign="space-between">
-    <!-- Pick Confirmation Button -->
-    <button
-      mat-raised-button
-      fxFlex="50"
-      [disabled]="gamePhase != _gamePhaseConstant.PICK || bust"
-    >
-      Confirm
-    </button>
-    <!-- Bank / Bust -->
-    <button
-      mat-raised-button
-      fxFlex="50"
-      [disabled]="
-        (gamePhase != _gamePhaseConstant.ROLL &&
-          gamePhase != _gamePhaseConstant.PICK) ||
-        firstRoll
-      "
-      [color]="bust ? 'warn' : ''"
-    >
-      {{ bust ? "Bust!" : "Bank" }}
-    </button>
-  </div>
-  <!-- Roll Button -->
+<div
+  fxFlex
+  fxLayout="row"
+  fxLayoutGap="20px"
+  fxLayoutAlign="space-between"
+  style="height: 4rem"
+>
+  <!-- Pick Confirmation Button -->
   <button
-    fxFlex
     mat-raised-button
-    [disabled]="gamePhase != _gamePhaseConstant.ROLL"
+    fxFlex="50"
+    [disabled]="gamePhase != _gamePhaseConstant.PICK || bust"
+    class="action-button"
   >
-    Roll!
+    {{ gamePhase == _gamePhaseConstant.PICK ? "Confirm" : "Roll!" }}
+  </button>
+  <!-- Bank / Bust -->
+  <button
+    mat-raised-button
+    fxFlex="50"
+    [disabled]="
+      (gamePhase != _gamePhaseConstant.ROLL &&
+        gamePhase != _gamePhaseConstant.PICK) ||
+      firstRoll
+    "
+    [color]="bust ? 'warn' : ''"
+    class="action-button"
+  >
+    {{ bust ? "Bust!" : "Bank" }}
   </button>
 </div>
