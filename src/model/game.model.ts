@@ -4,6 +4,9 @@ import { GamePhase } from "./game.phase.model";
 import { Player } from "./player.model";
 import { DieIndex } from "./die-index.type";
 import util from "../util/game.util";
+import { alg } from "../service/game.alg";
+import { RollPayload } from "../payload/roll.payload";
+import { SelectPayload } from "../payload/select.payload";
 
 export interface GameState {
   // Room properties
@@ -20,6 +23,7 @@ export interface GameState {
   gamePhase: GamePhase;
   bust: boolean;
   gameWon: boolean;
+  allDiceConfirmed: boolean;
   // Timing
   turnTime: number;
   currentTime: number;
@@ -32,8 +36,8 @@ export interface GameState {
    * rolls all unconfirmed/unselected dice and moves to pick phase.
    * Returns null if roll is not allowed i.e. game is not in ROLL phase
    */
-  roll(): Die[] | null;
-  select(dieIndex: DieIndex): number | null;
+  roll(): RollPayload | null;
+  select(dieIndex: DieIndex): SelectPayload;
   confirm(): number | null;
   bank(): number | null;
   pause(): boolean | null;
@@ -56,6 +60,7 @@ export class Game implements GameState {
   gamePhase: GamePhase = GamePhase.WAIT;
   bust: boolean = false;
   gameWon: boolean = false;
+  allDiceConfirmed = false;
   turnTime: number = 0;
   currentTime: number = 0;
   turnInterval?: NodeJS.Timeout;
@@ -96,15 +101,16 @@ export class Game implements GameState {
     return game;
   }
 
-  select(dieIndex: DieIndex): number | null {
+  select(dieIndex: DieIndex): SelectPayload {
     this.dice[dieIndex].selected = !this.dice[dieIndex].selected;
-    // Get potential score
+    return alg.getPoints(this.dice);
   }
 
   confirm(): number | null {
     // Get potential score
     // Add to current scores
     // Proceed to ROLL / BANK
+    throw new Error("Method not implemented.");
   }
 
   bank(): number | null {
@@ -127,11 +133,12 @@ export class Game implements GameState {
     return time;
   }
 
-  roll(): Die[] | null {
+  roll(): RollPayload | null {
     const roll: boolean = this.changeGamePhase(GamePhase.PICK);
     if (roll) {
       this.reRollDice();
-      return [...this.dice];
+      const bust = alg.checkBust(this.dice);
+      return { dice: [...this.dice], bust };
     }
     return null; // Illegal action
   }
@@ -172,10 +179,17 @@ export class Game implements GameState {
   private reRollDice(): void {
     for (let i = 0; i < this.dice.length; i++) {
       // Roll each dice that is not selected or confirmed
-      if (!this.dice[i].confirmed && !this.dice[i].selected) {
+      if (!this.dice[i].confirmed || this.allDiceConfirmed) {
         this.dice[i] = getRandomDie(this.dice[i].joker);
       }
     }
+    if (this.allDiceConfirmed) {
+      this.resetAllConfirmed();
+    }
+  }
+
+  private resetAllConfirmed(): void {
+    this.allDiceConfirmed = false;
   }
 
   private changeGamePhase(newPhase: GamePhase): boolean {

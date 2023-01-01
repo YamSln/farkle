@@ -18,6 +18,10 @@ import { GameEvent } from "../event/game.event";
 import log from "../config/log";
 import { MAXIMUM_MAX_PLAYERS } from "../validation/game.validation";
 import { GamePhase } from "../model/game.phase.model";
+import { Die } from "../model/die.model";
+import { DieIndex } from "../model/die-index.type";
+import { RollPayload } from "../payload/roll.payload";
+import { SelectPayload } from "../payload/select.payload";
 const REQUESTOR = "GAME_HANDLER";
 
 const rooms: Map<string, GameState> = new Map<string, GameState>();
@@ -139,6 +143,20 @@ const onBank = (socketId: string, room: string): number | null => {
   return state.bank();
 };
 
+const onRoll = (socketId: string, room: string): RollPayload => {
+  const state = getGame(room);
+  return service.roll(socketId, state);
+};
+
+const onSelect = (
+  socketId: string,
+  room: string,
+  dieIndex: DieIndex
+): SelectPayload => {
+  const state = getGame(room);
+  return service.select(socketId, state, dieIndex);
+};
+
 const clearTimer = (state: GameState, erase: boolean = false): void => {
   if (state.turnInterval) {
     clearInterval(state.turnInterval);
@@ -219,6 +237,8 @@ export default {
   onNewGame,
   onDisconnectGame,
   onBank,
+  onRoll,
+  onSelect,
 };
 
 export const handlerTest = {
