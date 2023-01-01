@@ -13,6 +13,7 @@ import { ThemeToggleComponent } from './theme-toggle/theme-toggle.component';
 import { FormsModule } from '@angular/forms';
 import { DecorationsToggleComponent } from './decorations-toggle/decorations-toggle.component';
 import { PopupsToggleComponent } from './popups-toggle/popups-toggle.component';
+import { SumPipe } from './pipe/sum.pipe';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import { PopupsToggleComponent } from './popups-toggle/popups-toggle.component';
     ThemeToggleComponent,
     DecorationsToggleComponent,
     PopupsToggleComponent,
+    SumPipe,
   ],
   imports: [CommonModule, MaterialModule, FormsModule],
   exports: [
@@ -37,6 +39,7 @@ import { PopupsToggleComponent } from './popups-toggle/popups-toggle.component';
     DieFacePipe,
     SettingsMenuComponent,
     ThemeToggleComponent,
+    SumPipe,
   ],
 })
 export class GameDataModule {}

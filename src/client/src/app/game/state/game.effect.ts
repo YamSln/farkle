@@ -15,7 +15,7 @@ import { SharedFacade } from 'src/app/shared/state/shared.facade';
 import { GameFacade } from './game.facade';
 import { environment } from 'src/environments/environment';
 import { JoinType } from 'src/app/model/join.type';
-import { GameEvent } from 'src/app/model/game.event';
+import { GameEvent } from '../../../../../event/game.event';
 import { GameState } from './game.state';
 import { io, Socket } from 'socket.io-client';
 import { Observable, of } from 'rxjs';
@@ -128,6 +128,11 @@ export class GameEffect {
           const socket = io(environment.api, {
             auth: { token: `Bearer ${action.token}` },
             query: { join: JoinType.CREATE },
+            reconnection: true,
+            reconnectionDelay: 1000,
+            reconnectionDelayMax: 5000,
+            reconnectionAttempts: 10,
+            requestTimeout: 10000,
           });
           this.handleSocketActions(socket);
         })
@@ -182,7 +187,10 @@ export class GameEffect {
       this.gameFacade.timeUpdate(time);
     });
     socket.on(GameEvent.NEW_GAME, (game: GameState) => {
-      this.gameFacade.newGameReceived(game);
+      this.gameFacade.newGameReceived(
+        game,
+        game.players.findIndex((player) => player.id == socket.id)
+      );
     });
     socket.on(GameEvent.PLAYER_DISCONNECTED, (playerAction: PlayerAction) => {
       this.gameFacade.playerDisconnected(playerAction);

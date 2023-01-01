@@ -103,8 +103,8 @@ export class GameFacade {
     this.store.dispatch(joinGameSuccess({ game, room, player }));
   }
 
-  newGameReceived(game: GameState): void {
-    this.store.dispatch(newGameSuccess({ game }));
+  newGameReceived(game: GameState, selfIndex: number): void {
+    this.store.dispatch(newGameSuccess({ game, selfIndex }));
   }
 
   getGameState(): Observable<GameState> {

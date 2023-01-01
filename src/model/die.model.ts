@@ -19,7 +19,7 @@ export const getRandomDie = (joker: boolean): Die => {
 
 export const getRandomDice = (numberOfDice: number): Die[] => {
   const dice: Die[] = [];
-  for (let i = 0; i < numberOfDice - 2; i++) {
+  for (let i = 0; i < numberOfDice - 1; i++) {
     dice.push(getRandomDie(false));
   }
   dice[numberOfDice - 1] = getRandomDie(true);

@@ -4,6 +4,7 @@ import {
   OnChanges,
   OnInit,
   SimpleChanges,
+  Input,
 } from '@angular/core';
 
 @Component({
@@ -13,8 +14,8 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ScorePotentialComponent implements OnInit, OnChanges {
-  currentScore: number = 0;
-  potentialScore: number = 0;
+  @Input() currentScore!: number;
+  @Input() potentialScore!: number;
   totalScore: number = 0;
 
   constructor() {}

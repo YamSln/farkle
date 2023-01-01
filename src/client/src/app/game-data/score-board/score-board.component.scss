@@ -31,3 +31,8 @@ $border-style: solid;
 .table-container::-webkit-scrollbar {
     display: none;
 }
+
+.self {
+    text-decoration: underline; 
+    font-weight: 500;
+}

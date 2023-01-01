@@ -68,7 +68,7 @@ export const timeUpdate = createAction(
 export const newGame = createAction(NEW_GAME);
 export const newGameSuccess = createAction(
   NEW_GAME_SUCCESS,
-  props<{ game: GameState }>()
+  props<{ game: GameState; selfIndex: number }>()
 );
 
 export const playerDisconnect = createAction(

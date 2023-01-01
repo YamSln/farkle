@@ -26,9 +26,6 @@ export class DieComponent implements OnInit {
   ngOnInit(): void {}
 
   onDieClick(): void {
-    if (!this.die.confirmed) {
-      this.die.selected = !this.die.selected;
-      this.click.emit();
-    }
+    this.click.emit();
   }
 }

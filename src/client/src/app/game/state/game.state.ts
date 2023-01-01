@@ -1,26 +1,45 @@
 import { Die } from 'src/app/model/die.model';
 import { Player } from 'src/app/model/player.model';
+import { GamePhase } from '../../../../../model/game.phase.model';
 
 export interface GameState {
   roomId: string;
-  participants: Player[];
+  selfIndex: number;
+  password: string;
+  maxPlayers: number;
+  maxPoints: number;
+  // Game fields
+  players: Player[];
   dice: Die[];
-  blueTeamPoints: number;
-  redTeamPoints: number;
+  currentThrowPicks: Die[][]; // Plays confirmed by current player
+  currentTurnScores: number[];
+  potentialScore: number;
+  currentPlayer: number;
+  gamePhase: GamePhase;
+  bust: boolean;
+  gameWon: boolean;
+  allDiceConfirmed: boolean;
+  // Timing
   turnTime: number;
   currentTime: number;
-  maxPlayers: number;
-  playerId: string;
 }
 
 export const initialState: GameState = {
   roomId: '',
-  participants: [],
+  selfIndex: 0,
+  password: '',
+  maxPlayers: 2,
+  maxPoints: 3000,
+  players: [],
   dice: [],
-  blueTeamPoints: 0,
-  redTeamPoints: 0,
+  currentThrowPicks: [],
+  currentTurnScores: [],
+  potentialScore: 0,
+  currentPlayer: 0,
+  gamePhase: GamePhase.WAIT,
+  bust: false,
+  gameWon: false,
+  allDiceConfirmed: false,
   turnTime: 0,
   currentTime: 0,
-  maxPlayers: 4,
-  playerId: '',
 };

@@ -15,9 +15,9 @@ import { GamePhase } from 'src/app/model/game.phase.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ActionBoardComponent implements OnInit {
-  @Input() bust: boolean = false;
-  @Input() gamePhase: GamePhase = GamePhase.ROLL;
-  @Input() firstRoll: boolean = false;
+  @Input() bust!: boolean;
+  @Input() gamePhase!: GamePhase;
+  @Input() firstRoll!: boolean;
 
   @Output() confirmClick: EventEmitter<any> = new EventEmitter<any>();
   @Output() bankBustClick: EventEmitter<any> = new EventEmitter<any>();

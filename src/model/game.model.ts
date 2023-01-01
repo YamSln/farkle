@@ -10,6 +10,7 @@ import { SelectPayload } from "../payload/select.payload";
 
 export interface GameState {
   // Room properties
+  roomId: string;
   password: string;
   maxPlayers: number;
   maxPoints: number;
@@ -48,6 +49,7 @@ export interface GameState {
 }
 
 export class Game implements GameState {
+  roomId = "";
   password: string = "";
   maxPlayers: number = MIN_PLAYERS;
   maxPoints: number = MIN_POINTS;

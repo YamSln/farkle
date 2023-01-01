@@ -4,6 +4,7 @@ import {
   flipOutXOnLeaveAnimation,
 } from 'angular-animations';
 import { Observable } from 'rxjs';
+import { DieIndex } from '../model/die-index.type';
 import { Player } from '../model/player.model';
 import { GameFacade } from './state/game.facade';
 import { GameState } from './state/game.state';
@@ -27,4 +28,6 @@ export class GameComponent implements OnInit {
   onTimeSet(timeSpan: number): void {
     this.gameFacade.setTime(timeSpan);
   }
+
+  onDieClicked($dieIndex: DieIndex): void {}
 }

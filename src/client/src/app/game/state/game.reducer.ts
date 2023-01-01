@@ -15,12 +15,12 @@ import { GameState, initialState } from './game.state';
 const _gameReducer = createReducer(
   initialState,
   on(createGameSuccess, (state: GameState, action: any): GameState => {
+    console.log(action);
     return {
       ...action.game,
       roomId: action.room,
-      playerId: action.player.id,
-      playerRole: action.player.role,
-      playerTeam: action.player.team,
+      selfIndex: 0,
+      currentPlayer: 0,
     };
   }),
   on(joinGameSuccess, (state: GameState, action: any): GameState => {
@@ -33,7 +33,7 @@ const _gameReducer = createReducer(
     };
   }),
   on(playerJoinedGame, (state: GameState, action: any): GameState => {
-    return { ...state, participants: action.players };
+    return { ...state, players: action.players };
   }),
   on(timeChangedSuccess, (state: GameState, action: any): GameState => {
     return {
@@ -47,16 +47,10 @@ const _gameReducer = createReducer(
   }),
   on(newGameSuccess, (state: GameState, action: any): GameState => {
     const game: GameState = action.game;
-    const player = game.participants.find(
-      (player: Player) => player.id == state.playerId
-    );
-    return {
-      ...game,
-      playerId: player ? player.id : '',
-    };
+    return game;
   }),
   on(playerDisconnect, (state: GameState, action: any): GameState => {
-    return { ...state, participants: action.players };
+    return { ...state, players: action.players };
   }),
   on(clearState, (state: GameState, action: any): GameState => {
     return { ...initialState };

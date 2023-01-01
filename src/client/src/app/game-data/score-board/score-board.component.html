@@ -1,7 +1,8 @@
 <mat-card fxLayout="column" fxLayoutAlign="start" style="min-height: 100%">
   <!-- Current Player Name -->
   <div fxFlex="0 1 auto" fxLayoutAlign="center start" *ngIf="playing">
-    {{ playing }} is Playing
+    {{ playing == players[selfIndex].nick ? "You are " : playing + " is " }}
+    Playing
   </div>
   <!-- Score Board Table -->
   <div fxFlex fxFlex.lt-md="1 0 auto" class="table-container">
@@ -9,11 +10,17 @@
       <!-- Name Column -->
       <ng-container matColumnDef="name">
         <th mat-header-cell *matHeaderCellDef>Name</th>
-        <td mat-cell *matCellDef="let player">
-          <span [ngClass]="playing == player.nick ? 'playing' : 'player'">{{
-            player.nick
-          }}</span>
-          <span *ngIf="player.host"> 👑</span>
+        <td mat-cell *matCellDef="let player; let i = index">
+          <span
+            [ngClass]="{
+              self: selfIndex == i && playing != player.nick,
+              playing: playing == player.nick,
+              player: playing != player.nick
+            }"
+          >
+            {{ player.nick }}
+          </span>
+          <span *ngIf="player.host">👑</span>
         </td>
       </ng-container>
       <!-- Score Column-->

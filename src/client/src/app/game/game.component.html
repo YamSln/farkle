@@ -1,23 +1,41 @@
 <div *ngIf="gameState | async as game">
   <div fxFlex="5" fxFlex.gt-lg="20"></div>
   <div fxFlex fxLayout="column" fxLayoutGap="20px">
+    <!-- Timer + Score Calculation -->
     <div fxFlex fxLayout="column" fxLayoutAlign="center center">
-      <app-timer></app-timer>
-      <app-score-potential></app-score-potential>
+      <app-timer
+        [time]="game.currentTime"
+        [display]="!!game.turnTime"
+      ></app-timer>
+      <app-score-potential
+        [currentScore]="game.currentTurnScores | sum"
+        [potentialScore]="game.potentialScore"
+      ></app-score-potential>
     </div>
+    <!-- Main Display -->
     <div fxFlex fxLayoutGap="20px" fxLayout.lt-md="column" fxLayout.gt-sm="row">
       <app-score-board
         fxHide.lt-md="true"
         fxFlexOrder="1"
         fxFlex="27"
+        [players]="game.players"
+        [playing]="game.players[game.currentPlayer].nick"
+        [selfIndex]="game.selfIndex"
       ></app-score-board>
+      <!-- Mobile Current Player -->
       <mat-card
         fxHide.gt-sm="true"
         style="text-align: center"
         class="mat-elevation-z0"
       >
-        bebs is Playing
+        {{
+          game.currentPlayer == game.selfIndex
+            ? "You are "
+            : game.players[game.currentPlayer].nick + " is "
+        }}
+        playing
       </mat-card>
+      <!-- Desktop Dice + Actions -->
       <div
         fxFlex.gt-sm="60"
         fxFlex.gt-md="60"
@@ -26,11 +44,26 @@
         fxLayout="column"
         fxLayoutGap="20px"
       >
-        <app-dice-board fxFlex></app-dice-board>
-        <app-action-board fxFlex></app-action-board>
+        <app-dice-board
+          fxFlex
+          [dice]="game.dice"
+          (dieClicked)="onDieClicked($event)"
+        ></app-dice-board>
+        <app-action-board
+          fxFlex
+          [bust]="game.bust"
+          [gamePhase]="game.gamePhase"
+          [firstRoll]="game.currentTurnScores.length == 0"
+        ></app-action-board>
       </div>
-
-      <app-plays fxFlex="27" fxHide.lt-md="true" fxFlexOrder="3">
+      <!-- Desktop Plays Board -->
+      <app-plays
+        fxFlex="27"
+        fxHide.lt-md="true"
+        fxFlexOrder="3"
+        [currentThrowPicks]="game.currentThrowPicks"
+        [currentTurnScores]="game.currentTurnScores"
+      >
         Plays
       </app-plays>
     </div>
