@@ -10,3 +10,6 @@ export const PASSWORD_MAX_LENGTH =
 export const MAX_PLAYERS_REQUIRED = "Maximum number of players is required";
 export const MAX_PLAYERS_MIN = "Minimum number of players is 4";
 export const MAX_PLAYERS_MAX = "Maximum number of players is 8";
+export const MAX_POINTS_REQUIRED = "Maximum points is required";
+export const MAX_POINTS_MIN = "Maximum number of points is 3000";
+export const MAX_POINTS_MAX = "Maximum number of points is 12000";

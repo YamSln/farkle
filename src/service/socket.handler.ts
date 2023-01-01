@@ -13,6 +13,8 @@ import { JoinPayload } from "../model/join.payload";
 import handler from "./game.handler";
 import log from "../config/log";
 import { DieIndex } from "../model/die-index.type";
+import { RollPayload } from "../payload/roll.payload";
+import { SelectPayload } from "../payload/select.payload";
 
 const REQUESTOR = "SOCKET_HANDLER";
 
@@ -44,37 +46,40 @@ const onConnection = (socket: Socket, io: Server) => {
     const newGame = handler.onNewGame(room);
     io.to(room).emit(GameEvent.NEW_GAME, newGame);
   });
-
+  /*
   socket.on(GameEvent.START_GAME, () => {
     const start = handler.onGameStart(room); // TODO : Implement
     io.to(room).emit(GameEvent.START_GAME, start);
   });
-
+*/
   socket.on(GameEvent.ROLL, () => {
-    const dice = handler.onRoll(room); // TODO : Implement
-    io.to(room).emit(dice.bust ? GameEvent.BUST : GameEvent.ROLL, dice.payload);
+    const rollPayload: RollPayload = handler.onRoll(socket.id, room); // TODO : Implement
+    io.to(room).emit(
+      rollPayload.bust ? GameEvent.BUST : GameEvent.ROLL,
+      rollPayload.dice
+    );
   });
 
-  socket.on(GameEvent.PICK, (dieIndex: DieIndex) => {
-    const picked = handler.onPick(room, dieIndex); // TODO : Implement
-    io.to(room).emit(GameEvent.PICK, picked);
+  socket.on(GameEvent.SELECT, (dieIndex: DieIndex) => {
+    const selected: SelectPayload = handler.onSelect(socket.id, room, dieIndex); // TODO : Implement
+    io.to(room).emit(GameEvent.SELECT, selected);
   });
-
+  /*
   socket.on(GameEvent.CONFIRM, () => {
     const result = handler.onConfirm(room);
     io.to(room).emit(GameEvent.CONFIRM, result);
   });
-
+*/
   socket.on(GameEvent.BANK, () => {
-    const score = handler.onBank(room); // TODO : Implement
+    const score = handler.onBank(socket.id, room); // TODO : Implement
     io.to(room).emit(GameEvent.BANK, score);
   });
-
+  /*
   socket.on(GameEvent.TIME_SET, (timeSpan: number) => {
     const time = handler.onTimerSet(room, timeSpan, io); // TODO : Implement
     io.to(room).emit(GameEvent.TIME_SET, time);
   });
-
+*/
   socket.on(GameEvent.DISCONNECT_SELF, () => {
     disconnect(socket);
   });
