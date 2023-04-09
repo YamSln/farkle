@@ -6,6 +6,7 @@
     style="z-index: 2"
     [isLightTheme]="(isLightTheme | async) || false"
     [roomUrl]="roomUrl"
+    [host]="host"
     (themeToggle)="themeToggleChanged()"
     (menuToggle)="menuToggleChanged()"
   ></app-header>

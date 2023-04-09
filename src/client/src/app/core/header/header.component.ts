@@ -19,6 +19,7 @@ export class HeaderComponent implements OnInit {
   @Input() isLightTheme!: boolean;
   @Input() roomUrl!: Observable<string>;
   @Input() timer: Observable<number> = of(1);
+  @Input() host!: Observable<boolean>;
 
   @Output() themeToggle: EventEmitter<any> = new EventEmitter<any>();
   @Output() menuToggle: EventEmitter<any> = new EventEmitter<any>();

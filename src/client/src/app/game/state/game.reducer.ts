@@ -1,5 +1,4 @@
 import { createReducer, on } from '@ngrx/store';
-import { Player } from 'src/app/model/player.model';
 import {
   clearState,
   createGameSuccess,
@@ -7,15 +6,17 @@ import {
   newGameSuccess,
   playerDisconnect,
   playerJoinedGame,
+  rollSuccess,
+  startGameSuccess,
   timeChangedSuccess,
   timeUpdate,
 } from './game.action';
 import { GameState, initialState } from './game.state';
+import { GamePhase } from '../../../../../model/game.phase.model';
 
 const _gameReducer = createReducer(
   initialState,
   on(createGameSuccess, (state: GameState, action: any): GameState => {
-    console.log(action);
     return {
       ...action.game,
       roomId: action.room,
@@ -27,13 +28,16 @@ const _gameReducer = createReducer(
     return {
       ...action.game,
       roomId: action.room,
-      playerId: action.player.id,
-      playerRole: action.player.role,
-      playerTeam: action.player.team,
+      selfIndex: action.game.players.findIndex(
+        (player: any) => player.id === action.player.id
+      ),
     };
   }),
   on(playerJoinedGame, (state: GameState, action: any): GameState => {
     return { ...state, players: action.players };
+  }),
+  on(rollSuccess, (state: GameState, action: any): GameState => {
+    return { ...state, dice: action.dice, bust: action.bust };
   }),
   on(timeChangedSuccess, (state: GameState, action: any): GameState => {
     return {
@@ -48,6 +52,18 @@ const _gameReducer = createReducer(
   on(newGameSuccess, (state: GameState, action: any): GameState => {
     const game: GameState = action.game;
     return game;
+  }),
+  on(startGameSuccess, (state: GameState, action: any): GameState => {
+    const game: GameState = action.game;
+    return {
+      ...state,
+      players: action.players,
+      gamePhase: GamePhase.ROLL,
+      selfIndex: action.players.findIndex(
+        // Reset index when shuffled
+        (player: any) => player.id === state.playerId
+      ),
+    };
   }),
   on(playerDisconnect, (state: GameState, action: any): GameState => {
     return { ...state, players: action.players };

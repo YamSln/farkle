@@ -11,6 +11,7 @@ import {
   NOT_FOUND,
   NICK_TAKEN,
   GAME_STARTED,
+  FORBIDDEN,
 } from "../error/error.util";
 import { CreateGamePayload } from "../model/create-game.payload";
 import { PlayerAction } from "../model/player.action.payload";
@@ -30,7 +31,7 @@ const createGame = (
   nick: string,
   password: string,
   maxPlayers: number,
-  maxPoints: number
+  maxPoints: number,
 ): string => {
   const room = uuidv4();
   return jwt.generateJwt({
@@ -63,7 +64,7 @@ const joinGame = (joinPayload: JoinPayload): string => {
 
 const onCreateGame = (
   socketId: string,
-  createGamePayload: CreateGamePayload
+  createGamePayload: CreateGamePayload,
 ): GameState => {
   const host: Player = {
     id: socketId,
@@ -75,7 +76,7 @@ const onCreateGame = (
     createGamePayload.password,
     createGamePayload.maxPlayers,
     createGamePayload.maxPoints,
-    [host]
+    [host],
   );
   rooms.set(createGamePayload.room, state);
   log.info(REQUESTOR, `Room ${createGamePayload.room} created`);
@@ -99,6 +100,18 @@ const onJoinGame = (socketId: string, joinPayload: JoinPayload): JoinEvent => {
   return { state, joined };
 };
 
+const onGameStart = (socketId: string, room: string): Player[] => {
+  const state = getGame(room);
+  const player = state.players.find((player) => player.id === socketId);
+  if (player && player.host) {
+    const players = state.start();
+    if (players) {
+      return players;
+    }
+  }
+  throw new Error(FORBIDDEN);
+};
+
 const onNewGame = (room: string): GameState => {
   const state = getGame(room);
   const newGame = service.newGame(state);
@@ -110,7 +123,7 @@ const onTimerSet = (
   socketId: string,
   room: string,
   timeSpan: number,
-  io: any
+  io: any,
 ): number => {
   const state = getGame(room);
   if (!state.isHost(socketId)) {
@@ -151,7 +164,7 @@ const onRoll = (socketId: string, room: string): RollPayload => {
 const onSelect = (
   socketId: string,
   room: string,
-  dieIndex: DieIndex
+  dieIndex: DieIndex,
 ): SelectPayload => {
   const state = getGame(room);
   return service.select(socketId, state, dieIndex);
@@ -169,7 +182,7 @@ const clearTimer = (state: GameState, erase: boolean = false): void => {
 
 const onDisconnectGame = (
   socketId: string,
-  room: string
+  room: string,
 ): PlayerAction | null => {
   const game = rooms.get(room);
   if (game) {
@@ -220,7 +233,7 @@ const getPlayer = (playerId: string, game: GameState): Player => {
 
 const getPlayerIndex = (playerId: string, game: GameState): number => {
   const playerIndex = game.players.findIndex(
-    (player) => player.id === playerId
+    (player) => player.id === playerId,
   );
   if (playerIndex === -1) {
     throw new Error(NOT_FOUND);
@@ -231,6 +244,7 @@ const getPlayerIndex = (playerId: string, game: GameState): number => {
 export default {
   createGame,
   joinGame,
+  onGameStart,
   onCreateGame,
   onJoinGame,
   onTimerSet,

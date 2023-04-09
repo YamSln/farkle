@@ -8,6 +8,8 @@ import {
   joinGameApproved,
   newGame,
   quitGame,
+  roll,
+  startGame,
   timeChanged,
 } from './game.action';
 import { catchError, exhaustMap, map, tap, throttleTime } from 'rxjs/operators';
@@ -21,6 +23,7 @@ import { io, Socket } from 'socket.io-client';
 import { Observable, of } from 'rxjs';
 import { displayErrorMessage } from 'src/app/shared/state/shared.action';
 import {
+  GAME_STARTED,
   INCORRECT_PASSWORD,
   NICK_TAKEN,
   NOT_FOUND,
@@ -39,6 +42,7 @@ import {
 } from '../../../../../validation/validation.messages';
 import { PlayerAction } from 'src/app/model/player.action.payload';
 import { Player } from 'src/app/model/player.model';
+import { Die } from 'src/app/model/die.model';
 
 @Injectable()
 export class GameEffect {
@@ -84,6 +88,18 @@ export class GameEffect {
     )
   );
 
+  startGame$ = createEffect(
+    () =>
+      this.action$.pipe(
+        ofType(startGame),
+        throttleTime(1500),
+        tap(() => {
+          this.socket.emit(GameEvent.START_GAME);
+        })
+      ),
+    { dispatch: false }
+  );
+
   newGame$ = createEffect(
     () =>
       this.action$.pipe(
@@ -92,6 +108,15 @@ export class GameEffect {
         tap(() => {
           this.socket.emit(GameEvent.NEW_GAME);
         })
+      ),
+    { dispatch: false }
+  );
+
+  roll$ = createEffect(
+    () =>
+      this.action$.pipe(
+        ofType(roll),
+        tap((action) => this.socket.emit(GameEvent.ROLL))
       ),
     { dispatch: false }
   );
@@ -174,11 +199,17 @@ export class GameEffect {
         this.gameFacade.gameReceived(game, room, player);
       }
     );
+    socket.on(GameEvent.START_GAME, (players: Player[]) => {
+      this.gameFacade.gameStarted(players);
+    });
     socket.on(GameEvent.CONNECT, () => {
       socket.sendBuffer = [];
     });
     socket.on(GameEvent.PLAYER_JOINED, (playerAction: PlayerAction) => {
       this.gameFacade.playerJoined(playerAction);
+    });
+    socket.on(GameEvent.ROLL, (dice: Die[], bust: boolean) => {
+      this.gameFacade.rolled(dice, bust);
     });
     socket.on(GameEvent.TIME_SET, (timeSpan: number) => {
       this.gameFacade.timeSet(timeSpan);
@@ -257,6 +288,9 @@ export class GameEffect {
         break;
       case PASSWORD_REQUIRED:
         message = PASSWORD_REQUIRED;
+        break;
+      case GAME_STARTED:
+        message = 'Game in progress';
         break;
       default:
         message = 'An unexpected error occurred';

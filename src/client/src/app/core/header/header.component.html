@@ -28,10 +28,10 @@
     fxHide.lt-md="true"
   >
     <!-- Timer Set Button -->
-    <button *ngIf="timer != undefined" mat-icon-button matTooltip="Timer">
-      <app-time-selector></app-time-selector>
+    <button *ngIf="roomUrl | async" mat-icon-button matTooltip="Timer">
+      <app-time-selector [host]="(host | async) || false"></app-time-selector>
     </button>
-    <span *ngIf="timer != undefined">|</span>
+    <span *ngIf="roomUrl | async">|</span>
     <!-- Rules Modal Button -->
     <app-rules></app-rules>
     <span>|</span>

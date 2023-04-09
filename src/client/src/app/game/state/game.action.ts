@@ -4,6 +4,7 @@ import { CreateGamePayload } from '../../model/create-game.payload';
 import { CreateGameResponse } from '../../model/create-game.response';
 import { JoinGamePayload } from '../../model/join-game.payload';
 import { GameState } from './game.state';
+import { Die } from 'src/app/model/die.model';
 
 const GAME_PAGE = '[game page]';
 
@@ -16,6 +17,9 @@ export const CREATE_GAME = `${GAME_PAGE} create game`;
 export const CREATE_GAME_APPROVED = `${GAME_PAGE} create game approved`;
 export const CREATE_GAME_SUCCESS = `${GAME_PAGE} create game success`;
 
+export const START_GAME = `${GAME_PAGE} start game`;
+export const START_GAME_SUCCESS = `${GAME_PAGE} start game success`;
+
 export const NEW_GAME = `${GAME_PAGE} new game`;
 export const NEW_GAME_SUCCESS = `${GAME_PAGE} new game success`;
 
@@ -27,6 +31,9 @@ export const PLAYER_DISCONNECT = `${GAME_PAGE} player disconnect`;
 
 export const QUIT_GAME = `${GAME_PAGE} quit game`;
 export const CLEAR_STATE = `${GAME_PAGE} clear state`;
+
+export const ROLL = `${GAME_PAGE} roll`;
+export const ROLL_SUCCESS = `${GAME_PAGE} roll success`;
 
 export const joinGame = createAction(JOIN_GAME, props<JoinGamePayload>());
 export const joinGameApproved = createAction(
@@ -52,6 +59,12 @@ export const createGameSuccess = createAction(
   props<{ game: GameState; room: string; player: Player }>()
 );
 
+export const roll = createAction(ROLL);
+export const rollSuccess = createAction(
+  ROLL_SUCCESS,
+  props<{ dice: Die[]; bust: boolean }>()
+);
+
 export const timeChanged = createAction(
   TIME_CHANGED,
   props<{ timeSpan: number }>()
@@ -63,6 +76,12 @@ export const timeChangedSuccess = createAction(
 export const timeUpdate = createAction(
   TIME_UPDATE,
   props<{ currentTime: number }>()
+);
+
+export const startGame = createAction(START_GAME);
+export const startGameSuccess = createAction(
+  START_GAME_SUCCESS,
+  props<{ players: Player[] }>()
 );
 
 export const newGame = createAction(NEW_GAME);

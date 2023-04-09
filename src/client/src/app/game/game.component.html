@@ -51,9 +51,14 @@
         ></app-dice-board>
         <app-action-board
           fxFlex
+          [playing]="game.currentPlayer == game.selfIndex"
           [bust]="game.bust"
           [gamePhase]="game.gamePhase"
           [firstRoll]="game.currentTurnScores.length == 0"
+          [host]="game.players[game.selfIndex].host"
+          [startAllowed]="game.players.length > 1"
+          (startGameClick)="onGameStart()"
+          (rollClick)="onRoll()"
         ></app-action-board>
       </div>
       <!-- Desktop Plays Board -->

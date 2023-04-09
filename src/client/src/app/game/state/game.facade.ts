@@ -18,12 +18,17 @@ import {
   playerDisconnect,
   playerJoinedGame,
   quitGame,
+  roll,
+  rollSuccess,
+  startGame,
+  startGameSuccess,
   timeChanged,
   timeChangedSuccess,
   timeUpdate,
 } from './game.action';
-import { getGameState, getRoomUrl } from './game.selector';
+import { getGameState, getHostState, getRoomUrl } from './game.selector';
 import { GameState } from './game.state';
+import { Die } from 'src/app/model/die.model';
 
 @Injectable({ providedIn: 'root' })
 export class GameFacade {
@@ -41,6 +46,10 @@ export class GameFacade {
     this.store.dispatch(joinGame(joinPayload));
   }
 
+  startGame(): void {
+    this.store.dispatch(startGame());
+  }
+
   newGame(): void {
     this.store.dispatch(newGame());
   }
@@ -48,6 +57,14 @@ export class GameFacade {
   quitGame(): void {
     this.clearGame();
     this.store.dispatch(quitGame());
+  }
+
+  roll(): void {
+    this.store.dispatch(roll());
+  }
+
+  rolled(dice: Die[], bust: boolean): void {
+    this.store.dispatch(rollSuccess({ dice, bust }));
   }
 
   playerJoined(playerAction: PlayerAction): void {
@@ -103,12 +120,20 @@ export class GameFacade {
     this.store.dispatch(joinGameSuccess({ game, room, player }));
   }
 
+  gameStarted(players: Player[]): void {
+    this.store.dispatch(startGameSuccess({ players }));
+  }
+
   newGameReceived(game: GameState, selfIndex: number): void {
     this.store.dispatch(newGameSuccess({ game, selfIndex }));
   }
 
   getGameState(): Observable<GameState> {
     return this.store.select(getGameState);
+  }
+
+  getHostState(): Observable<boolean> {
+    return this.store.select(getHostState);
   }
 
   getRoomUrl(): Observable<string> {

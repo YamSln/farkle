@@ -32,6 +32,7 @@ export class ConfettiComponent implements OnChanges, OnDestroy, OnInit {
   constructor() {}
 
   ngOnInit(): void {
+    /*
     this.winningConfetti = new JSConfetti({
       canvas: this.confettiCanvas,
     });
@@ -39,6 +40,7 @@ export class ConfettiComponent implements OnChanges, OnDestroy, OnInit {
       canvas: this.confettiCanvas,
     });
     this.triggerConfetti(ConfettiType.WIN);
+    */
   }
 
   ngOnChanges(changes: SimpleChanges): void {

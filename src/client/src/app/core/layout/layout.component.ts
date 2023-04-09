@@ -14,6 +14,7 @@ export class LayoutComponent implements OnInit {
   isMenuOpen: boolean = false;
   isLightTheme!: Observable<boolean>;
   roomUrl!: Observable<string>;
+  host!: Observable<boolean>;
 
   constructor(
     private gameFacade: GameFacade,
@@ -23,6 +24,7 @@ export class LayoutComponent implements OnInit {
   ngOnInit(): void {
     this.isLightTheme = this.sharedFacade.getIsLightTheme();
     this.roomUrl = this.gameFacade.getRoomUrl();
+    this.host = this.gameFacade.getHostState();
   }
 
   themeToggleChanged(): void {

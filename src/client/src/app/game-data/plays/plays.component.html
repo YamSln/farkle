@@ -3,23 +3,21 @@
   <!-- Plays Table -->
   <div fxFlex fxFlex.lt-md="1 0 auto" class="table-container">
     <table
-      fxFlex
+      style="width: 100%"
       mat-table
       [dataSource]="currentThrowPicks"
       *ngIf="currentThrowPicks"
     >
       <!-- Number Column -->
       <ng-container matColumnDef="number">
-        <th mat-header-cell *matHeaderCellDef>Throw</th>
+        <th mat-header-cell *matHeaderCellDef>No.</th>
         <td mat-cell *matCellDef="let plays; let i = index">
           {{ i + 1 }}
         </td>
       </ng-container>
       <!-- Dice Column -->
       <ng-container matColumnDef="dice">
-        <th style="text-align: center" mat-header-cell *matHeaderCellDef>
-          Picks
-        </th>
+        <th mat-header-cell *matHeaderCellDef>Picks</th>
         <td mat-cell *matCellDef="let plays">
           <img
             *ngFor="let die of plays"

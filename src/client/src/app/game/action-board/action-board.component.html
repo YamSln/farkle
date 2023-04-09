@@ -5,27 +5,61 @@
   fxLayoutAlign="space-between"
   style="height: 4rem"
 >
-  <!-- Pick Confirmation Button -->
-  <button
-    mat-raised-button
-    fxFlex="50"
-    [disabled]="gamePhase != _gamePhaseConstant.PICK || bust"
-    class="action-button"
-  >
-    {{ gamePhase == _gamePhaseConstant.PICK ? "Confirm" : "Roll!" }}
-  </button>
-  <!-- Bank / Bust -->
-  <button
-    mat-raised-button
-    fxFlex="50"
-    [disabled]="
-      (gamePhase != _gamePhaseConstant.ROLL &&
-        gamePhase != _gamePhaseConstant.PICK) ||
-      firstRoll
-    "
-    [color]="bust ? 'warn' : ''"
-    class="action-button"
-  >
-    {{ bust ? "Bust!" : "Bank" }}
-  </button>
+  <ng-container
+    *ngIf="gamePhase != _gamePhaseConstant.WAIT; then play; else wait"
+  ></ng-container>
+  <ng-template #play>
+    <!-- Pick Confirmation Button -->
+    <button
+      mat-raised-button
+      fxFlex="50"
+      [disabled]="
+        (gamePhase != _gamePhaseConstant.PICK &&
+          gamePhase != _gamePhaseConstant.ROLL) ||
+        bust ||
+        !playing
+      "
+      class="action-button"
+      (click)="onRollConfirmClick()"
+    >
+      {{ gamePhase == _gamePhaseConstant.PICK ? "Confirm" : "Roll!" }}
+    </button>
+    <!-- Bank / Bust -->
+    <button
+      mat-raised-button
+      fxFlex="50"
+      [disabled]="
+        (gamePhase != _gamePhaseConstant.ROLL && !bust) ||
+        (firstRoll && !bust) ||
+        !playing
+      "
+      [color]="bust ? 'warn' : ''"
+      class="action-button"
+    >
+      {{ bust ? "Bust!" : "Bank" }}
+    </button>
+  </ng-template>
+  <ng-template #wait>
+    <ng-container
+      *ngIf="host; then startButton; else waitMessage"
+    ></ng-container>
+    <ng-template #startButton>
+      <button
+        mat-raised-button
+        fxFlex
+        [disabled]="!startAllowed"
+        class="action-button"
+        (click)="onStartGameClick()"
+      >
+        Start Game
+      </button>
+    </ng-template>
+    <ng-template #waitMessage
+      ><mat-card class="mat-elevation-z0" fxFlex fxLayoutAlign="center center">
+        <span style="text-align: center" fxFlex
+          >Waiting for other players...</span
+        >
+      </mat-card>
+    </ng-template>
+  </ng-template>
 </div>

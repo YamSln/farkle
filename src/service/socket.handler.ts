@@ -46,18 +46,15 @@ const onConnection = (socket: Socket, io: Server) => {
     const newGame = handler.onNewGame(room);
     io.to(room).emit(GameEvent.NEW_GAME, newGame);
   });
-  /*
+
   socket.on(GameEvent.START_GAME, () => {
-    const start = handler.onGameStart(room); // TODO : Implement
+    const start = handler.onGameStart(socket.id, room);
     io.to(room).emit(GameEvent.START_GAME, start);
   });
-*/
+
   socket.on(GameEvent.ROLL, () => {
     const rollPayload: RollPayload = handler.onRoll(socket.id, room); // TODO : Implement
-    io.to(room).emit(
-      rollPayload.bust ? GameEvent.BUST : GameEvent.ROLL,
-      rollPayload.dice
-    );
+    io.to(room).emit(GameEvent.ROLL, rollPayload.dice, rollPayload.bust);
   });
 
   socket.on(GameEvent.SELECT, (dieIndex: DieIndex) => {
@@ -103,9 +100,9 @@ const joinGame = (socket: Socket, joinPayload: JoinPayload) => {
     socket.join(joinPayload.room);
     socket.emit(
       GameEvent.JOIN_GAME,
-      { ...event.state, turnInterval: "" },
+      { ...event.state, turnInterval: "", playerId: socket.id },
       joinPayload.room,
-      event.joined
+      event.joined,
     );
     socket.broadcast.to(joinPayload.room).emit(GameEvent.PLAYER_JOINED, {
       nick: event.joined.nick,
@@ -120,7 +117,12 @@ const joinGame = (socket: Socket, joinPayload: JoinPayload) => {
 const createGame = (socket: Socket, payload: CreateGamePayload) => {
   try {
     const game = handler.onCreateGame(socket.id, payload);
-    socket.emit(GameEvent.CREATE_GAME, game, payload.room, game.players[0]);
+    socket.emit(
+      GameEvent.CREATE_GAME,
+      { ...game, playerId: socket.id },
+      payload.room,
+      game.players[0],
+    );
     socket.join(payload.room);
   } catch (err: any) {
     handler.onDisconnectGame(socket.id, payload.room);
@@ -133,7 +135,7 @@ const disconnect = (socket: Socket, message?: string) => {
     sendError(socket, message);
     log.error(
       REQUESTOR,
-      `Client id: ${socket.id} - ${socket.handshake.address} disconnected due to and error - ${message}`
+      `Client id: ${socket.id} - ${socket.handshake.address} disconnected due to and error - ${message}`,
     );
   }
   socket.disconnect(true);

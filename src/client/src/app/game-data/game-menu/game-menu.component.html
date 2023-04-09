@@ -1,4 +1,11 @@
-<mat-list>
-  <app-score-board></app-score-board>
-  <app-plays></app-plays>
+<mat-list *ngIf="gameState | async as game">
+  <app-score-board
+    [players]="game.players"
+    [playing]="game.players[game.currentPlayer].nick"
+    [selfIndex]="game.selfIndex"
+  ></app-score-board>
+  <app-plays
+    [currentThrowPicks]="game.currentThrowPicks"
+    [currentTurnScores]="game.currentTurnScores"
+  ></app-plays>
 </mat-list>

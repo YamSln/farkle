@@ -5,7 +5,7 @@ import handler from "../service/game.handler";
 const createGame = async (
   request: Request,
   response: Response,
-  next: NextFunction
+  next: NextFunction,
 ): Promise<any> => {
   // Get create payload
   const { nick, password, maxPlayers, maxPoints } = request.body;
@@ -18,7 +18,7 @@ const createGame = async (
 const joinGame = async (
   request: Request,
   response: Response,
-  next: NextFunction
+  next: NextFunction,
 ): Promise<any> => {
   // Get join payload
   const joinPayload: JoinPayload = request.body;

@@ -9,18 +9,9 @@ const getRandomDieFace = (): DieFace => {
 };
 
 const shuffleArray = <T>(array: T[]): T[] => {
-  let currentIndex = array.length;
-  let randomIndex;
-
-  while (currentIndex != 0) {
-    // Get random remaining
-    randomIndex = getRandomNumber(0, currentIndex);
-    currentIndex--;
-    // Swap
-    [array[currentIndex], array[randomIndex]] = [
-      array[randomIndex],
-      array[currentIndex],
-    ];
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
   }
   return array;
 };

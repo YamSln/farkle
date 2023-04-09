@@ -30,4 +30,12 @@ export class GameComponent implements OnInit {
   }
 
   onDieClicked($dieIndex: DieIndex): void {}
+
+  onGameStart(): void {
+    this.gameFacade.startGame();
+  }
+
+  onRoll(): void {
+    this.gameFacade.roll();
+  }
 }

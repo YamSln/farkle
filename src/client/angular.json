@@ -128,5 +128,8 @@
       }
     }
   },
-  "defaultProject": "farkle-web-client"
+  "defaultProject": "farkle-web-client",
+  "cli": {
+    "analytics": false
+  }
 }
