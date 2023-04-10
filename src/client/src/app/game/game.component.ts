@@ -29,7 +29,9 @@ export class GameComponent implements OnInit {
     this.gameFacade.setTime(timeSpan);
   }
 
-  onDieClicked($dieIndex: DieIndex): void {}
+  onDieSelected($dieIndex: any): void {
+    this.gameFacade.selectDie($dieIndex as DieIndex);
+  }
 
   onGameStart(): void {
     this.gameFacade.startGame();

@@ -3,7 +3,7 @@
   <mat-grid-list fxFlex fxFlexFill cols="3" [gutterSize]="'10px'">
     <!-- Render each dice and count index -->
     <mat-grid-tile *ngFor="let die of dice; let i = index">
-      <app-die [die]="die" (click)="onDieClicked(i)"></app-die>
+      <app-die [die]="die" (selectDie)="onDieSelected(i)"></app-die>
     </mat-grid-tile>
   </mat-grid-list>
 </div>

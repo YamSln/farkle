@@ -18,13 +18,13 @@ import { Die } from 'src/app/model/die.model';
 export class DiceBoardComponent implements OnInit {
   @Input() dice!: Die[];
 
-  @Output() dieClicked: EventEmitter<DieIndex> = new EventEmitter<DieIndex>();
+  @Output() dieSelected: EventEmitter<DieIndex> = new EventEmitter<DieIndex>();
 
   constructor() {}
 
   ngOnInit(): void {}
 
-  onDieClicked($event: number): void {
-    this.dieClicked.emit($event as DieIndex);
+  onDieSelected($event: number): void {
+    this.dieSelected.emit($event as DieIndex);
   }
 }

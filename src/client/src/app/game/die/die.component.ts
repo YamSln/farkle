@@ -19,13 +19,13 @@ import { Die } from 'src/app/model/die.model';
 export class DieComponent implements OnInit {
   @Input() die!: Die;
 
-  @Output() click: EventEmitter<any> = new EventEmitter();
+  @Output() selectDie: EventEmitter<any> = new EventEmitter();
 
   constructor() {}
 
   ngOnInit(): void {}
 
-  onDieClick(): void {
-    this.click.emit();
+  onDieSelect(): void {
+    this.selectDie.emit();
   }
 }

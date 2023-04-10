@@ -44,10 +44,10 @@
       *ngIf="host; then startButton; else waitMessage"
     ></ng-container>
     <ng-template #startButton>
+      <!-- [disabled]="!startAllowed" REMEMBER TO PUT THIS BACK -->
       <button
         mat-raised-button
         fxFlex
-        [disabled]="!startAllowed"
         class="action-button"
         (click)="onStartGameClick()"
       >

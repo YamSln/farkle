@@ -20,6 +20,8 @@ import {
   quitGame,
   roll,
   rollSuccess,
+  selectDie,
+  selectDieSuccess,
   startGame,
   startGameSuccess,
   timeChanged,
@@ -29,6 +31,8 @@ import {
 import { getGameState, getHostState, getRoomUrl } from './game.selector';
 import { GameState } from './game.state';
 import { Die } from 'src/app/model/die.model';
+import { DieIndex } from 'src/app/model/die-index.type';
+import { SelectPayload } from '../../../../../payload/select.payload';
 
 @Injectable({ providedIn: 'root' })
 export class GameFacade {
@@ -65,6 +69,14 @@ export class GameFacade {
 
   rolled(dice: Die[], bust: boolean): void {
     this.store.dispatch(rollSuccess({ dice, bust }));
+  }
+
+  selectDie(index: DieIndex): void {
+    this.store.dispatch(selectDie({ index }));
+  }
+
+  dieSelected(selectPayload: SelectPayload): void {
+    this.store.dispatch(selectDieSuccess({ selectPayload }));
   }
 
   playerJoined(playerAction: PlayerAction): void {

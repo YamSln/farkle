@@ -1,6 +1,7 @@
 import { DieFace } from "../model/die-face.type";
 import { Die } from "../model/die.model";
 import { SelectPayload } from "../payload/select.payload";
+import { JOKER_INDEX } from "../util/game.constants";
 
 interface Histogram {
   array: number[];
@@ -27,21 +28,32 @@ const checkBust = (dice: Die[]): boolean => {
 };
 
 // point calculation algorithm
-const getPoints = (dice: Die[]): SelectPayload => {
+const getPoints = (
+  dice: Die[],
+): { jokerNumber: DieFace; potentialScore: number } => {
   const histo: Histogram = {
     array: ([] = [0, 0, 0, 0, 0, 0, 0]),
     joker: 0,
   };
+  let isJoker: boolean = false;
   for (let i = 0; i < 6; i++) {
     if (dice[i].selected) {
       if (dice[i].joker) {
         histo.joker = dice[i].number;
+        if (dice[i].number === 1) {
+          isJoker = true;
+        }
       }
       histo.array[dice[i].number]++;
     }
   }
   const potentialScore: number = calculateScore(histo);
-  return { jokerNumber: (histo.joker || 1) as DieFace, potentialScore };
+  return {
+    jokerNumber: isJoker
+      ? ((histo.joker || 1) as DieFace)
+      : dice[JOKER_INDEX].number,
+    potentialScore,
+  };
 };
 
 const calculateScore = (histo: Histogram): number => {

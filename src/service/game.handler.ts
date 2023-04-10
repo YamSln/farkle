@@ -17,9 +17,7 @@ import { CreateGamePayload } from "../model/create-game.payload";
 import { PlayerAction } from "../model/player.action.payload";
 import { GameEvent } from "../event/game.event";
 import log from "../config/log";
-import { MAXIMUM_MAX_PLAYERS } from "../validation/game.validation";
 import { GamePhase } from "../model/game.phase.model";
-import { Die } from "../model/die.model";
 import { DieIndex } from "../model/die-index.type";
 import { RollPayload } from "../payload/roll.payload";
 import { SelectPayload } from "../payload/select.payload";
@@ -150,13 +148,10 @@ const onTimerSet = (
 
 const onBank = (socketId: string, room: string): number | null => {
   const state = getGame(room);
-  if (!state.isPlaying(socketId)) {
-    return null;
-  }
-  return state.bank();
+  return service.bank(socketId, state);
 };
 
-const onRoll = (socketId: string, room: string): RollPayload => {
+const onRoll = (socketId: string, room: string): RollPayload | null => {
   const state = getGame(room);
   return service.roll(socketId, state);
 };
@@ -165,7 +160,7 @@ const onSelect = (
   socketId: string,
   room: string,
   dieIndex: DieIndex,
-): SelectPayload => {
+): SelectPayload | null => {
   const state = getGame(room);
   return service.select(socketId, state, dieIndex);
 };
@@ -186,7 +181,8 @@ const onDisconnectGame = (
 ): PlayerAction | null => {
   const game = rooms.get(room);
   if (game) {
-    const index = game.players.findIndex((player) => player.id === socketId); // Find and remove participant, decrease players count
+    // Find and remove participant, decrease players count
+    const index = game.players.findIndex((player) => player.id === socketId);
     if (index !== -1) {
       const player = game.players[index];
       game.players.splice(index, 1);

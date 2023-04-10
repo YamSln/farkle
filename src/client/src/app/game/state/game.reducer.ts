@@ -7,12 +7,16 @@ import {
   playerDisconnect,
   playerJoinedGame,
   rollSuccess,
+  selectDieSuccess,
   startGameSuccess,
   timeChangedSuccess,
   timeUpdate,
 } from './game.action';
 import { GameState, initialState } from './game.state';
 import { GamePhase } from '../../../../../model/game.phase.model';
+import { JOKER_INDEX } from '../../../../../util/game.constants';
+import { findSelf } from './game.state.util';
+import { Die } from 'src/app/model/die.model';
 
 const _gameReducer = createReducer(
   initialState,
@@ -28,16 +32,34 @@ const _gameReducer = createReducer(
     return {
       ...action.game,
       roomId: action.room,
-      selfIndex: action.game.players.findIndex(
-        (player: any) => player.id === action.player.id
-      ),
+      selfIndex: findSelf(action.game.players, action.player.id),
     };
   }),
   on(playerJoinedGame, (state: GameState, action: any): GameState => {
     return { ...state, players: action.players };
   }),
   on(rollSuccess, (state: GameState, action: any): GameState => {
-    return { ...state, dice: action.dice, bust: action.bust };
+    return {
+      ...state,
+      dice: action.dice,
+      bust: action.bust,
+      gamePhase: GamePhase.PICK,
+    };
+  }),
+  on(selectDieSuccess, (state: GameState, action: any): GameState => {
+    return {
+      ...state,
+      dice: state.dice.map((die, index) => {
+        if (index == action.selectPayload.dieIndex) {
+          return { ...die, selected: action.selectPayload.selected };
+        }
+        if (die.joker) {
+          return { ...die, number: action.selectPayload.jokerNumber };
+        }
+        return die;
+      }),
+      potentialScore: action.selectPayload.potentialScore,
+    };
   }),
   on(timeChangedSuccess, (state: GameState, action: any): GameState => {
     return {
@@ -54,19 +76,19 @@ const _gameReducer = createReducer(
     return game;
   }),
   on(startGameSuccess, (state: GameState, action: any): GameState => {
-    const game: GameState = action.game;
     return {
       ...state,
       players: action.players,
       gamePhase: GamePhase.ROLL,
-      selfIndex: action.players.findIndex(
-        // Reset index when shuffled
-        (player: any) => player.id === state.playerId
-      ),
+      selfIndex: findSelf(action.players, state.playerId),
     };
   }),
   on(playerDisconnect, (state: GameState, action: any): GameState => {
-    return { ...state, players: action.players };
+    return {
+      ...state,
+      players: action.players,
+      selfIndex: findSelf(action.game.players, state.playerId),
+    };
   }),
   on(clearState, (state: GameState, action: any): GameState => {
     return { ...initialState };

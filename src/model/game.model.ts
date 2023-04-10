@@ -73,7 +73,7 @@ export class Game implements GameState {
     password: string,
     players: Player[],
     maxPoints: number,
-    maxPlayers: number
+    maxPlayers: number,
   ) {
     this.password = password;
     this.players = players;
@@ -96,7 +96,7 @@ export class Game implements GameState {
       this.password,
       this.players,
       this.maxPoints,
-      this.maxPlayers
+      this.maxPlayers,
     );
     game.shufflePlayers();
     game.start();
@@ -104,8 +104,14 @@ export class Game implements GameState {
   }
 
   select(dieIndex: DieIndex): SelectPayload {
-    this.dice[dieIndex].selected = !this.dice[dieIndex].selected;
-    return alg.getPoints(this.dice);
+    const selected: boolean = (this.dice[dieIndex].selected =
+      !this.dice[dieIndex].selected);
+    const payLoad: SelectPayload = {
+      ...alg.getPoints(this.dice),
+      selected,
+      dieIndex,
+    };
+    return payLoad;
   }
 
   confirm(): number | null {
@@ -118,7 +124,7 @@ export class Game implements GameState {
   bank(): number | null {
     // Increase player score
     this.players[this.currentPlayer].points += util.sumArray(
-      this.currentTurnScores
+      this.currentTurnScores,
     );
     this.currentTurnScores = []; // Reset turn scores
     // Check if player won game

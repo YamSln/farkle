@@ -53,13 +53,21 @@ const onConnection = (socket: Socket, io: Server) => {
   });
 
   socket.on(GameEvent.ROLL, () => {
-    const rollPayload: RollPayload = handler.onRoll(socket.id, room); // TODO : Implement
-    io.to(room).emit(GameEvent.ROLL, rollPayload.dice, rollPayload.bust);
+    const rollPayload: RollPayload | null = handler.onRoll(socket.id, room); // TODO : Implement
+    if (rollPayload) {
+      io.to(room).emit(GameEvent.ROLL, rollPayload.dice, rollPayload.bust);
+    }
   });
 
   socket.on(GameEvent.SELECT, (dieIndex: DieIndex) => {
-    const selected: SelectPayload = handler.onSelect(socket.id, room, dieIndex); // TODO : Implement
-    io.to(room).emit(GameEvent.SELECT, selected);
+    const selectPayload: SelectPayload | null = handler.onSelect(
+      socket.id,
+      room,
+      dieIndex,
+    );
+    if (selectPayload) {
+      io.to(room).emit(GameEvent.SELECT, selectPayload);
+    }
   });
   /*
   socket.on(GameEvent.CONFIRM, () => {

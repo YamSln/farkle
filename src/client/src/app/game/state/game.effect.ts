@@ -9,6 +9,7 @@ import {
   newGame,
   quitGame,
   roll,
+  selectDie,
   startGame,
   timeChanged,
 } from './game.action';
@@ -18,6 +19,7 @@ import { GameFacade } from './game.facade';
 import { environment } from 'src/environments/environment';
 import { JoinType } from 'src/app/model/join.type';
 import { GameEvent } from '../../../../../event/game.event';
+import { SelectPayload } from '../../../../../payload/select.payload';
 import { GameState } from './game.state';
 import { io, Socket } from 'socket.io-client';
 import { Observable, of } from 'rxjs';
@@ -121,6 +123,15 @@ export class GameEffect {
     { dispatch: false }
   );
 
+  selectDie = createEffect(
+    () =>
+      this.action$.pipe(
+        ofType(selectDie),
+        tap((action) => this.socket.emit(GameEvent.SELECT, action.index))
+      ),
+    { dispatch: false }
+  );
+
   changeTime$ = createEffect(
     () =>
       this.action$.pipe(
@@ -210,6 +221,10 @@ export class GameEffect {
     });
     socket.on(GameEvent.ROLL, (dice: Die[], bust: boolean) => {
       this.gameFacade.rolled(dice, bust);
+    });
+    socket.on(GameEvent.SELECT, (selectPayload: SelectPayload) => {
+      console.log(selectPayload);
+      this.gameFacade.dieSelected(selectPayload);
     });
     socket.on(GameEvent.TIME_SET, (timeSpan: number) => {
       this.gameFacade.timeSet(timeSpan);

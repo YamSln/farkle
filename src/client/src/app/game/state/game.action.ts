@@ -5,6 +5,8 @@ import { CreateGameResponse } from '../../model/create-game.response';
 import { JoinGamePayload } from '../../model/join-game.payload';
 import { GameState } from './game.state';
 import { Die } from 'src/app/model/die.model';
+import { DieIndex } from 'src/app/model/die-index.type';
+import { SelectPayload } from '../../../../../payload/select.payload';
 
 const GAME_PAGE = '[game page]';
 
@@ -35,6 +37,9 @@ export const CLEAR_STATE = `${GAME_PAGE} clear state`;
 export const ROLL = `${GAME_PAGE} roll`;
 export const ROLL_SUCCESS = `${GAME_PAGE} roll success`;
 
+export const SELECT_DIE = `${GAME_PAGE} select die`;
+export const SELECT_DIE_SUCCESS = `${GAME_PAGE} select die success`;
+
 export const joinGame = createAction(JOIN_GAME, props<JoinGamePayload>());
 export const joinGameApproved = createAction(
   JOIN_GAME_APPROVED,
@@ -63,6 +68,14 @@ export const roll = createAction(ROLL);
 export const rollSuccess = createAction(
   ROLL_SUCCESS,
   props<{ dice: Die[]; bust: boolean }>()
+);
+
+export const selectDie = createAction(SELECT_DIE, props<{ index: DieIndex }>());
+export const selectDieSuccess = createAction(
+  SELECT_DIE_SUCCESS,
+  props<{
+    selectPayload: SelectPayload;
+  }>()
 );
 
 export const timeChanged = createAction(
