@@ -21,6 +21,8 @@ import { GamePhase } from "../model/game.phase.model";
 import { DieIndex } from "../model/die-index.type";
 import { RollPayload } from "../payload/roll.payload";
 import { SelectPayload } from "../payload/select.payload";
+import { ConfirmPayload } from "../payload/confirm.payload";
+import { BankBustPayload } from "../payload/bankbust.payload";
 const REQUESTOR = "GAME_HANDLER";
 
 const rooms: Map<string, GameState> = new Map<string, GameState>();
@@ -146,12 +148,12 @@ const onTimerSet = (
   return timeSpan;
 };
 
-const onBank = (socketId: string, room: string): number | null => {
+const onBankBust = (socketId: string, room: string): BankBustPayload => {
   const state = getGame(room);
-  return service.bank(socketId, state);
+  return service.bankBust(socketId, state);
 };
 
-const onRoll = (socketId: string, room: string): RollPayload | null => {
+const onRoll = (socketId: string, room: string): RollPayload => {
   const state = getGame(room);
   return service.roll(socketId, state);
 };
@@ -160,9 +162,14 @@ const onSelect = (
   socketId: string,
   room: string,
   dieIndex: DieIndex,
-): SelectPayload | null => {
+): SelectPayload => {
   const state = getGame(room);
   return service.select(socketId, state, dieIndex);
+};
+
+const onConfirm = (socketId: string, room: string): ConfirmPayload => {
+  const state = getGame(room);
+  return service.confirm(socketId, state);
 };
 
 const clearTimer = (state: GameState, erase: boolean = false): void => {
@@ -246,9 +253,10 @@ export default {
   onTimerSet,
   onNewGame,
   onDisconnectGame,
-  onBank,
+  onBankBust,
   onRoll,
   onSelect,
+  onConfirm,
 };
 
 export const handlerTest = {

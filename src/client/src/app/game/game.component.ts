@@ -8,6 +8,7 @@ import { DieIndex } from '../model/die-index.type';
 import { Player } from '../model/player.model';
 import { GameFacade } from './state/game.facade';
 import { GameState } from './state/game.state';
+import { GamePhase } from '../model/game.phase.model';
 
 @Component({
   selector: 'app-game',
@@ -18,6 +19,7 @@ import { GameState } from './state/game.state';
 export class GameComponent implements OnInit {
   gameState!: Observable<GameState>;
   player!: Player;
+  _gamePhaseConstant = GamePhase;
 
   constructor(private gameFacade: GameFacade) {}
 
@@ -31,6 +33,14 @@ export class GameComponent implements OnInit {
 
   onDieSelected($dieIndex: any): void {
     this.gameFacade.selectDie($dieIndex as DieIndex);
+  }
+
+  onConfirmation(): void {
+    this.gameFacade.confirm();
+  }
+
+  onBankBust(): void {
+    this.gameFacade.bankBust();
   }
 
   onGameStart(): void {

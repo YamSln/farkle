@@ -7,6 +7,9 @@ import util from "../util/game.util";
 import { alg } from "../service/game.alg";
 import { RollPayload } from "../payload/roll.payload";
 import { SelectPayload } from "../payload/select.payload";
+import { ConfirmPayload } from "../payload/confirm.payload";
+import { DieFace } from "./die-face.type";
+import { BankBustPayload } from "../payload/bankbust.payload";
 
 export interface GameState {
   // Room properties
@@ -38,9 +41,9 @@ export interface GameState {
    * Returns null if roll is not allowed i.e. game is not in ROLL phase
    */
   roll(): RollPayload | null;
-  select(dieIndex: DieIndex): SelectPayload;
-  confirm(): number | null;
-  bank(): number | null;
+  select(dieIndex: DieIndex): SelectPayload | null;
+  confirm(): ConfirmPayload | null;
+  bankBust(): BankBustPayload | null;
   pause(): boolean | null;
   resume(): boolean | null;
   timeSet(time: number): number | null;
@@ -57,8 +60,10 @@ export class Game implements GameState {
   dice: Die[] = [];
   currentThrowPicks: Die[][] = [];
   currentTurnScores: number[] = [];
+  currentTurnScore: number = 0;
   potentialScore: number = 0;
   currentPlayer: number = 0;
+  jokerNumberBeforeConfirm: DieFace = 1;
   gamePhase: GamePhase = GamePhase.WAIT;
   bust: boolean = false;
   gameWon: boolean = false;
@@ -103,7 +108,10 @@ export class Game implements GameState {
     return game;
   }
 
-  select(dieIndex: DieIndex): SelectPayload {
+  select(dieIndex: DieIndex): SelectPayload | null {
+    if (this.dice[dieIndex].confirmed) {
+      return null;
+    }
     const selected: boolean = (this.dice[dieIndex].selected =
       !this.dice[dieIndex].selected);
     const payLoad: SelectPayload = {
@@ -111,17 +119,56 @@ export class Game implements GameState {
       selected,
       dieIndex,
     };
+    this.jokerNumberBeforeConfirm = payLoad.jokerNumber;
+    this.updatePotentialScore(payLoad.potentialScore);
     return payLoad;
   }
 
-  confirm(): number | null {
+  confirm(): ConfirmPayload | null {
     // Get potential score
+    if (!this.potentialScore || !this.changeGamePhase(GamePhase.ROLL)) {
+      return null;
+    }
     // Add to current scores
-    // Proceed to ROLL / BANK
-    throw new Error("Method not implemented.");
+    const throwScore = this.potentialScore;
+    this.increaseTurnScore();
+    const confirmedDice: Die[] = [];
+    const diceIndices: DieIndex[] = [];
+    let confimationCount: number = 0;
+    this.dice.forEach((die, index) => {
+      if (die.selected) {
+        // confirm die
+        die.selected = false;
+        die.confirmed = true;
+        // Create copy for picks array
+        confirmedDice.push({
+          // Joker changed face
+          number:
+            die.joker && die.number == 1
+              ? this.jokerNumberBeforeConfirm
+              : die.number,
+          joker: die.joker,
+          confirmed: false,
+          selected: false,
+        });
+        diceIndices.push(index as DieIndex);
+      }
+      if (die.confirmed) {
+        confimationCount++;
+      }
+    });
+    if (confimationCount === this.dice.length) {
+      this.allDiceConfirmed = true;
+    }
+    this.currentThrowPicks.push(confirmedDice);
+    return {
+      currentThrowScore: throwScore,
+      currentThrowPick: confirmedDice,
+      diceIndices,
+    };
   }
 
-  bank(): number | null {
+  bankBust(): BankBustPayload | null {
     // Increase player score
     this.players[this.currentPlayer].points += util.sumArray(
       this.currentTurnScores,
@@ -133,7 +180,7 @@ export class Game implements GameState {
       return null;
     } // Otherwise next turn
     this.nextTurn();
-    return this.players[this.currentPlayer].points;
+    return null;
   }
 
   timeSet(time: number): number | null {
@@ -146,6 +193,7 @@ export class Game implements GameState {
     if (roll) {
       this.reRollDice();
       const bust = alg.checkBust(this.dice);
+      console.log(bust);
       return { dice: [...this.dice], bust };
     }
     return null; // Illegal action
@@ -192,12 +240,27 @@ export class Game implements GameState {
       }
     }
     if (this.allDiceConfirmed) {
-      this.resetAllConfirmed();
+      this.allDiceConfirmed = false;
     }
   }
 
-  private resetAllConfirmed(): void {
-    this.allDiceConfirmed = false;
+  private resetTurnScore(): void {
+    this.currentTurnScores = [];
+    this.currentTurnScore = 0;
+  }
+
+  private increaseTurnScore(): void {
+    this.currentTurnScores.push(this.potentialScore);
+    this.currentTurnScore += this.potentialScore;
+    this.potentialScore = 0;
+  }
+
+  private updatePotentialScore(potentialScore: number) {
+    if (potentialScore) {
+      this.potentialScore = potentialScore;
+    } else {
+      this.potentialScore = 0;
+    }
   }
 
   private changeGamePhase(newPhase: GamePhase): boolean {

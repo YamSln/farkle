@@ -9,15 +9,16 @@
     *ngIf="gamePhase != _gamePhaseConstant.WAIT; then play; else wait"
   ></ng-container>
   <ng-template #play>
-    <!-- Pick Confirmation Button -->
+    <!-- Roll / Confirm -->
     <button
       mat-raised-button
       fxFlex="50"
       [disabled]="
         (gamePhase != _gamePhaseConstant.PICK &&
           gamePhase != _gamePhaseConstant.ROLL) ||
-        bust ||
-        !playing
+        (gamePhase == _gamePhaseConstant.PICK && !confirmable) ||
+        !playing ||
+        bust
       "
       class="action-button"
       (click)="onRollConfirmClick()"
@@ -29,8 +30,7 @@
       mat-raised-button
       fxFlex="50"
       [disabled]="
-        (gamePhase != _gamePhaseConstant.ROLL && !bust) ||
-        (firstRoll && !bust) ||
+        ((gamePhase != _gamePhaseConstant.ROLL || firstRoll) && !bust) ||
         !playing
       "
       [color]="bust ? 'warn' : ''"

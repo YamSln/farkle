@@ -12,6 +12,7 @@ import { SharedReducer } from './shared/state/shared.reducer';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment.prod';
+import { DieSortPipe } from './game-data/pipe/die-sort.pipe';
 
 @NgModule({
   declarations: [AppComponent],

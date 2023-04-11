@@ -5,3 +5,4 @@ export const INCORRECT_PASSWORD = "INCORRECT_PASSWORD";
 export const ROOM_FULL = "ROOM_FULL";
 export const GAME_STARTED = "GAME_STARTED";
 export const UNAUTHORIZED = "UNAUTHORIZED";
+export const ILLEGAL = "ILLEGAL";

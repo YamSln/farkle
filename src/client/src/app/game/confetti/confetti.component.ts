@@ -22,7 +22,8 @@ enum ConfettiType {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ConfettiComponent implements OnChanges, OnDestroy, OnInit {
-  @Input() winningTeam: boolean = false;
+  @Input() gameWon!: boolean;
+  @Input() bust!: boolean;
 
   winningConfetti: any;
   bustConfetti: any;
@@ -32,20 +33,20 @@ export class ConfettiComponent implements OnChanges, OnDestroy, OnInit {
   constructor() {}
 
   ngOnInit(): void {
-    /*
     this.winningConfetti = new JSConfetti({
       canvas: this.confettiCanvas,
     });
     this.bustConfetti = new JSConfetti({
       canvas: this.confettiCanvas,
     });
-    this.triggerConfetti(ConfettiType.WIN);
-    */
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.winningTeam.currentValue) {
+    console.log(changes);
+    if (changes.gameWon && changes.gameWon.currentValue) {
       this.triggerConfetti(ConfettiType.WIN);
+    } else if (changes.bust && changes.bust.currentValue) {
+      this.triggerConfetti(ConfettiType.BUST);
     } else {
       this.clearConfetti();
     }
@@ -64,10 +65,14 @@ export class ConfettiComponent implements OnChanges, OnDestroy, OnInit {
           }
         }, 1500);
         break;
+      case ConfettiType.BUST:
+        this.throwConfetti(ConfettiType.BUST);
+        break;
     }
   }
 
   throwConfetti(type: ConfettiType): void {
+    console.log(this.winningConfetti, this.bustConfetti);
     switch (type) {
       case ConfettiType.WIN:
         this.winningConfetti.addConfetti({

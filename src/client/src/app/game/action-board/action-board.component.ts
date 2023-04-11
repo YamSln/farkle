@@ -21,6 +21,7 @@ export class ActionBoardComponent implements OnInit {
   @Input() firstRoll!: boolean;
   @Input() host!: boolean;
   @Input() startAllowed!: boolean;
+  @Input() confirmable!: boolean;
 
   @Output() confirmClick: EventEmitter<any> = new EventEmitter<any>();
   @Output() bankBustClick: EventEmitter<any> = new EventEmitter<any>();
@@ -42,7 +43,6 @@ export class ActionBoardComponent implements OnInit {
   onBankBustClick(): void {
     if (
       (this.gamePhase == GamePhase.ROLL || this.gamePhase == GamePhase.PICK) &&
-      !this.firstRoll &&
       this.playing
     ) {
       this.bankBustClick.emit();
@@ -66,7 +66,7 @@ export class ActionBoardComponent implements OnInit {
       this.onRollClick();
     }
     if (this.gamePhase === GamePhase.PICK) {
-      // TODO: Implement Confirm
+      this.onConfirmClick();
     }
   }
 }

@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { GameService } from '../../service/game.service';
 import {
+  bankBust,
+  confirm,
   createGame,
   createGameApproved,
   joinGame,
@@ -20,6 +22,7 @@ import { environment } from 'src/environments/environment';
 import { JoinType } from 'src/app/model/join.type';
 import { GameEvent } from '../../../../../event/game.event';
 import { SelectPayload } from '../../../../../payload/select.payload';
+import { ConfirmPayload } from '../../../../../payload/confirm.payload';
 import { GameState } from './game.state';
 import { io, Socket } from 'socket.io-client';
 import { Observable, of } from 'rxjs';
@@ -123,13 +126,30 @@ export class GameEffect {
     { dispatch: false }
   );
 
-  selectDie = createEffect(
+  selectDie$ = createEffect(
     () =>
       this.action$.pipe(
         ofType(selectDie),
+        throttleTime(333),
         tap((action) => this.socket.emit(GameEvent.SELECT, action.index))
       ),
     { dispatch: false }
+  );
+
+  confirm$ = createEffect(
+    () =>
+      this.action$.pipe(
+        ofType(confirm),
+        tap((action) => this.socket.emit(GameEvent.CONFIRM))
+      ),
+    { dispatch: false }
+  );
+
+  bankBust$ = createEffect(() =>
+    this.action$.pipe(
+      ofType(bankBust),
+      tap((action) => this.socket.emit(GameEvent.BANK_BUST))
+    )
   );
 
   changeTime$ = createEffect(
@@ -223,8 +243,10 @@ export class GameEffect {
       this.gameFacade.rolled(dice, bust);
     });
     socket.on(GameEvent.SELECT, (selectPayload: SelectPayload) => {
-      console.log(selectPayload);
       this.gameFacade.dieSelected(selectPayload);
+    });
+    socket.on(GameEvent.CONFIRM, (confirmPayload: ConfirmPayload) => {
+      this.gameFacade.confimed(confirmPayload);
     });
     socket.on(GameEvent.TIME_SET, (timeSpan: number) => {
       this.gameFacade.timeSet(timeSpan);

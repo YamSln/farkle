@@ -14,6 +14,7 @@ import { FormsModule } from '@angular/forms';
 import { DecorationsToggleComponent } from './decorations-toggle/decorations-toggle.component';
 import { PopupsToggleComponent } from './popups-toggle/popups-toggle.component';
 import { SumPipe } from './pipe/sum.pipe';
+import { DieSortPipe } from './pipe/die-sort.pipe';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { SumPipe } from './pipe/sum.pipe';
     PlaysComponent,
     GameMenuComponent,
     DieFacePipe,
+    DieSortPipe,
     TimerPipe,
     SettingsMenuComponent,
     ThemeToggleComponent,

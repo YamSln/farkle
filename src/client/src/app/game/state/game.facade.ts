@@ -8,7 +8,10 @@ import { PlayerAction } from 'src/app/model/player.action.payload';
 import { Player } from 'src/app/model/player.model';
 import { displayPlayerAction } from 'src/app/shared/state/shared.action';
 import {
+  bankBust,
   clearState,
+  confirm,
+  confirmSuccess,
   createGame,
   createGameSuccess,
   joinGame,
@@ -33,6 +36,7 @@ import { GameState } from './game.state';
 import { Die } from 'src/app/model/die.model';
 import { DieIndex } from 'src/app/model/die-index.type';
 import { SelectPayload } from '../../../../../payload/select.payload';
+import { ConfirmPayload } from '../../../../../payload/confirm.payload';
 
 @Injectable({ providedIn: 'root' })
 export class GameFacade {
@@ -77,6 +81,18 @@ export class GameFacade {
 
   dieSelected(selectPayload: SelectPayload): void {
     this.store.dispatch(selectDieSuccess({ selectPayload }));
+  }
+
+  confirm(): void {
+    this.store.dispatch(confirm());
+  }
+
+  confimed(confirmPayload: ConfirmPayload): void {
+    this.store.dispatch(confirmSuccess({ confirmPayload }));
+  }
+
+  bankBust(): void {
+    this.store.dispatch(bankBust());
   }
 
   playerJoined(playerAction: PlayerAction): void {

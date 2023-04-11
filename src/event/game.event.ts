@@ -9,6 +9,7 @@ export enum GameEvent {
   BANK = "bank",
   ROLL = "roll",
   BUST = "bust",
+  BANK_BUST = "bank_bust",
   SELECT = "select",
   CONFIRM = "confirm",
   START_GAME = "start_game",

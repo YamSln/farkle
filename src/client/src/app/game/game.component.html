@@ -47,6 +47,12 @@
         <app-dice-board
           fxFlex
           [dice]="game.dice"
+          [inGame]="game.gamePhase != _gamePhaseConstant.WAIT"
+          [selectable]="
+            game.currentPlayer == game.selfIndex &&
+            game.gamePhase == _gamePhaseConstant.PICK &&
+            !game.bust
+          "
           (dieSelected)="onDieSelected($event)"
         ></app-dice-board>
         <app-action-board
@@ -56,9 +62,11 @@
           [gamePhase]="game.gamePhase"
           [firstRoll]="game.currentTurnScores.length == 0"
           [host]="game.players[game.selfIndex].host"
+          [confirmable]="game.potentialScore != 0"
           [startAllowed]="game.players.length > 1"
           (startGameClick)="onGameStart()"
           (rollClick)="onRoll()"
+          (confirmClick)="onConfirmation()"
         ></app-action-board>
       </div>
       <!-- Desktop Plays Board -->
@@ -74,5 +82,5 @@
     </div>
   </div>
   <div fxFlex="5" fxFlex.gt-lg="20"></div>
+  <app-confetti [gameWon]="game.gameWon" [bust]="game.bust"></app-confetti>
 </div>
-<app-confetti></app-confetti>

@@ -20,7 +20,7 @@
         <th mat-header-cell *matHeaderCellDef>Picks</th>
         <td mat-cell *matCellDef="let plays">
           <img
-            *ngFor="let die of plays"
+            *ngFor="let die of plays | dieSort"
             [src]="die | dieFace"
             style="width: 20px; margin: 3px"
           />

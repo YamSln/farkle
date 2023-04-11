@@ -2,8 +2,8 @@ import { Server, Socket } from "socket.io";
 import { JoinType } from "../auth/join.type";
 import {
   FORBIDDEN,
+  ILLEGAL,
   NOT_FOUND,
-  GAME_STARTED,
   UNAUTHORIZED,
 } from "../error/error.util";
 import { GameEvent } from "../event/game.event";
@@ -15,6 +15,8 @@ import log from "../config/log";
 import { DieIndex } from "../model/die-index.type";
 import { RollPayload } from "../payload/roll.payload";
 import { SelectPayload } from "../payload/select.payload";
+import { ConfirmPayload } from "../payload/confirm.payload";
+import { BankBustPayload } from "../payload/bankbust.payload";
 
 const REQUESTOR = "SOCKET_HANDLER";
 
@@ -53,31 +55,49 @@ const onConnection = (socket: Socket, io: Server) => {
   });
 
   socket.on(GameEvent.ROLL, () => {
-    const rollPayload: RollPayload | null = handler.onRoll(socket.id, room); // TODO : Implement
-    if (rollPayload) {
+    try {
+      const rollPayload: RollPayload = handler.onRoll(socket.id, room);
       io.to(room).emit(GameEvent.ROLL, rollPayload.dice, rollPayload.bust);
+    } catch {
+      sendIllegal(socket);
     }
   });
 
   socket.on(GameEvent.SELECT, (dieIndex: DieIndex) => {
-    const selectPayload: SelectPayload | null = handler.onSelect(
-      socket.id,
-      room,
-      dieIndex,
-    );
-    if (selectPayload) {
+    try {
+      const selectPayload: SelectPayload = handler.onSelect(
+        socket.id,
+        room,
+        dieIndex,
+      );
       io.to(room).emit(GameEvent.SELECT, selectPayload);
+    } catch {
+      sendIllegal(socket);
     }
   });
-  /*
+
   socket.on(GameEvent.CONFIRM, () => {
-    const result = handler.onConfirm(room);
-    io.to(room).emit(GameEvent.CONFIRM, result);
+    try {
+      const confirmPayload: ConfirmPayload = handler.onConfirm(socket.id, room);
+      io.to(room).emit(GameEvent.CONFIRM, confirmPayload);
+    } catch {
+      sendIllegal(socket);
+    }
   });
-*/
-  socket.on(GameEvent.BANK, () => {
-    const score = handler.onBank(socket.id, room); // TODO : Implement
-    io.to(room).emit(GameEvent.BANK, score);
+
+  socket.on(GameEvent.BANK_BUST, () => {
+    try {
+      const bankBustPayload: BankBustPayload = handler.onBankBust(
+        socket.id,
+        room,
+      );
+      io.to(room).emit(
+        bankBustPayload.bust ? GameEvent.BUST : GameEvent.BANK,
+        bankBustPayload.nextPlayerIndex,
+      );
+    } catch {
+      sendIllegal(socket);
+    }
   });
   /*
   socket.on(GameEvent.TIME_SET, (timeSpan: number) => {
@@ -151,6 +171,10 @@ const disconnect = (socket: Socket, message?: string) => {
 
 const sendError = (socket: Socket, message: string) => {
   socket.emit("error", message);
+};
+
+const sendIllegal = (socket: Socket) => {
+  socket.emit("illegal", ILLEGAL);
 };
 
 const getSocketRoom = (socket: Socket): string => {

@@ -1,6 +1,7 @@
 import { createReducer, on } from '@ngrx/store';
 import {
   clearState,
+  confirmSuccess,
   createGameSuccess,
   joinGameSuccess,
   newGameSuccess,
@@ -47,11 +48,16 @@ const _gameReducer = createReducer(
     };
   }),
   on(selectDieSuccess, (state: GameState, action: any): GameState => {
+    console.log(action.selectPayload.jokerNumber);
     return {
       ...state,
       dice: state.dice.map((die, index) => {
         if (index == action.selectPayload.dieIndex) {
-          return { ...die, selected: action.selectPayload.selected };
+          return {
+            ...die,
+            selected: action.selectPayload.selected,
+            number: die.joker ? action.selectPayload.jokerNumber : die.number,
+          };
         }
         if (die.joker) {
           return { ...die, number: action.selectPayload.jokerNumber };
@@ -59,6 +65,27 @@ const _gameReducer = createReducer(
         return die;
       }),
       potentialScore: action.selectPayload.potentialScore,
+    };
+  }),
+  on(confirmSuccess, (state: GameState, action: any): GameState => {
+    console.log(action);
+    return {
+      ...state,
+      currentThrowPicks: [
+        ...state.currentThrowPicks,
+        action.confirmPayload.currentThrowPick,
+      ],
+      currentTurnScores: [
+        ...state.currentTurnScores,
+        action.confirmPayload.currentThrowScore,
+      ],
+      dice: state.dice.map((die, index) =>
+        action.confirmPayload.diceIndices.includes(index)
+          ? { ...die, selected: false, confirmed: true }
+          : die
+      ),
+      potentialScore: 0,
+      gamePhase: GamePhase.ROLL,
     };
   }),
   on(timeChangedSuccess, (state: GameState, action: any): GameState => {
