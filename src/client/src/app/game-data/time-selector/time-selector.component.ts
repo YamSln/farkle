@@ -24,7 +24,7 @@ export class TimeSelectorComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  onTimeChange($event: number): void {
-    this.timeSet.emit($event);
+  onTimeChange($event: any): void {
+    this.timeSet.emit($event.value);
   }
 }

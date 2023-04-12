@@ -17,7 +17,6 @@ import { headShakeAnimation } from 'angular-animations';
 })
 export class TimerComponent implements OnInit, OnChanges {
   @Input() time!: number;
-  @Input() display!: boolean;
 
   constructor() {}
 
@@ -25,7 +24,6 @@ export class TimerComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     this.time = 0;
-    this.display = true;
   }
 
   ngOnChanges(changes: SimpleChanges): void {

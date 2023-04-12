@@ -23,6 +23,7 @@
     <mat-slider
       [value]="time"
       [disabled]="!host"
+      (change)="onTimeChange($event)"
       (input)="time = $event.value || 0"
       style="width: 80%"
       min="0"

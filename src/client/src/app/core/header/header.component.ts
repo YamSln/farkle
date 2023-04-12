@@ -18,11 +18,12 @@ import { Observable, of } from 'rxjs';
 export class HeaderComponent implements OnInit {
   @Input() isLightTheme!: boolean;
   @Input() roomUrl!: Observable<string>;
-  @Input() timer: Observable<number> = of(1);
+  @Input() time!: Observable<number>;
   @Input() host!: Observable<boolean>;
 
   @Output() themeToggle: EventEmitter<any> = new EventEmitter<any>();
   @Output() menuToggle: EventEmitter<any> = new EventEmitter<any>();
+  @Output() timeChange: EventEmitter<number> = new EventEmitter<number>();
 
   constructor(private clipboardService: ClipboardService) {}
 
@@ -38,5 +39,9 @@ export class HeaderComponent implements OnInit {
 
   copyUrlToClipboard(url: string): void {
     this.clipboardService.copy(url);
+  }
+
+  onTimeChange($event: any): void {
+    this.timeChange.emit($event);
   }
 }

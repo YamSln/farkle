@@ -50,7 +50,6 @@ const _gameReducer = createReducer(
     };
   }),
   on(selectDieSuccess, (state: GameState, action: any): GameState => {
-    console.log(action.selectPayload.jokerNumber);
     return {
       ...state,
       dice: state.dice.map((die, index) => {
@@ -70,7 +69,6 @@ const _gameReducer = createReducer(
     };
   }),
   on(confirmSuccess, (state: GameState, action: any): GameState => {
-    console.log(action);
     return {
       ...state,
       currentThrowPicks: [
@@ -130,8 +128,12 @@ const _gameReducer = createReducer(
     return { ...state, currentTime: action.currentTime };
   }),
   on(newGameSuccess, (state: GameState, action: any): GameState => {
-    const game: GameState = action.game;
-    return game;
+    return {
+      ...action.game,
+      roomId: state.roomId,
+      playerId: state.playerId,
+      selfIndex: findSelf(action.game.players, state.playerId),
+    };
   }),
   on(startGameSuccess, (state: GameState, action: any): GameState => {
     return {

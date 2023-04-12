@@ -29,7 +29,11 @@
   >
     <!-- Timer Set Button -->
     <button *ngIf="roomUrl | async" mat-icon-button matTooltip="Timer">
-      <app-time-selector [host]="(host | async) || false"></app-time-selector>
+      <app-time-selector
+        [host]="(host | async) || false"
+        [time]="(time | async) || 0"
+        (timeSet)="onTimeChange($event)"
+      ></app-time-selector>
     </button>
     <span *ngIf="roomUrl | async">|</span>
     <!-- Rules Modal Button -->

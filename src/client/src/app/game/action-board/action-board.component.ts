@@ -22,6 +22,7 @@ export class ActionBoardComponent implements OnInit {
   @Input() host!: boolean;
   @Input() startAllowed!: boolean;
   @Input() confirmable!: boolean;
+  @Input() gameWon!: boolean;
 
   @Output() confirmClick: EventEmitter<any> = new EventEmitter<any>();
   @Output() bankBustClick: EventEmitter<any> = new EventEmitter<any>();

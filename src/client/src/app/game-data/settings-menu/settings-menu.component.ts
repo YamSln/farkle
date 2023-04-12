@@ -15,6 +15,8 @@ import {
 })
 export class SettingsMenuComponent implements OnInit {
   @Input() isLightTheme!: boolean;
+  @Input() host!: boolean;
+  @Input() time!: number;
 
   @Output() themeToggle: EventEmitter<any> = new EventEmitter<any>();
   @Output() decorationsToggle: EventEmitter<any> = new EventEmitter<any>();

@@ -9,6 +9,7 @@
     [host]="host"
     (themeToggle)="themeToggleChanged()"
     (menuToggle)="menuToggleChanged()"
+    (timeChange)="timeChanged($event)"
   ></app-header>
   <mat-drawer-container fxFlex>
     <mat-drawer
@@ -27,11 +28,13 @@
           <ng-template mat-tab-label
             ><mat-icon>videogame_asset</mat-icon></ng-template
           >
-          <app-game-menu></app-game-menu>
+          <app-game-menu (newGameClick)="onNewGame($event)"></app-game-menu>
         </mat-tab>
         <mat-tab>
           <ng-template mat-tab-label><mat-icon>settings</mat-icon></ng-template>
           <app-settings-menu
+            [host]="(host | async) || false"
+            [time]="(time | async) || 0"
             [isLightTheme]="(isLightTheme | async) || false"
             (themeToggle)="themeToggleChanged()"
           ></app-settings-menu>

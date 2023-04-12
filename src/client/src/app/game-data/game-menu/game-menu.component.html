@@ -3,6 +3,9 @@
     [players]="game.players"
     [playing]="game.players[game.currentPlayer].nick"
     [selfIndex]="game.selfIndex"
+    [host]="game.players[game.currentPlayer].host"
+    [gameWon]="game.gameWon"
+    (newGameClick)="onNewGameClick(game.gameWon)"
   ></app-score-board>
   <app-plays
     [currentThrowPicks]="game.currentThrowPicks"

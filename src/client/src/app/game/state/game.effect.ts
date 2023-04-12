@@ -110,7 +110,6 @@ export class GameEffect {
     () =>
       this.action$.pipe(
         ofType(newGame),
-        throttleTime(1500),
         tap(() => {
           this.socket.emit(GameEvent.NEW_GAME);
         })
@@ -159,9 +158,7 @@ export class GameEffect {
     () =>
       this.action$.pipe(
         ofType(timeChanged),
-        tap((action) => {
-          this.socket.emit(GameEvent.TIME_SET, action.timeSpan);
-        })
+        tap((action) => this.socket.emit(GameEvent.TIME_SET, action.timeSpan))
       ),
     { dispatch: false }
   );

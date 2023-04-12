@@ -3,10 +3,7 @@
   <div fxFlex fxLayout="column" fxLayoutGap="20px">
     <!-- Timer + Score Calculation -->
     <div fxFlex fxLayout="column" fxLayoutAlign="center center">
-      <app-timer
-        [time]="game.currentTime"
-        [display]="!!game.turnTime"
-      ></app-timer>
+      <app-timer [time]="game.currentTime"></app-timer>
       <app-score-potential
         [currentScore]="game.currentTurnScores | sum"
         [potentialScore]="game.potentialScore"
@@ -21,6 +18,9 @@
         [players]="game.players"
         [playing]="game.players[game.currentPlayer].nick"
         [selfIndex]="game.selfIndex"
+        [host]="game.players[game.selfIndex].host"
+        [gameWon]="game.gameWon"
+        (newGameClick)="onNewGame(game.gameWon)"
       ></app-score-board>
       <!-- Mobile Current Player -->
       <mat-card
@@ -64,6 +64,7 @@
           [host]="game.players[game.selfIndex].host"
           [confirmable]="game.potentialScore != 0"
           [startAllowed]="game.players.length > 1"
+          [gameWon]="game.gameWon"
           (startGameClick)="onGameStart()"
           (rollClick)="onRoll()"
           (confirmClick)="onConfirmation()"

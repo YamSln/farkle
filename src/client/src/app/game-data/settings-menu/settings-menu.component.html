@@ -6,7 +6,11 @@
     ></app-theme-toggle>
   </mat-list-item>
   <mat-divider></mat-divider>
-  <app-time-selector [menu]="true"></app-time-selector>
+  <app-time-selector
+    [menu]="true"
+    [host]="host"
+    [time]="time"
+  ></app-time-selector>
   <mat-divider></mat-divider>
   <mat-list-item class="list-item">
     <app-decorations-toggle

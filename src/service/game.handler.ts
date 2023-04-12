@@ -12,6 +12,7 @@ import {
   NICK_TAKEN,
   GAME_STARTED,
   FORBIDDEN,
+  ILLEGAL,
 } from "../error/error.util";
 import { CreateGamePayload } from "../model/create-game.payload";
 import { PlayerAction } from "../model/player.action.payload";
@@ -112,9 +113,9 @@ const onGameStart = (socketId: string, room: string): Player[] => {
   throw new Error(FORBIDDEN);
 };
 
-const onNewGame = (room: string): GameState => {
+const onNewGame = (socketId: string, room: string): GameState => {
   const state = getGame(room);
-  const newGame = service.newGame(state);
+  const newGame = service.newGame(socketId, state);
   rooms.set(room, newGame);
   return newGame;
 };
@@ -127,7 +128,7 @@ const onTimerSet = (
 ): number => {
   const state = getGame(room);
   if (!state.isHost(socketId)) {
-    return 0;
+    throw new Error(ILLEGAL);
   }
   state.turnTime = timeSpan;
   state.currentTime = state.turnTime;

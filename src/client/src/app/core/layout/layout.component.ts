@@ -15,6 +15,7 @@ export class LayoutComponent implements OnInit {
   isLightTheme!: Observable<boolean>;
   roomUrl!: Observable<string>;
   host!: Observable<boolean>;
+  time!: Observable<number>;
 
   constructor(
     private gameFacade: GameFacade,
@@ -37,5 +38,14 @@ export class LayoutComponent implements OnInit {
 
   menuClosed(): void {
     this.isMenuOpen = false;
+  }
+
+  timeChanged($event: any): void {
+    console.log($event);
+    this.gameFacade.setTime($event);
+  }
+
+  onNewGame($event: boolean): void {
+    this.gameFacade.newGame($event);
   }
 }

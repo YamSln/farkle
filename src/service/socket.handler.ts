@@ -17,6 +17,7 @@ import { RollPayload } from "../payload/roll.payload";
 import { SelectPayload } from "../payload/select.payload";
 import { ConfirmPayload } from "../payload/confirm.payload";
 import { BankBustPayload } from "../payload/bankbust.payload";
+import { GameState } from "../model/game.model";
 
 const REQUESTOR = "SOCKET_HANDLER";
 
@@ -45,8 +46,12 @@ const onConnection = (socket: Socket, io: Server) => {
   const room = getSocketRoom(socket);
 
   socket.on(GameEvent.NEW_GAME, () => {
-    const newGame = handler.onNewGame(room);
-    io.to(room).emit(GameEvent.NEW_GAME, newGame);
+    try {
+      const newGame: GameState = handler.onNewGame(socket.id, room);
+      io.to(room).emit(GameEvent.NEW_GAME, newGame);
+    } catch {
+      sendIllegal(socket);
+    }
   });
 
   socket.on(GameEvent.START_GAME, () => {
@@ -99,12 +104,16 @@ const onConnection = (socket: Socket, io: Server) => {
       sendIllegal(socket);
     }
   });
-  /*
+
   socket.on(GameEvent.TIME_SET, (timeSpan: number) => {
-    const time = handler.onTimerSet(room, timeSpan, io); // TODO : Implement
-    io.to(room).emit(GameEvent.TIME_SET, time);
+    try {
+      const time = handler.onTimerSet(socket.id, room, timeSpan, io);
+      io.to(room).emit(GameEvent.TIME_SET, time);
+    } catch {
+      sendIllegal(socket);
+    }
   });
-*/
+
   socket.on(GameEvent.DISCONNECT_SELF, () => {
     disconnect(socket);
   });

@@ -1,4 +1,10 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { Observable } from 'rxjs';
 import { GameFacade } from 'src/app/game/state/game.facade';
 import { GameState } from 'src/app/game/state/game.state';
@@ -14,9 +20,15 @@ export class GameMenuComponent implements OnInit {
   gameState!: Observable<GameState>;
   player!: Player;
 
+  @Output() newGameClick = new EventEmitter<boolean>();
+
   constructor(private gameFacade: GameFacade) {}
 
   ngOnInit(): void {
     this.gameState = this.gameFacade.getGameState();
+  }
+
+  onNewGameClick($event: boolean): void {
+    this.newGameClick.emit($event);
   }
 }

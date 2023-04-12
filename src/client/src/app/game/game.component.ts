@@ -50,4 +50,8 @@ export class GameComponent implements OnInit {
   onRoll(): void {
     this.gameFacade.roll();
   }
+
+  onNewGame($event: boolean): void {
+    this.gameFacade.newGame($event);
+  }
 }

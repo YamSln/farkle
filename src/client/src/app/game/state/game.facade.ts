@@ -1,7 +1,7 @@
-import { Injectable } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Injectable, OnDestroy } from '@angular/core';
+import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { CreateGamePayload } from 'src/app/model/create-game.payload';
 import { JoinGamePayload } from 'src/app/model/join-game.payload';
 import { PlayerAction } from 'src/app/model/player.action.payload';
@@ -40,13 +40,18 @@ import { DieIndex } from 'src/app/model/die-index.type';
 import { SelectPayload } from '../../../../../payload/select.payload';
 import { ConfirmPayload } from '../../../../../payload/confirm.payload';
 import { BankBustPayload } from '../../../../../payload/bankbust.payload';
+import { DialogService } from 'src/app/shared/dialog/service/dialog.service';
+import { MatDialogData } from 'src/app/shared/dialog/model/mat-dialog.data';
+import { GeneralDialogType } from 'src/app/shared/dialog/model/general-dialog.type';
+import { GeneralDialogDefinition } from 'src/app/shared/dialog/model/general-dialog.definition';
 
 @Injectable({ providedIn: 'root' })
-export class GameFacade {
+export class GameFacade implements OnDestroy {
+  dialogSubscription!: Subscription;
   constructor(
     private store: Store<GameState>,
     private router: Router,
-    private activatedRoute: ActivatedRoute
+    private dialogService: DialogService
   ) {}
 
   createGame(game: CreateGamePayload): void {
@@ -61,7 +66,29 @@ export class GameFacade {
     this.store.dispatch(startGame());
   }
 
-  newGame(): void {
+  newGame(gameWon: boolean): void {
+    if (!gameWon) {
+      const dialogData: MatDialogData = {
+        data: {
+          dialogType: GeneralDialogType.WARNING,
+          dialogDefinition: GeneralDialogDefinition.CONFIRMATION,
+          dialogMessage: 'Start a new game?',
+        },
+        panelClass: 'dialog',
+      };
+      this.dialogSubscription = this.dialogService
+        .openGeneralDialog(dialogData)
+        .subscribe((value) => {
+          if (value) {
+            this.dispatchNewGame();
+          }
+        });
+    } else {
+      this.dispatchNewGame();
+    }
+  }
+
+  private dispatchNewGame(): void {
     this.store.dispatch(newGame());
   }
 
@@ -189,5 +216,11 @@ export class GameFacade {
 
   clearGame(): void {
     this.store.dispatch(clearState());
+  }
+
+  ngOnDestroy(): void {
+    if (this.dialogSubscription) {
+      this.dialogSubscription.unsubscribe();
+    }
   }
 }

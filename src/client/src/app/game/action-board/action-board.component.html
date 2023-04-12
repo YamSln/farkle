@@ -18,7 +18,8 @@
           gamePhase != _gamePhaseConstant.ROLL) ||
         (gamePhase == _gamePhaseConstant.PICK && !confirmable) ||
         !playing ||
-        bust
+        bust ||
+        gameWon
       "
       class="action-button"
       (click)="onRollConfirmClick()"
@@ -31,7 +32,8 @@
       fxFlex="50"
       [disabled]="
         ((gamePhase != _gamePhaseConstant.ROLL || firstRoll) && !bust) ||
-        !playing
+        !playing ||
+        gameWon
       "
       [color]="bust ? 'warn' : ''"
       class="action-button"
