@@ -93,7 +93,7 @@ const onConnection = (socket: Socket, io: Server) => {
       );
       io.to(room).emit(
         bankBustPayload.bust ? GameEvent.BUST : GameEvent.BANK,
-        bankBustPayload.nextPlayerIndex,
+        bankBustPayload,
       );
     } catch {
       sendIllegal(socket);

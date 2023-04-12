@@ -42,7 +42,8 @@ const bankBust = (socketId: string, state: GameState): BankBustPayload => {
   let bankBustPayload: BankBustPayload | null = null;
   if (
     !state.isPlaying(socketId) ||
-    state.gamePhase !== GamePhase.ROLL ||
+    (state.gamePhase !== GamePhase.ROLL &&
+      state.gamePhase !== GamePhase.PICK) ||
     !(bankBustPayload = state.bankBust())
   ) {
     throw new Error(ILLEGAL);

@@ -9,6 +9,8 @@ import { Player } from 'src/app/model/player.model';
 import { displayPlayerAction } from 'src/app/shared/state/shared.action';
 import {
   bankBust,
+  bankSuccess,
+  bustSuccess,
   clearState,
   confirm,
   confirmSuccess,
@@ -37,6 +39,7 @@ import { Die } from 'src/app/model/die.model';
 import { DieIndex } from 'src/app/model/die-index.type';
 import { SelectPayload } from '../../../../../payload/select.payload';
 import { ConfirmPayload } from '../../../../../payload/confirm.payload';
+import { BankBustPayload } from '../../../../../payload/bankbust.payload';
 
 @Injectable({ providedIn: 'root' })
 export class GameFacade {
@@ -93,6 +96,14 @@ export class GameFacade {
 
   bankBust(): void {
     this.store.dispatch(bankBust());
+  }
+
+  banked(bankBustPayload: BankBustPayload): void {
+    this.store.dispatch(bankSuccess({ bankBustPayload }));
+  }
+
+  busted(bankBustPayload: BankBustPayload): void {
+    this.store.dispatch(bustSuccess({ bankBustPayload }));
   }
 
   playerJoined(playerAction: PlayerAction): void {

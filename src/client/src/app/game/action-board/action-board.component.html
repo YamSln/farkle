@@ -35,6 +35,7 @@
       "
       [color]="bust ? 'warn' : ''"
       class="action-button"
+      (click)="onBankBustClick()"
     >
       {{ bust ? "Bust!" : "Bank" }}
     </button>

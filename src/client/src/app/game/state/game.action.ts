@@ -8,6 +8,7 @@ import { Die } from 'src/app/model/die.model';
 import { DieIndex } from 'src/app/model/die-index.type';
 import { SelectPayload } from '../../../../../payload/select.payload';
 import { ConfirmPayload } from '../../../../../payload/confirm.payload';
+import { BankBustPayload } from '../../../../../payload/bankbust.payload';
 
 const GAME_PAGE = '[game page]';
 
@@ -45,7 +46,8 @@ export const CONFIRM = `${GAME_PAGE} confirm`;
 export const CONFIRM_SUCCESS = `${GAME_PAGE} confirm success`;
 
 export const BANK_BUST = `${GAME_PAGE} bank_bust`;
-export const BANK_BUST_SUCCESS = `${GAME_PAGE} bank_bust success`;
+export const BANK_SUCCESS = `${GAME_PAGE} bank success`;
+export const BUST_SUCCESS = `${GAME_PAGE} bust success`;
 
 export const joinGame = createAction(JOIN_GAME, props<JoinGamePayload>());
 export const joinGameApproved = createAction(
@@ -92,9 +94,13 @@ export const confirmSuccess = createAction(
 );
 
 export const bankBust = createAction(BANK_BUST);
-export const bankBustSuccess = createAction(
-  BANK_BUST_SUCCESS,
-  props<{ nextPlayer: number }>()
+export const bankSuccess = createAction(
+  BANK_SUCCESS,
+  props<{ bankBustPayload: BankBustPayload }>()
+);
+export const bustSuccess = createAction(
+  BUST_SUCCESS,
+  props<{ bankBustPayload: BankBustPayload }>()
 );
 
 export const timeChanged = createAction(

@@ -169,18 +169,26 @@ export class Game implements GameState {
   }
 
   bankBust(): BankBustPayload | null {
-    // Increase player score
-    this.players[this.currentPlayer].points += util.sumArray(
-      this.currentTurnScores,
-    );
-    this.currentTurnScores = []; // Reset turn scores
-    // Check if player won game
-    if (this.players[this.currentPlayer].points >= this.maxPoints) {
-      this.winGame();
-      return null;
-    } // Otherwise next turn
+    if (!this.bust) {
+      // Increase player score
+      const total: number = (this.players[this.currentPlayer].points +=
+        this.currentTurnScore);
+      // Check if player won game
+      if (total >= this.maxPoints) {
+        this.gameWon = true;
+      }
+    }
+    // Next turn
+    const bust: boolean = this.bust;
+    const pointsEarned: number = this.currentTurnScore;
     this.nextTurn();
-    return null;
+    this.resetDiceConfirmation();
+    return {
+      bust,
+      nextPlayerIndex: this.currentPlayer,
+      wonGame: this.gameWon,
+      pointsEarned,
+    };
   }
 
   timeSet(time: number): number | null {
@@ -192,8 +200,8 @@ export class Game implements GameState {
     const roll: boolean = this.changeGamePhase(GamePhase.PICK);
     if (roll) {
       this.reRollDice();
-      const bust = alg.checkBust(this.dice);
-      console.log(bust);
+      const bust: boolean = alg.checkBust(this.dice);
+      this.bust = bust;
       return { dice: [...this.dice], bust };
     }
     return null; // Illegal action
@@ -226,10 +234,17 @@ export class Game implements GameState {
     return this.currentPlayer;
   }
 
-  private nextTurn(): number {
-    this.gamePhase = GamePhase.ROLL;
-    this.currentPlayer++;
-    return this.currentPlayer;
+  private nextTurn(): void {
+    if (!this.gameWon) {
+      this.changeGamePhase(GamePhase.ROLL);
+      this.currentPlayer++;
+      if (this.currentPlayer >= this.players.length) {
+        this.currentPlayer = 0;
+      }
+      this.resetTurnScore();
+      this.currentThrowPicks = [];
+      this.bust = false;
+    }
   }
 
   private reRollDice(): void {
@@ -242,6 +257,10 @@ export class Game implements GameState {
     if (this.allDiceConfirmed) {
       this.allDiceConfirmed = false;
     }
+  }
+
+  private resetDiceConfirmation(): void {
+    this.dice.forEach((die) => (die.confirmed = false));
   }
 
   private resetTurnScore(): void {

@@ -23,6 +23,7 @@ import { JoinType } from 'src/app/model/join.type';
 import { GameEvent } from '../../../../../event/game.event';
 import { SelectPayload } from '../../../../../payload/select.payload';
 import { ConfirmPayload } from '../../../../../payload/confirm.payload';
+import { BankBustPayload } from '../../../../../payload/bankbust.payload';
 import { GameState } from './game.state';
 import { io, Socket } from 'socket.io-client';
 import { Observable, of } from 'rxjs';
@@ -145,11 +146,13 @@ export class GameEffect {
     { dispatch: false }
   );
 
-  bankBust$ = createEffect(() =>
-    this.action$.pipe(
-      ofType(bankBust),
-      tap((action) => this.socket.emit(GameEvent.BANK_BUST))
-    )
+  bankBust$ = createEffect(
+    () =>
+      this.action$.pipe(
+        ofType(bankBust),
+        tap((action) => this.socket.emit(GameEvent.BANK_BUST))
+      ),
+    { dispatch: false }
   );
 
   changeTime$ = createEffect(
@@ -247,6 +250,12 @@ export class GameEffect {
     });
     socket.on(GameEvent.CONFIRM, (confirmPayload: ConfirmPayload) => {
       this.gameFacade.confimed(confirmPayload);
+    });
+    socket.on(GameEvent.BANK, (bankBustPayload: BankBustPayload) => {
+      this.gameFacade.banked(bankBustPayload);
+    });
+    socket.on(GameEvent.BUST, (bankBustPayload: BankBustPayload) => {
+      this.gameFacade.busted(bankBustPayload);
     });
     socket.on(GameEvent.TIME_SET, (timeSpan: number) => {
       this.gameFacade.timeSet(timeSpan);

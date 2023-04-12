@@ -1,5 +1,7 @@
 import { createReducer, on } from '@ngrx/store';
 import {
+  bankSuccess,
+  bustSuccess,
   clearState,
   confirmSuccess,
   createGameSuccess,
@@ -86,6 +88,35 @@ const _gameReducer = createReducer(
       ),
       potentialScore: 0,
       gamePhase: GamePhase.ROLL,
+    };
+  }),
+  on(bankSuccess, (state: GameState, action: any): GameState => {
+    return {
+      ...state,
+      players: state.players.map((player, index) => {
+        if (index === state.currentPlayer) {
+          return {
+            ...player,
+            points: player.points + action.bankBustPayload.pointsEarned,
+          };
+        }
+        return player;
+      }),
+      gameWon: action.bankBustPayload.wonGame,
+      currentPlayer: action.bankBustPayload.nextPlayerIndex,
+      gamePhase: GamePhase.ROLL,
+      currentThrowPicks: [],
+      currentTurnScores: [],
+    };
+  }),
+  on(bustSuccess, (state: GameState, action: any): GameState => {
+    return {
+      ...state,
+      bust: false,
+      currentPlayer: action.bankBustPayload.nextPlayerIndex,
+      gamePhase: GamePhase.ROLL,
+      currentThrowPicks: [],
+      currentTurnScores: [],
     };
   }),
   on(timeChangedSuccess, (state: GameState, action: any): GameState => {
