@@ -16,7 +16,6 @@ import {
 } from "../error/error.util";
 import { CreateGamePayload } from "../model/create-game.payload";
 import { PlayerAction } from "../model/player.action.payload";
-import { GameEvent } from "../event/game.event";
 import log from "../config/log";
 import { GamePhase } from "../model/game.phase.model";
 import { DieIndex } from "../model/die-index.type";

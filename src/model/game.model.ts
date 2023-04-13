@@ -149,6 +149,8 @@ export class Game implements GameState {
           joker: die.joker,
           confirmed: false,
           selected: false,
+          wasConfirmed: false,
+          wasSelected: false,
         });
         diceIndices.push(index as DieIndex);
       }

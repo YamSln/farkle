@@ -5,4 +5,6 @@ export interface Die {
   selected: boolean;
   confirmed: boolean;
   joker: boolean;
+  wasSelected: boolean;
+  wasConfirmed: boolean;
 }

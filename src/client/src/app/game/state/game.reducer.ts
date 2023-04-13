@@ -18,7 +18,6 @@ import {
 } from './game.action';
 import { GameState, initialState } from './game.state';
 import { GamePhase } from '../../../../../model/game.phase.model';
-import { JOKER_INDEX } from '../../../../../util/game.constants';
 import { findSelf } from './game.state.util';
 import { Die } from 'src/app/model/die.model';
 
@@ -47,7 +46,9 @@ const _gameReducer = createReducer(
   on(rollSuccess, (state: GameState, action: any): GameState => {
     return {
       ...state,
-      dice: action.dice,
+      dice: action.dice.map((die: Die) => {
+        return { ...die, wasConfirmed: die.confirmed };
+      }),
       bust: action.bust,
       gamePhase: GamePhase.PICK,
     };
@@ -61,10 +62,15 @@ const _gameReducer = createReducer(
             ...die,
             selected: action.selectPayload.selected,
             number: die.joker ? action.selectPayload.jokerNumber : die.number,
+            wasSelected: true,
           };
         }
-        if (die.joker) {
-          return { ...die, number: action.selectPayload.jokerNumber };
+        if (die.joker && die.number != action.selectPayload.jokerNumber) {
+          return {
+            ...die,
+            number: action.selectPayload.jokerNumber,
+            wasSelected: true,
+          };
         }
         return die;
       }),
@@ -172,13 +178,55 @@ const _gameReducer = createReducer(
   })
 );
 
-const initialDice = [
-  { number: 1, confirmed: true, selected: false, joker: true },
-  { number: 1, confirmed: true, selected: false, joker: true },
-  { number: 1, confirmed: true, selected: false, joker: true },
-  { number: 1, confirmed: true, selected: false, joker: true },
-  { number: 1, confirmed: true, selected: false, joker: true },
-  { number: 1, confirmed: true, selected: false, joker: true },
+const initialDice: Die[] = [
+  {
+    number: 1,
+    confirmed: true,
+    selected: false,
+    joker: true,
+    wasSelected: false,
+    wasConfirmed: true,
+  },
+  {
+    number: 1,
+    confirmed: true,
+    selected: false,
+    joker: true,
+    wasSelected: false,
+    wasConfirmed: true,
+  },
+  {
+    number: 1,
+    confirmed: true,
+    selected: false,
+    joker: true,
+    wasSelected: false,
+    wasConfirmed: true,
+  },
+  {
+    number: 1,
+    confirmed: true,
+    selected: false,
+    joker: true,
+    wasSelected: false,
+    wasConfirmed: true,
+  },
+  {
+    number: 1,
+    confirmed: true,
+    selected: false,
+    joker: true,
+    wasSelected: false,
+    wasConfirmed: true,
+  },
+  {
+    number: 1,
+    confirmed: true,
+    selected: false,
+    joker: true,
+    wasSelected: false,
+    wasConfirmed: true,
+  },
 ];
 
 export function GameReducer(state: GameState, action: any): GameState {
