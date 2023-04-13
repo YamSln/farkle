@@ -17,9 +17,9 @@ import { Observable, of } from 'rxjs';
 })
 export class HeaderComponent implements OnInit {
   @Input() isLightTheme!: boolean;
-  @Input() roomUrl!: Observable<string>;
-  @Input() time!: Observable<number>;
-  @Input() host!: Observable<boolean>;
+  @Input() roomUrl!: string;
+  @Input() time!: number;
+  @Input() host!: boolean;
 
   @Output() themeToggle: EventEmitter<any> = new EventEmitter<any>();
   @Output() menuToggle: EventEmitter<any> = new EventEmitter<any>();

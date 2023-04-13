@@ -4,13 +4,13 @@
   [color]="isLightTheme ? '' : 'primary'"
 >
   <!-- Home / Invitation Link Button -->
-  <div *ngIf="roomUrl | async as url; then url; else home"></div>
+  <div *ngIf="roomUrl; then url; else home"></div>
   <ng-template #url>
     <button
-      *ngIf="roomUrl | async as url"
+      *ngIf="roomUrl"
       mat-icon-button
       [matTooltip]="'Get invitation link'"
-      (click)="copyUrlToClipboard(url)"
+      (click)="copyUrlToClipboard(roomUrl)"
     >
       <mat-icon matSuffix>link</mat-icon>
     </button>
@@ -28,14 +28,14 @@
     fxHide.lt-md="true"
   >
     <!-- Timer Set Button -->
-    <button *ngIf="roomUrl | async" mat-icon-button matTooltip="Timer">
+    <button *ngIf="roomUrl" mat-icon-button matTooltip="Timer">
       <app-time-selector
-        [host]="(host | async) || false"
-        [time]="(time | async) || 0"
+        [host]="host"
+        [time]="time"
         (timeSet)="onTimeChange($event)"
       ></app-time-selector>
     </button>
-    <span *ngIf="roomUrl | async">|</span>
+    <span *ngIf="roomUrl">|</span>
     <!-- Rules Modal Button -->
     <app-rules></app-rules>
     <span>|</span>

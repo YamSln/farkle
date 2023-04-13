@@ -13,14 +13,14 @@
         <td mat-cell *matCellDef="let player; let i = index">
           <span
             [ngClass]="{
-              self: selfIndex == i && playing != player.nick,
-              playing: playing == player.nick,
+              self: selfIndex == i && (playing != player.nick || !restartable),
+              playing: playing == player.nick && restartable,
               player: playing != player.nick
             }"
           >
             {{ player.nick }}
           </span>
-          <span *ngIf="player.host">👑</span>
+          <span *ngIf="player.host">亗</span>
         </td>
       </ng-container>
       <!-- Score Column-->
@@ -37,6 +37,7 @@
     mat-stroked-button
     *ngIf="host"
     [color]="gameWon ? 'warn' : ''"
+    [disabled]="!restartable"
     (click)="onNewGameClick()"
   >
     New Game

@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { GameFacade } from 'src/app/game/state/game.facade';
+import { GameState } from 'src/app/game/state/game.state';
+import { GamePhase } from 'src/app/model/game.phase.model';
 import { SharedFacade } from 'src/app/shared/state/shared.facade';
 import { environment } from 'src/environments/environment';
 
@@ -12,10 +14,11 @@ import { environment } from 'src/environments/environment';
 export class LayoutComponent implements OnInit {
   version: string = environment.version;
   isMenuOpen: boolean = false;
+  gameState!: Observable<GameState>;
   isLightTheme!: Observable<boolean>;
   roomUrl!: Observable<string>;
-  host!: Observable<boolean>;
-  time!: Observable<number>;
+
+  _gamePhaseConstant = GamePhase;
 
   constructor(
     private gameFacade: GameFacade,
@@ -23,9 +26,9 @@ export class LayoutComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.isLightTheme = this.sharedFacade.getIsLightTheme();
     this.roomUrl = this.gameFacade.getRoomUrl();
-    this.host = this.gameFacade.getHostState();
+    this.isLightTheme = this.sharedFacade.getIsLightTheme();
+    this.gameState = this.gameFacade.getGameState();
   }
 
   themeToggleChanged(): void {
@@ -41,7 +44,6 @@ export class LayoutComponent implements OnInit {
   }
 
   timeChanged($event: any): void {
-    console.log($event);
     this.gameFacade.setTime($event);
   }
 

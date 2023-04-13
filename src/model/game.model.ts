@@ -44,9 +44,10 @@ export interface GameState {
   select(dieIndex: DieIndex): SelectPayload | null;
   confirm(): ConfirmPayload | null;
   bankBust(): BankBustPayload | null;
-  pause(): boolean | null;
-  resume(): boolean | null;
   timeSet(time: number): number | null;
+  timeout(): number;
+  resetCurrentTimer(): void;
+  clearTimer(erase: boolean): void;
   isPlaying(playerId: string): boolean;
   isHost(playerId: string): boolean;
 }
@@ -71,8 +72,6 @@ export class Game implements GameState {
   turnTime: number = 0;
   currentTime: number = 0;
   turnInterval?: NodeJS.Timeout;
-
-  private prevPhase: GamePhase = GamePhase.WAIT;
 
   constructor(
     password: string,
@@ -161,6 +160,7 @@ export class Game implements GameState {
       this.allDiceConfirmed = true;
     }
     this.currentThrowPicks.push(confirmedDice);
+    this.resetCurrentTimer();
     return {
       currentThrowScore: throwScore,
       currentThrowPick: confirmedDice,
@@ -182,7 +182,6 @@ export class Game implements GameState {
     const bust: boolean = this.bust;
     const pointsEarned: number = this.currentTurnScore;
     this.nextTurn();
-    this.resetDiceConfirmation();
     return {
       bust,
       nextPlayerIndex: this.currentPlayer,
@@ -207,13 +206,23 @@ export class Game implements GameState {
     return null; // Illegal action
   }
 
-  pause(): boolean | null {
-    this.prevPhase = this.gamePhase;
-    return this.changeGamePhase(GamePhase.PAUSE);
+  timeout(): number {
+    this.nextTurn();
+    return this.currentPlayer;
   }
 
-  resume(): boolean | null {
-    return this.prevPhase ? this.changeGamePhase(this.prevPhase) : null;
+  clearTimer = (erase: boolean = false): void => {
+    if (this.turnInterval) {
+      clearInterval(this.turnInterval);
+    }
+    if (erase) {
+      this.turnTime = 0;
+      this.currentTime = 0;
+    }
+  };
+
+  resetCurrentTimer(): void {
+    this.currentTime = this.turnTime + 1;
   }
 
   isPlaying(playerId: string): boolean {
@@ -244,6 +253,8 @@ export class Game implements GameState {
       this.resetTurnScore();
       this.currentThrowPicks = [];
       this.bust = false;
+      this.resetDiceConfirmation();
+      this.resetCurrentTimer();
     }
   }
 

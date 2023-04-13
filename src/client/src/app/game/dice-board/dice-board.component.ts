@@ -18,7 +18,6 @@ import { Die } from 'src/app/model/die.model';
 export class DiceBoardComponent implements OnInit {
   @Input() dice!: Die[];
   @Input() selectable!: boolean;
-  @Input() inGame!: boolean;
 
   @Output() dieSelected: EventEmitter<DieIndex> = new EventEmitter<DieIndex>();
 

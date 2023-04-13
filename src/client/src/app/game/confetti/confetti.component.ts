@@ -76,9 +76,9 @@ export class ConfettiComponent implements OnChanges, OnDestroy, OnInit {
     switch (type) {
       case ConfettiType.WIN:
         this.winningConfetti.addConfetti({
-          emojis: ['🎲'],
+          emojis: ['🎲', '🏆', '🏅'],
           emojiSize: 40,
-          confettiNumber: 75,
+          confettiNumber: 40,
         });
         break;
       case ConfettiType.BUST:

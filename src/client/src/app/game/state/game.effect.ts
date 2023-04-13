@@ -260,6 +260,9 @@ export class GameEffect {
     socket.on(GameEvent.TIME_TICK, (time: number) => {
       this.gameFacade.timeUpdate(time);
     });
+    socket.on(GameEvent.TIME_OUT, (nextPlayerIndex: number) => {
+      this.gameFacade.timeout(nextPlayerIndex);
+    });
     socket.on(GameEvent.NEW_GAME, (game: GameState) => {
       this.gameFacade.newGameReceived(
         game,

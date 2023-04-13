@@ -24,6 +24,7 @@ export class ScoreBoardComponent implements OnInit {
   @Input() selfIndex!: number;
   @Input() host!: boolean;
   @Input() gameWon!: boolean;
+  @Input() restartable!: boolean;
 
   @Output() newGameClick: EventEmitter<any> = new EventEmitter();
 

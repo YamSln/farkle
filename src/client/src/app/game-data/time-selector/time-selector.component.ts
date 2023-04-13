@@ -14,7 +14,7 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TimeSelectorComponent implements OnInit {
-  @Input() time: number = 0;
+  @Input() time!: number;
   @Input() host!: boolean;
   @Input() menu: boolean = false;
 

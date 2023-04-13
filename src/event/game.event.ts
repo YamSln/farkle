@@ -16,6 +16,7 @@ export enum GameEvent {
   NEW_GAME = "new_game",
   TIME_SET = "time_set",
   TIME_TICK = "time_tick",
+  TIME_OUT = "time_out",
   PLAYER_DISCONNECTED = "player_disconnected",
   ERROR = "error",
 }

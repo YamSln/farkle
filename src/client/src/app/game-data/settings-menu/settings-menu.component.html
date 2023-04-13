@@ -8,8 +8,9 @@
   <mat-divider></mat-divider>
   <app-time-selector
     [menu]="true"
-    [host]="host"
+    [host]="host && timeChangable"
     [time]="time"
+    (timeSet)="onTimeChange($event)"
   ></app-time-selector>
   <mat-divider></mat-divider>
   <mat-list-item class="list-item">

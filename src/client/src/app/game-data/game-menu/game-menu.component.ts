@@ -8,6 +8,7 @@ import {
 import { Observable } from 'rxjs';
 import { GameFacade } from 'src/app/game/state/game.facade';
 import { GameState } from 'src/app/game/state/game.state';
+import { GamePhase } from 'src/app/model/game.phase.model';
 import { Player } from 'src/app/model/player.model';
 
 @Component({
@@ -21,6 +22,8 @@ export class GameMenuComponent implements OnInit {
   player!: Player;
 
   @Output() newGameClick = new EventEmitter<boolean>();
+
+  _gamePhaseConstant = GamePhase;
 
   constructor(private gameFacade: GameFacade) {}
 

@@ -1,12 +1,18 @@
-<div class="mat-app-background" style="min-height: 100%" fxLayout="column">
+<div
+  *ngIf="gameState | async as game"
+  class="mat-app-background"
+  style="min-height: 100%"
+  fxLayout="column"
+>
   <!-- Toolbar -->
   <app-header
     fxFlex="0 1 auto"
     class="mat-elevation-z4"
     style="z-index: 2"
     [isLightTheme]="(isLightTheme | async) || false"
-    [roomUrl]="roomUrl"
-    [host]="host"
+    [roomUrl]="(roomUrl | async) || ''"
+    [host]="game.players[game.selfIndex].host"
+    [time]="game.turnTime"
     (themeToggle)="themeToggleChanged()"
     (menuToggle)="menuToggleChanged()"
     (timeChange)="timeChanged($event)"
@@ -24,7 +30,7 @@
         [selectedIndex]="(roomUrl | async) ? 0 : 1"
         [dynamicHeight]="true"
       >
-        <mat-tab [disabled]="false">
+        <mat-tab [disabled]="!(roomUrl | async) || false">
           <ng-template mat-tab-label
             ><mat-icon>videogame_asset</mat-icon></ng-template
           >
@@ -33,10 +39,12 @@
         <mat-tab>
           <ng-template mat-tab-label><mat-icon>settings</mat-icon></ng-template>
           <app-settings-menu
-            [host]="(host | async) || false"
-            [time]="(time | async) || 0"
+            [host]="game.players[game.selfIndex].host"
+            [time]="game.turnTime"
             [isLightTheme]="(isLightTheme | async) || false"
+            [timeChangable]="!!(roomUrl | async) || false"
             (themeToggle)="themeToggleChanged()"
+            (timeChange)="timeChanged($event)"
           ></app-settings-menu>
         </mat-tab>
         <mat-tab fxFill fxLayout="column" fxLayoutAlign="space-between">

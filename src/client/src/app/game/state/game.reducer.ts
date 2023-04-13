@@ -14,6 +14,7 @@ import {
   startGameSuccess,
   timeChangedSuccess,
   timeUpdate,
+  timeout,
 } from './game.action';
 import { GameState, initialState } from './game.state';
 import { GamePhase } from '../../../../../model/game.phase.model';
@@ -29,6 +30,7 @@ const _gameReducer = createReducer(
       roomId: action.room,
       selfIndex: 0,
       currentPlayer: 0,
+      dice: initialDice,
     };
   }),
   on(joinGameSuccess, (state: GameState, action: any): GameState => {
@@ -36,6 +38,7 @@ const _gameReducer = createReducer(
       ...action.game,
       roomId: action.room,
       selfIndex: findSelf(action.game.players, action.player.id),
+      dice: initialDice,
     };
   }),
   on(playerJoinedGame, (state: GameState, action: any): GameState => {
@@ -124,8 +127,21 @@ const _gameReducer = createReducer(
       currentTime: action.timeSpan,
     };
   }),
+  on(timeout, (state: GameState, action: any): GameState => {
+    return {
+      ...state,
+      bust: false,
+      currentPlayer: action.nextPlayerIndex,
+      gamePhase: GamePhase.ROLL,
+      currentThrowPicks: [],
+      currentTurnScores: [],
+    };
+  }),
   on(timeUpdate, (state: GameState, action: any): GameState => {
-    return { ...state, currentTime: action.currentTime };
+    return {
+      ...state,
+      currentTime: action.currentTime,
+    };
   }),
   on(newGameSuccess, (state: GameState, action: any): GameState => {
     return {
@@ -133,6 +149,7 @@ const _gameReducer = createReducer(
       roomId: state.roomId,
       playerId: state.playerId,
       selfIndex: findSelf(action.game.players, state.playerId),
+      dice: initialDice,
     };
   }),
   on(startGameSuccess, (state: GameState, action: any): GameState => {
@@ -155,13 +172,14 @@ const _gameReducer = createReducer(
   })
 );
 
-const changeTurn = (state: GameState): GameState => {
-  // change current turn
-  return {
-    ...state,
-    currentTime: state.turnTime ? state.turnTime : 0,
-  };
-};
+const initialDice = [
+  { number: 1, confirmed: true, selected: false, joker: true },
+  { number: 1, confirmed: true, selected: false, joker: true },
+  { number: 1, confirmed: true, selected: false, joker: true },
+  { number: 1, confirmed: true, selected: false, joker: true },
+  { number: 1, confirmed: true, selected: false, joker: true },
+  { number: 1, confirmed: true, selected: false, joker: true },
+];
 
 export function GameReducer(state: GameState, action: any): GameState {
   return _gameReducer(state, action);
