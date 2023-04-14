@@ -50,6 +50,8 @@ export interface GameState {
   clearTimer(erase: boolean): void;
   isPlaying(playerId: string): boolean;
   isHost(playerId: string): boolean;
+  playerIndex(playerId: string): number;
+  resetTurn(): number;
 }
 
 export class Game implements GameState {
@@ -232,8 +234,20 @@ export class Game implements GameState {
   }
 
   isHost(playerId: string): boolean {
-    const player = this.players.findIndex((player) => player.id === playerId);
+    const player = this.playerIndex(playerId);
     return this.players[player].host;
+  }
+
+  playerIndex(playerId: string) {
+    return this.players.findIndex((player) => player.id === playerId);
+  }
+
+  resetTurn(): number {
+    if (this.currentPlayer >= this.players.length) {
+      this.currentPlayer = 0;
+    }
+    this.resetTurnData();
+    return this.currentPlayer;
   }
 
   private shufflePlayers(): void {
@@ -247,17 +261,19 @@ export class Game implements GameState {
 
   private nextTurn(): void {
     if (!this.gameWon) {
-      this.changeGamePhase(GamePhase.ROLL);
       this.currentPlayer++;
-      if (this.currentPlayer >= this.players.length) {
-        this.currentPlayer = 0;
-      }
-      this.resetTurnScore();
-      this.currentThrowPicks = [];
-      this.bust = false;
-      this.resetDiceConfirmation();
-      this.resetCurrentTimer();
+      this.resetTurn();
     }
+  }
+
+  private resetTurnData(): boolean {
+    this.changeGamePhase(GamePhase.ROLL);
+    this.resetTurnScore();
+    this.currentThrowPicks = [];
+    this.bust = false;
+    this.resetDiceConfirmation();
+    this.resetCurrentTimer();
+    return true;
   }
 
   private reRollDice(): void {

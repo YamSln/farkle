@@ -1,0 +1,31 @@
+.winFlip {
+  transition: transform 500ms linear;
+  transform: rotateX(180deg);
+  animation: hidden 250ms ease-in;
+  opacity: 0;
+}
+
+.default {
+  transition: transform 500ms linear;
+  transform: rotateX(0deg);
+  animation: visible 250ms ease-in 250ms forwards;
+  opacity: 0;
+}
+
+@keyframes visible {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes hidden {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}

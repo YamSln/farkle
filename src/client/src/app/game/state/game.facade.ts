@@ -149,9 +149,7 @@ export class GameFacade implements OnDestroy {
   }
 
   playerDisconnected(playerAction: PlayerAction): void {
-    this.store.dispatch(
-      playerDisconnect({ players: playerAction.updatedPlayers })
-    );
+    this.store.dispatch(playerDisconnect({ playerAction }));
     this.displayPlayerAction(playerAction, ' Left');
   }
 

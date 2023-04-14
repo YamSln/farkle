@@ -147,6 +147,10 @@ const startTimer = (state: GameState, io: any): void => {
   }
 };
 
+const resetTurn = (state: GameState): number => {
+  return state.resetTurn();
+};
+
 export default {
   newGame,
   createGame,
@@ -156,4 +160,5 @@ export default {
   select,
   confirm,
   setTime,
+  resetTurn,
 };

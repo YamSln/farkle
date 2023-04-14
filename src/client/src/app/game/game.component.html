@@ -53,6 +53,9 @@
             game.gamePhase == _gamePhaseConstant.PICK &&
             !game.bust
           "
+          [winningPlayer]="
+            game.gameWon ? game.players[game.currentPlayer] : null
+          "
           (dieSelected)="onDieSelected($event)"
         ></app-dice-board>
         <app-action-board

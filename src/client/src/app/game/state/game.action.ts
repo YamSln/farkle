@@ -9,6 +9,7 @@ import { DieIndex } from 'src/app/model/die-index.type';
 import { SelectPayload } from '../../../../../payload/select.payload';
 import { ConfirmPayload } from '../../../../../payload/confirm.payload';
 import { BankBustPayload } from '../../../../../payload/bankbust.payload';
+import { PlayerAction } from 'src/app/model/player.action.payload';
 
 const GAME_PAGE = '[game page]';
 
@@ -135,7 +136,7 @@ export const newGameSuccess = createAction(
 
 export const playerDisconnect = createAction(
   PLAYER_DISCONNECT,
-  props<{ players: Player[] }>()
+  props<{ playerAction: PlayerAction }>()
 );
 
 export const quitGame = createAction(QUIT_GAME);

@@ -11,8 +11,6 @@ import {
   NOT_FOUND,
   NICK_TAKEN,
   GAME_STARTED,
-  FORBIDDEN,
-  ILLEGAL,
 } from "../error/error.util";
 import { CreateGamePayload } from "../model/create-game.payload";
 import { PlayerAction } from "../model/player.action.payload";
@@ -161,28 +159,35 @@ const clearTimer = (state: GameState, erase: boolean = false): void => {
 const onDisconnectGame = (
   socketId: string,
   room: string,
-): PlayerAction | null => {
+): PlayerAction | boolean => {
   const game = rooms.get(room);
   if (game) {
     // Find and remove participant, decrease players count
-    const index = game.players.findIndex((player) => player.id === socketId);
+    const index = game.playerIndex(socketId);
     if (index !== -1) {
       const player = game.players[index];
       game.players.splice(index, 1);
-      if (game.players.length === 0) {
-        // Remove game upon 0 participants
+      const numberOfPlayers = game.players.length;
+      if (numberOfPlayers === 0 || player.host) {
+        // Remove game upon 0 participants or host left
         clearTimer(game, true);
         rooms.delete(room);
         log.info(REQUESTOR, `Room ${room} removed`);
-        return null;
+        return numberOfPlayers === 0;
+      }
+      let playerIndex: number = -1;
+      if (game.currentPlayer == index) {
+        playerIndex = service.resetTurn(game);
       }
       return {
         nick: player.nick,
         updatedPlayers: Array.from(game.players),
+        reset: playerIndex != -1,
+        playerIndex,
       };
     }
   }
-  return null;
+  return true;
 };
 
 const nextTurn = (room: GameState): number => {
@@ -208,16 +213,6 @@ const getPlayer = (playerId: string, game: GameState): Player => {
     throw new Error(NOT_FOUND);
   }
   return player;
-};
-
-const getPlayerIndex = (playerId: string, game: GameState): number => {
-  const playerIndex = game.players.findIndex(
-    (player) => player.id === playerId,
-  );
-  if (playerIndex === -1) {
-    throw new Error(NOT_FOUND);
-  }
-  return playerIndex;
 };
 
 export default {

@@ -167,10 +167,23 @@ const _gameReducer = createReducer(
     };
   }),
   on(playerDisconnect, (state: GameState, action: any): GameState => {
+    if (action.playerAction.reset) {
+      return {
+        ...state,
+        players: action.playerAction.updatedPlayers,
+        selfIndex: findSelf(action.playerAction.updatedPlayers, state.playerId),
+        bust: false,
+        gamePhase: GamePhase.ROLL,
+        currentTurnScores: [],
+        currentThrowPicks: [],
+        currentTime: state.turnTime,
+        currentPlayer: action.playerAction.playerIndex,
+      };
+    }
     return {
       ...state,
-      players: action.players,
-      selfIndex: findSelf(action.game.players, state.playerId),
+      players: action.playerAction.updatedPlayers,
+      selfIndex: findSelf(action.playerAction.updatedPlayers, state.playerId),
     };
   }),
   on(clearState, (state: GameState, action: any): GameState => {
@@ -181,7 +194,7 @@ const _gameReducer = createReducer(
 const initialDice: Die[] = [
   {
     number: 1,
-    confirmed: true,
+    confirmed: false,
     selected: false,
     joker: true,
     wasSelected: false,
@@ -189,7 +202,7 @@ const initialDice: Die[] = [
   },
   {
     number: 1,
-    confirmed: true,
+    confirmed: false,
     selected: false,
     joker: true,
     wasSelected: false,
@@ -197,7 +210,7 @@ const initialDice: Die[] = [
   },
   {
     number: 1,
-    confirmed: true,
+    confirmed: false,
     selected: false,
     joker: true,
     wasSelected: false,
@@ -205,7 +218,7 @@ const initialDice: Die[] = [
   },
   {
     number: 1,
-    confirmed: true,
+    confirmed: false,
     selected: false,
     joker: true,
     wasSelected: false,
@@ -213,7 +226,7 @@ const initialDice: Die[] = [
   },
   {
     number: 1,
-    confirmed: true,
+    confirmed: false,
     selected: false,
     joker: true,
     wasSelected: false,
@@ -221,7 +234,7 @@ const initialDice: Die[] = [
   },
   {
     number: 1,
-    confirmed: true,
+    confirmed: false,
     selected: false,
     joker: true,
     wasSelected: false,
