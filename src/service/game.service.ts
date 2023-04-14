@@ -1,4 +1,5 @@
 import { ILLEGAL } from "../error/error.util";
+import { GameEvent } from "../event/game.event";
 import { DieIndex } from "../model/die-index.type";
 import { Game, GameState } from "../model/game.model";
 import { GamePhase } from "../model/game.phase.model";
@@ -12,7 +13,8 @@ const newGame = (socketId: string, currentGame: GameState): GameState => {
   if (!currentGame.isHost(socketId)) {
     throw new Error(ILLEGAL);
   }
-  return createGame(
+  currentGame.clearTimer(true);
+  const newGame = createGame(
     currentGame.password,
     currentGame.maxPlayers,
     currentGame.maxPoints,
@@ -20,6 +22,8 @@ const newGame = (socketId: string, currentGame: GameState): GameState => {
       return { ...player, points: 0 };
     }),
   );
+  newGame.roomId = currentGame.roomId;
+  return newGame;
 };
 
 const createGame = (
@@ -29,6 +33,17 @@ const createGame = (
   players: Player[] = [],
 ): GameState => {
   return new Game(password, players, maxPoints, maxPlayers);
+};
+
+const startGame = (socketId: string, state: GameState, io: any): Player[] => {
+  let players: Player[] | null = null;
+  if (!state.isHost(socketId) || !(players = state.start())) {
+    throw new Error(ILLEGAL);
+  }
+  if (state.turnTime) {
+    startTimer(state, io);
+  }
+  return players;
 };
 
 const roll = (socketId: string, state: GameState): RollPayload => {
@@ -89,11 +104,61 @@ const confirm = (socketId: string, state: GameState): ConfirmPayload => {
   return confirmPayload;
 };
 
+const setTime = (
+  socketId: string,
+  state: GameState,
+  timeSpan: number,
+  io: any,
+): number => {
+  if (!state.isHost(socketId)) {
+    throw new Error(ILLEGAL);
+  }
+  state.turnTime = timeSpan;
+  // Timer cam only run when picking
+  if (
+    state.gamePhase === GamePhase.PICK ||
+    state.gamePhase === GamePhase.ROLL
+  ) {
+    startTimer(state, io);
+  }
+  return timeSpan;
+};
+
+const startTimer = (state: GameState, io: any): void => {
+  if (state.turnTime === 0) {
+    state.clearTimer(true);
+  }
+  state.currentTime = state.turnTime;
+  // Clear timer interval
+  state.clearTimer(false);
+  if (state.turnTime > 0) {
+    state.turnInterval = setInterval(() => {
+      state.currentTime--;
+      if (state.currentTime >= 0) {
+        // Timer ticking
+        io.to(state.roomId).emit(GameEvent.TIME_TICK, state.currentTime);
+      } else {
+        // TimeOut - reset timer and change turn
+        const nextPlayerIndex: number = state.timeout();
+        state.resetCurrentTimer();
+        io.to(state.roomId).emit(GameEvent.TIME_OUT, nextPlayerIndex);
+      }
+    }, 1000);
+  }
+};
+
+const resetTurn = (state: GameState): number => {
+  return state.resetTurn();
+};
+
 export default {
   newGame,
   createGame,
+  startGame,
   roll,
   bankBust,
   select,
   confirm,
+  setTime,
+  resetTurn,
 };

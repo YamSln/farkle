@@ -5,6 +5,7 @@
     [selfIndex]="game.selfIndex"
     [host]="game.players[game.currentPlayer].host"
     [gameWon]="game.gameWon"
+    [restartable]="game.gamePhase != _gamePhaseConstant.WAIT"
     (newGameClick)="onNewGameClick(game.gameWon)"
   ></app-score-board>
   <app-plays

@@ -10,6 +10,16 @@ export const getRoomUrl = createSelector(getGameState, (state) =>
   state.roomId ? `${JOIN_URL}/${state.roomId}` : state.roomId
 );
 
+export const getTurnTime = createSelector(
+  getGameState,
+  (state) => state.turnTime
+);
+
+export const getGamePhase = createSelector(
+  getGameState,
+  (state) => state.gamePhase
+);
+
 export const getHostState = createSelector(getGameState, (state) => {
   if (state.players) {
     return state.players[state.selfIndex].host;

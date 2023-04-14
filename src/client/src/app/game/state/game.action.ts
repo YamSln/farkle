@@ -9,6 +9,7 @@ import { DieIndex } from 'src/app/model/die-index.type';
 import { SelectPayload } from '../../../../../payload/select.payload';
 import { ConfirmPayload } from '../../../../../payload/confirm.payload';
 import { BankBustPayload } from '../../../../../payload/bankbust.payload';
+import { PlayerAction } from 'src/app/model/player.action.payload';
 
 const GAME_PAGE = '[game page]';
 
@@ -30,6 +31,7 @@ export const NEW_GAME_SUCCESS = `${GAME_PAGE} new game success`;
 export const TIME_CHANGED = `${GAME_PAGE} time changed`;
 export const TIME_CHANGED_SUCCESS = `${GAME_PAGE} time changed success`;
 export const TIME_UPDATE = `${GAME_PAGE} time update`;
+export const TIME_OUT = `${GAME_PAGE} timeout`;
 
 export const PLAYER_DISCONNECT = `${GAME_PAGE} player disconnect`;
 
@@ -115,6 +117,10 @@ export const timeUpdate = createAction(
   TIME_UPDATE,
   props<{ currentTime: number }>()
 );
+export const timeout = createAction(
+  TIME_OUT,
+  props<{ nextPlayerIndex: number }>()
+);
 
 export const startGame = createAction(START_GAME);
 export const startGameSuccess = createAction(
@@ -130,7 +136,7 @@ export const newGameSuccess = createAction(
 
 export const playerDisconnect = createAction(
   PLAYER_DISCONNECT,
-  props<{ players: Player[] }>()
+  props<{ playerAction: PlayerAction }>()
 );
 
 export const quitGame = createAction(QUIT_GAME);

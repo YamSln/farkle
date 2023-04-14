@@ -32,8 +32,15 @@ import {
   timeChanged,
   timeChangedSuccess,
   timeUpdate,
+  timeout,
 } from './game.action';
-import { getGameState, getHostState, getRoomUrl } from './game.selector';
+import {
+  getGamePhase,
+  getGameState,
+  getHostState,
+  getRoomUrl,
+  getTurnTime,
+} from './game.selector';
 import { GameState } from './game.state';
 import { Die } from 'src/app/model/die.model';
 import { DieIndex } from 'src/app/model/die-index.type';
@@ -44,6 +51,7 @@ import { DialogService } from 'src/app/shared/dialog/service/dialog.service';
 import { MatDialogData } from 'src/app/shared/dialog/model/mat-dialog.data';
 import { GeneralDialogType } from 'src/app/shared/dialog/model/general-dialog.type';
 import { GeneralDialogDefinition } from 'src/app/shared/dialog/model/general-dialog.definition';
+import { GamePhase } from 'src/app/model/game.phase.model';
 
 @Injectable({ providedIn: 'root' })
 export class GameFacade implements OnDestroy {
@@ -141,9 +149,7 @@ export class GameFacade implements OnDestroy {
   }
 
   playerDisconnected(playerAction: PlayerAction): void {
-    this.store.dispatch(
-      playerDisconnect({ players: playerAction.updatedPlayers })
-    );
+    this.store.dispatch(playerDisconnect({ playerAction }));
     this.displayPlayerAction(playerAction, ' Left');
   }
 
@@ -176,6 +182,10 @@ export class GameFacade implements OnDestroy {
     this.store.dispatch(timeUpdate({ currentTime }));
   }
 
+  timeout(nextPlayerIndex: number): void {
+    this.store.dispatch(timeout({ nextPlayerIndex }));
+  }
+
   gameLoaded(game: GameState, room: string, player: Player): void {
     this.navigateToGame();
     this.store.dispatch(createGameSuccess({ game, room, player }));
@@ -204,6 +214,14 @@ export class GameFacade implements OnDestroy {
 
   getRoomUrl(): Observable<string> {
     return this.store.select(getRoomUrl);
+  }
+
+  getTime(): Observable<number> {
+    return this.store.select(getTurnTime);
+  }
+
+  getGamePhase(): Observable<GamePhase> {
+    return this.store.select(getGamePhase);
   }
 
   navigateToGame(): void {

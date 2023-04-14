@@ -21,6 +21,7 @@
         [gamePhase]="game.gamePhase"
         [host]="game.players[game.selfIndex].host"
         [gameWon]="game.gameWon"
+        [restartable]="game.gamePhase != _gamePhaseConstant.WAIT"
         (newGameClick)="onNewGame(game.gameWon)"
       ></app-score-board>
       <!-- Mobile Current Player -->
@@ -48,11 +49,13 @@
         <app-dice-board
           fxFlex
           [dice]="game.dice"
-          [inGame]="game.gamePhase != _gamePhaseConstant.WAIT"
           [selectable]="
             game.currentPlayer == game.selfIndex &&
             game.gamePhase == _gamePhaseConstant.PICK &&
             !game.bust
+          "
+          [winningPlayer]="
+            game.gameWon ? game.players[game.currentPlayer] : null
           "
           (dieSelected)="onDieSelected($event)"
         ></app-dice-board>

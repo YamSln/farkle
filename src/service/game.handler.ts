@@ -11,12 +11,9 @@ import {
   NOT_FOUND,
   NICK_TAKEN,
   GAME_STARTED,
-  FORBIDDEN,
-  ILLEGAL,
 } from "../error/error.util";
 import { CreateGamePayload } from "../model/create-game.payload";
 import { PlayerAction } from "../model/player.action.payload";
-import { GameEvent } from "../event/game.event";
 import log from "../config/log";
 import { GamePhase } from "../model/game.phase.model";
 import { DieIndex } from "../model/die-index.type";
@@ -79,6 +76,7 @@ const onCreateGame = (
     createGamePayload.maxPoints,
     [host],
   );
+  state.roomId = createGamePayload.room;
   rooms.set(createGamePayload.room, state);
   log.info(REQUESTOR, `Room ${createGamePayload.room} created`);
   return state;
@@ -101,16 +99,10 @@ const onJoinGame = (socketId: string, joinPayload: JoinPayload): JoinEvent => {
   return { state, joined };
 };
 
-const onGameStart = (socketId: string, room: string): Player[] => {
+const onGameStart = (socketId: string, room: string, io: any): Player[] => {
   const state = getGame(room);
-  const player = state.players.find((player) => player.id === socketId);
-  if (player && player.host) {
-    const players = state.start();
-    if (players) {
-      return players;
-    }
-  }
-  throw new Error(FORBIDDEN);
+  const players: Player[] = service.startGame(socketId, state, io);
+  return players;
 };
 
 const onNewGame = (socketId: string, room: string): GameState => {
@@ -127,26 +119,7 @@ const onTimerSet = (
   io: any,
 ): number => {
   const state = getGame(room);
-  if (!state.isHost(socketId)) {
-    throw new Error(ILLEGAL);
-  }
-  state.turnTime = timeSpan;
-  state.currentTime = state.turnTime;
-  // Clear timer interval
-  clearTimer(state);
-  if (timeSpan > 0) {
-    state.turnInterval = setInterval(() => {
-      state.currentTime--;
-      if (state.currentTime >= 0) {
-        // Timer ticking
-        io.to(room).emit(GameEvent.TIME_TICK, state.currentTime);
-      } else {
-        // TimeOut - reset timer and change turn
-        // TODO : Implement TimeOut
-      }
-    }, 1000);
-  }
-  return timeSpan;
+  return service.setTime(socketId, state, timeSpan, io);
 };
 
 const onBankBust = (socketId: string, room: string): BankBustPayload => {
@@ -186,28 +159,35 @@ const clearTimer = (state: GameState, erase: boolean = false): void => {
 const onDisconnectGame = (
   socketId: string,
   room: string,
-): PlayerAction | null => {
+): PlayerAction | boolean => {
   const game = rooms.get(room);
   if (game) {
     // Find and remove participant, decrease players count
-    const index = game.players.findIndex((player) => player.id === socketId);
+    const index = game.playerIndex(socketId);
     if (index !== -1) {
       const player = game.players[index];
       game.players.splice(index, 1);
-      if (game.players.length === 0) {
-        // Remove game upon 0 participants
+      const numberOfPlayers = game.players.length;
+      if (numberOfPlayers === 0 || player.host) {
+        // Remove game upon 0 participants or host left
         clearTimer(game, true);
         rooms.delete(room);
         log.info(REQUESTOR, `Room ${room} removed`);
-        return null;
+        return numberOfPlayers === 0;
+      }
+      let playerIndex: number = -1;
+      if (game.currentPlayer == index) {
+        playerIndex = service.resetTurn(game);
       }
       return {
         nick: player.nick,
         updatedPlayers: Array.from(game.players),
+        reset: playerIndex != -1,
+        playerIndex,
       };
     }
   }
-  return null;
+  return true;
 };
 
 const nextTurn = (room: GameState): number => {
@@ -233,16 +213,6 @@ const getPlayer = (playerId: string, game: GameState): Player => {
     throw new Error(NOT_FOUND);
   }
   return player;
-};
-
-const getPlayerIndex = (playerId: string, game: GameState): number => {
-  const playerIndex = game.players.findIndex(
-    (player) => player.id === playerId,
-  );
-  if (playerIndex === -1) {
-    throw new Error(NOT_FOUND);
-  }
-  return playerIndex;
 };
 
 export default {

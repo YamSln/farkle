@@ -55,7 +55,7 @@ const onConnection = (socket: Socket, io: Server) => {
   });
 
   socket.on(GameEvent.START_GAME, () => {
-    const start = handler.onGameStart(socket.id, room);
+    const start = handler.onGameStart(socket.id, room, io);
     io.to(room).emit(GameEvent.START_GAME, start);
   });
 
@@ -127,6 +127,9 @@ const onConnection = (socket: Socket, io: Server) => {
       socket.broadcast
         .to(room)
         .emit(GameEvent.PLAYER_DISCONNECTED, playerAction);
+    } else {
+      // Close the lobby if the host left
+      socket.broadcast.disconnectSockets(true);
     }
   });
 };

@@ -1,10 +1,11 @@
 <div style="text-align: center">
   <img
     [@bounceInOnEnter]
-    [@.disabled]="die.selected || die.confirmed"
+    [@.disabled]="die.selected || die.confirmed || die.wasSelected"
     [ngClass]="{
       'unconfirmed-die mat-elevation-z4': !die.confirmed,
-      'confirmed-die': die.confirmed,
+      'confirmed-die-nonanim': die.confirmed && die.wasConfirmed,
+      'confirmed-die': die.confirmed && !die.wasConfirmed,
       'selected-die': die.selected
     }"
     (click)="onDieSelect()"

@@ -17,10 +17,12 @@ export class SettingsMenuComponent implements OnInit {
   @Input() isLightTheme!: boolean;
   @Input() host!: boolean;
   @Input() time!: number;
+  @Input() timeChangable!: boolean;
 
   @Output() themeToggle: EventEmitter<any> = new EventEmitter<any>();
   @Output() decorationsToggle: EventEmitter<any> = new EventEmitter<any>();
   @Output() popupsToggle: EventEmitter<any> = new EventEmitter<any>();
+  @Output() timeChange: EventEmitter<number> = new EventEmitter<number>();
 
   constructor() {}
 
@@ -36,5 +38,9 @@ export class SettingsMenuComponent implements OnInit {
 
   onPopupsToggleClick(): void {
     this.popupsToggle.emit();
+  }
+
+  onTimeChange($event: any): void {
+    this.timeChange.emit($event);
   }
 }

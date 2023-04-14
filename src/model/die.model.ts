@@ -6,6 +6,8 @@ export interface Die {
   selected: boolean;
   confirmed: boolean;
   joker: boolean;
+  wasConfirmed: boolean;
+  wasSelected: boolean;
 }
 
 export const getRandomDie = (joker: boolean): Die => {
@@ -14,6 +16,8 @@ export const getRandomDie = (joker: boolean): Die => {
     number: util.getRandomDieFace(),
     selected: false,
     confirmed: false,
+    wasConfirmed: false,
+    wasSelected: false,
   };
 };
 

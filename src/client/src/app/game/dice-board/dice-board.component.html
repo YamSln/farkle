@@ -1,19 +1,30 @@
 <div fxLayout="column" fxLayoutAlign="center center">
   <!-- 6 dice in 2 row 3 columns style grid -->
   <mat-grid-list
+    [ngClass]="{ winFlip: winningPlayer, default: !winningPlayer }"
     fxFlex
     fxFlexFill
     cols="3"
-    *ngIf="inGame"
     [gutterSize]="'10px'"
   >
     <!-- Render each dice and count index -->
-    <mat-grid-tile
-      *ngFor="let die of dice; let i = index"
-      [ngClass]="{ nonselectable: !selectable }"
-    >
+    <mat-grid-tile *ngFor="let die of dice; let i = index">
       <app-die [die]="die" (selectDie)="onDieSelected(i)"></app-die>
     </mat-grid-tile>
   </mat-grid-list>
-  <img fxFlex *ngIf="!inGame" src="assets/logo.svg" alt="logo" />
+  <div
+    [@zoomOutOnLeave]
+    [@zoomInOnEnter]
+    *ngIf="winningPlayer"
+    style="
+      position: absolute;
+      font-size: 2rem;
+      line-height: 1.2;
+      text-align: center;
+    "
+  >
+    {{ winningPlayer.nick }} <br />
+    Is Victorious! <br />
+    Score: {{ winningPlayer.points }}
+  </div>
 </div>

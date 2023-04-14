@@ -6,19 +6,28 @@ import {
   EventEmitter,
   ChangeDetectionStrategy,
 } from '@angular/core';
+import {
+  zoomInOnEnterAnimation,
+  zoomOutOnLeaveAnimation,
+} from 'angular-animations';
 import { DieIndex } from 'src/app/model/die-index.type';
 import { Die } from 'src/app/model/die.model';
+import { Player } from 'src/app/model/player.model';
 
 @Component({
   selector: 'app-dice-board',
   templateUrl: './dice-board.component.html',
   styleUrls: ['./dice-board.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  animations: [
+    zoomOutOnLeaveAnimation({ duration: 500 }),
+    zoomInOnEnterAnimation({ duration: 500 }),
+  ],
 })
 export class DiceBoardComponent implements OnInit {
   @Input() dice!: Die[];
   @Input() selectable!: boolean;
-  @Input() inGame!: boolean;
+  @Input() winningPlayer!: Player | null;
 
   @Output() dieSelected: EventEmitter<DieIndex> = new EventEmitter<DieIndex>();
 

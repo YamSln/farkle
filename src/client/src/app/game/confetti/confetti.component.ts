@@ -42,7 +42,6 @@ export class ConfettiComponent implements OnChanges, OnDestroy, OnInit {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log(changes);
     if (changes.gameWon && changes.gameWon.currentValue) {
       this.triggerConfetti(ConfettiType.WIN);
     } else if (changes.bust && changes.bust.currentValue) {
@@ -72,13 +71,12 @@ export class ConfettiComponent implements OnChanges, OnDestroy, OnInit {
   }
 
   throwConfetti(type: ConfettiType): void {
-    console.log(this.winningConfetti, this.bustConfetti);
     switch (type) {
       case ConfettiType.WIN:
         this.winningConfetti.addConfetti({
-          emojis: ['🎲'],
+          emojis: ['🎲', '🏆', '👑'],
           emojiSize: 40,
-          confettiNumber: 75,
+          confettiNumber: 40,
         });
         break;
       case ConfettiType.BUST:

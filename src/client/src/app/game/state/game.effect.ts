@@ -260,6 +260,9 @@ export class GameEffect {
     socket.on(GameEvent.TIME_TICK, (time: number) => {
       this.gameFacade.timeUpdate(time);
     });
+    socket.on(GameEvent.TIME_OUT, (nextPlayerIndex: number) => {
+      this.gameFacade.timeout(nextPlayerIndex);
+    });
     socket.on(GameEvent.NEW_GAME, (game: GameState) => {
       this.gameFacade.newGameReceived(
         game,
@@ -281,13 +284,21 @@ export class GameEffect {
     socket.io.on('reconnect_error', (err: Error) => {
       this.errorDisconnection(socket);
     });
+    socket.io.on('close', () => {
+      this.handleDisconnection();
+    });
     this.socket = socket;
   }
 
-  private errorDisconnection(socket: Socket) {
+  private errorDisconnection(socket: Socket): void {
     this.gameFacade.navigateToMain();
     this.sharedFacade.displayError('Lost connection to server');
     socket.disconnect();
+  }
+
+  private handleDisconnection(): void {
+    this.gameFacade.navigateToMain();
+    this.sharedFacade.displayError('Lobby Disbanded');
   }
 
   private handleError(err: any): Observable<any> {
