@@ -18,6 +18,7 @@
         [players]="game.players"
         [playing]="game.players[game.currentPlayer].nick"
         [selfIndex]="game.selfIndex"
+        [gamePhase]="game.gamePhase"
         [host]="game.players[game.selfIndex].host"
         [gameWon]="game.gameWon"
         [restartable]="game.gamePhase != _gamePhaseConstant.WAIT"

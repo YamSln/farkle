@@ -11,6 +11,7 @@ import { GeneralDialogDefinition } from 'src/app/shared/dialog/model/general-dia
 import { GeneralDialogType } from 'src/app/shared/dialog/model/general-dialog.type';
 import { MatDialogData } from 'src/app/shared/dialog/model/mat-dialog.data';
 import { DialogService } from 'src/app/shared/dialog/service/dialog.service';
+import { GamePhase } from 'src/app/model/game.phase.model';
 
 @Component({
   selector: 'app-score-board',
@@ -24,10 +25,12 @@ export class ScoreBoardComponent implements OnInit {
   @Input() selfIndex!: number;
   @Input() host!: boolean;
   @Input() gameWon!: boolean;
+  @Input() gamePhase!: GamePhase;
   @Input() restartable!: boolean;
 
   @Output() newGameClick: EventEmitter<any> = new EventEmitter();
 
+  _gamePhaseConstant = GamePhase;
   displayedColumns: string[] = ['name', 'score'];
 
   constructor(private dialogService: DialogService) {}
