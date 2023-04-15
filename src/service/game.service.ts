@@ -116,8 +116,9 @@ const setTime = (
   state.turnTime = timeSpan;
   // Timer cam only run when picking
   if (
-    state.gamePhase === GamePhase.PICK ||
-    state.gamePhase === GamePhase.ROLL
+    (state.gamePhase === GamePhase.PICK ||
+      state.gamePhase === GamePhase.ROLL) &&
+    !state.gameWon
   ) {
     startTimer(state, io);
   }

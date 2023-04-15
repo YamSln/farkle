@@ -11,6 +11,7 @@ import {
   NOT_FOUND,
   NICK_TAKEN,
   GAME_STARTED,
+  ILLEGAL,
 } from "../error/error.util";
 import { CreateGamePayload } from "../model/create-game.payload";
 import { PlayerAction } from "../model/player.action.payload";
@@ -159,7 +160,7 @@ const clearTimer = (state: GameState, erase: boolean = false): void => {
 const onDisconnectGame = (
   socketId: string,
   room: string,
-): PlayerAction | boolean => {
+): PlayerAction | null => {
   const game = rooms.get(room);
   if (game) {
     // Find and remove participant, decrease players count
@@ -173,7 +174,7 @@ const onDisconnectGame = (
         clearTimer(game, true);
         rooms.delete(room);
         log.info(REQUESTOR, `Room ${room} removed`);
-        return numberOfPlayers === 0;
+        return null;
       }
       let playerIndex: number = -1;
       if (game.currentPlayer == index) {
@@ -187,7 +188,7 @@ const onDisconnectGame = (
       };
     }
   }
-  return true;
+  throw new Error(ILLEGAL);
 };
 
 const nextTurn = (room: GameState): number => {

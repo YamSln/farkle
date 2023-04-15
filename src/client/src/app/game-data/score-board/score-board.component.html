@@ -1,6 +1,10 @@
 <mat-card fxLayout="column" fxLayoutAlign="start" style="min-height: 100%">
   <!-- Current Player Name -->
-  <div fxFlex="0 1 auto" fxLayoutAlign="center start" *ngIf="gamePhase != _gamePhaseConstant.WAIT">
+  <div
+    fxFlex="0 1 auto"
+    fxLayoutAlign="center start"
+    *ngIf="gamePhase != _gamePhaseConstant.WAIT"
+  >
     {{ playing == players[selfIndex].nick ? "You are " : playing + " is " }}
     Playing
   </div>

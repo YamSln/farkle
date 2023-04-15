@@ -180,6 +180,7 @@ export class Game implements GameState {
       // Check if player won game
       if (total >= this.maxPoints) {
         this.gameWon = true;
+        this.clearTimer(false);
       }
     }
     // Next turn

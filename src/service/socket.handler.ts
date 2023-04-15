@@ -18,6 +18,7 @@ import { SelectPayload } from "../payload/select.payload";
 import { ConfirmPayload } from "../payload/confirm.payload";
 import { BankBustPayload } from "../payload/bankbust.payload";
 import { GameState } from "../model/game.model";
+import { PlayerAction } from "../model/player.action.payload";
 
 const REQUESTOR = "SOCKET_HANDLER";
 
@@ -121,7 +122,12 @@ const onConnection = (socket: Socket, io: Server) => {
   socket.on(GameEvent.DISCONNECTING, () => {
     const room = getSocketRoom(socket);
     // Disconnect player from its room
-    const playerAction = handler.onDisconnectGame(socket.id, room);
+    let playerAction: PlayerAction | null = null;
+    try {
+      playerAction = handler.onDisconnectGame(socket.id, room);
+    } catch {
+      return;
+    }
     // Emit player disconnected event
     if (playerAction) {
       socket.broadcast

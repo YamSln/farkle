@@ -291,14 +291,19 @@ export class GameEffect {
   }
 
   private errorDisconnection(socket: Socket): void {
-    this.gameFacade.navigateToMain();
+    this.gameExit();
     this.sharedFacade.displayError('Lost connection to server');
     socket.disconnect();
   }
 
   private handleDisconnection(): void {
-    this.gameFacade.navigateToMain();
+    this.gameExit();
     this.sharedFacade.displayError('Lobby Disbanded');
+  }
+
+  private gameExit(): void {
+    this.gameFacade.navigateToMain();
+    this.gameFacade.clearGame();
   }
 
   private handleError(err: any): Observable<any> {
