@@ -20,7 +20,7 @@
     "heroku-postbuild": "tsc && cd src/client && npm install && npm run build --prod",
     "test": "ts-node -O '{\"config\":\"commonjs\"}' node_modules/jest/bin/jest.js"
   },
-  "author": "Jam & Bob",
+  "author": "Yam & Yonathan",
   "license": "ISC",
   "dependencies": {
     "cors": "^2.8.5",

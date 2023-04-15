@@ -312,9 +312,14 @@ export class GameEffect {
   }
 
   private handleError(err: any): Observable<any> {
-    let message = err.error.message;
-    if (!message) {
-      message = err.error.errors[0];
+    let message = '';
+    try {
+      message = err.error.message;
+      if (!message) {
+        message = err.error.errors[0];
+      }
+    } catch {
+      return this.resolveError(message);
     }
     switch (message) {
       case INCORRECT_PASSWORD:
@@ -362,7 +367,15 @@ export class GameEffect {
       default:
         message = 'An unexpected error occurred';
     }
+    return this.resolveError(message);
+  }
+
+  private resolveError(message: string): Observable<any> {
     this.sharedFacade.hideLoading();
-    return of(displayErrorMessage({ message }));
+    return of(
+      displayErrorMessage({
+        message: message || 'An unexpected error occurred',
+      })
+    );
   }
 }

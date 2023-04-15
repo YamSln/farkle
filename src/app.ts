@@ -30,7 +30,7 @@ if (env.devEnv()) {
   app.use("/", express.static(__dirname + "/client/dist/farkle-web-client"));
   app.use("*", function (req, res) {
     res.sendFile(
-      path.join(__dirname, "/client/dist/farkle-web-client/index.html")
+      path.join(__dirname, "/client/dist/farkle-web-client/index.html"),
     );
   });
 } else {
@@ -45,7 +45,7 @@ if (env.devEnv()) {
 app.use(
   (err: Error, request: Request, response: Response, next: NextFunction) => {
     handleErrors(request, err, response);
-  }
+  },
 );
 
 // Http server creation
@@ -56,5 +56,5 @@ const io = new Server(server, serverConfig.server.ioOptions);
 io.use(jwtManager.verifyJwt);
 // Socket connection event
 io.on(GameEvent.CONNECT, (socket: Socket) =>
-  socketHandler.onConnection(socket, io)
+  socketHandler.onConnection(socket, io),
 );

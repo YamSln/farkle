@@ -16,7 +16,7 @@ export class ErrorComponent implements OnInit, OnDestroy {
   dialogSubscription!: Subscription;
   dialogData!: MatDialogData;
   constructor(
-    private facade: SharedFacade,
+    private sharedFacade: SharedFacade,
     private dialogService: DialogService
   ) {
     this.dialogData = {
@@ -30,7 +30,7 @@ export class ErrorComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.errorMessage = this.facade.getErrorMessage();
+    this.errorMessage = this.sharedFacade.getErrorMessage();
     this.dialogSubscription = this.errorMessage.subscribe((message: string) => {
       // Listen to error messages
       if (message) {
@@ -44,7 +44,7 @@ export class ErrorComponent implements OnInit, OnDestroy {
     this.dialogData.data.dialogMessage = errorMessage;
     return this.dialogService
       .openGeneralDialog(this.dialogData)
-      .subscribe(() => this.facade.clearError());
+      .subscribe(() => this.sharedFacade.clearError());
   }
 
   ngOnDestroy(): void {

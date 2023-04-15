@@ -179,12 +179,12 @@ const onDisconnectGame = (
       let playerIndex: number = -1;
       if (game.currentPlayer == index) {
         playerIndex = service.resetTurn(game);
-      }
+      } // -1 if not reset
       return {
         nick: player.nick,
         updatedPlayers: Array.from(game.players),
         reset: playerIndex != -1,
-        playerIndex,
+        playerIndex: playerIndex == -1 ? index : playerIndex,
       };
     }
   }
