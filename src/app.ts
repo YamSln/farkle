@@ -35,9 +35,9 @@ if (env.devEnv()) {
   });
 } else {
   // Static app root endpoint
-  app.use("/", express.static(__dirname + "/client"));
+  app.use("/", express.static(__dirname + "/farkle-web-client"));
   app.use("*", function (req, res) {
-    res.sendFile(path.join(__dirname, "/client/index.html"));
+    res.sendFile(path.join(__dirname, "/farkle-web-client/index.html"));
   });
 }
 
