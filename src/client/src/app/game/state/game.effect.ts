@@ -49,6 +49,7 @@ import {
 import { PlayerAction } from 'src/app/model/player.action.payload';
 import { Player } from 'src/app/model/player.model';
 import { Die } from 'src/app/model/die.model';
+import { Console } from 'console';
 
 @Injectable()
 export class GameEffect {
@@ -130,7 +131,7 @@ export class GameEffect {
     () =>
       this.action$.pipe(
         ofType(selectDie),
-        throttleTime(333),
+        throttleTime(150),
         tap((action) => this.socket.emit(GameEvent.SELECT, action.index))
       ),
     { dispatch: false }
@@ -302,7 +303,7 @@ export class GameEffect {
   }
 
   private handleError(err: any): Observable<any> {
-    let message = err.error.message;
+    let message = err.error.errors[0];
     switch (message) {
       case INCORRECT_PASSWORD:
         message = 'Incorrect Password';

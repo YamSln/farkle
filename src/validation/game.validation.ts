@@ -21,7 +21,7 @@ import {
 } from "./validation.messages";
 
 const MIN_NICK_LENGTH = 2;
-const MAX_NICK_LENGTH = 15;
+const MAX_NICK_LENGTH = 8;
 const MIN_PASSWORD_LENGTH = 3;
 const MAX_PASSWORD_LENGTH = 10;
 const MAXIMUM_POINTS_MAX = MAX_POINTS;

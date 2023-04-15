@@ -31,11 +31,7 @@ export class GameFormComponent implements OnInit {
     this.gameForm = this.formBuilder.group({
       nick: [
         '',
-        [
-          Validators.required,
-          Validators.minLength(2),
-          Validators.maxLength(15),
-        ],
+        [Validators.required, Validators.minLength(2), Validators.maxLength(8)],
       ],
       password: [
         '',

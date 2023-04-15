@@ -1,3 +1,5 @@
+@use "../../../theme.scss" as theme;
+
 .winFlip {
   transition: transform 500ms linear;
   transform: rotateX(180deg);
@@ -10,6 +12,14 @@
   transform: rotateX(0deg);
   animation: visible 250ms ease-in 250ms forwards;
   opacity: 0;
+}
+
+.winBanner {
+  position: absolute;
+  font-size: 3.5rem;
+  line-height: 1.2;
+  text-align: center;
+  color: theme.$color-win;
 }
 
 @keyframes visible {
