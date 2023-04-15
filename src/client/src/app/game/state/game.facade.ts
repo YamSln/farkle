@@ -2,10 +2,10 @@ import { Injectable, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
-import { CreateGamePayload } from 'src/app/model/create-game.payload';
-import { JoinGamePayload } from 'src/app/model/join-game.payload';
-import { PlayerAction } from 'src/app/model/player.action.payload';
-import { Player } from 'src/app/model/player.model';
+import { CreateGamePayload } from '../../../../../model/create-game.payload';
+import { JoinPayload } from '../../../../../model/join.payload';
+import { PlayerAction } from '../../../../../model/player.action.payload';
+import { Player } from '../../../../../model/player.model';
 import { displayPlayerAction } from 'src/app/shared/state/shared.action';
 import {
   bankBust,
@@ -43,7 +43,7 @@ import {
 } from './game.selector';
 import { GameState } from './game.state';
 import { Die } from 'src/app/model/die.model';
-import { DieIndex } from 'src/app/model/die-index.type';
+import { DieIndex } from '../../../../../model/die-index.type';
 import { SelectPayload } from '../../../../../payload/select.payload';
 import { ConfirmPayload } from '../../../../../payload/confirm.payload';
 import { BankBustPayload } from '../../../../../payload/bankbust.payload';
@@ -51,7 +51,7 @@ import { DialogService } from 'src/app/shared/dialog/service/dialog.service';
 import { MatDialogData } from 'src/app/shared/dialog/model/mat-dialog.data';
 import { GeneralDialogType } from 'src/app/shared/dialog/model/general-dialog.type';
 import { GeneralDialogDefinition } from 'src/app/shared/dialog/model/general-dialog.definition';
-import { GamePhase } from 'src/app/model/game.phase.model';
+import { GamePhase } from '../../../../../model/game.phase.model';
 
 @Injectable({ providedIn: 'root' })
 export class GameFacade implements OnDestroy {
@@ -66,7 +66,7 @@ export class GameFacade implements OnDestroy {
     this.store.dispatch(createGame(game));
   }
 
-  joinGame(joinPayload: JoinGamePayload): void {
+  joinGame(joinPayload: JoinPayload): void {
     this.store.dispatch(joinGame(joinPayload));
   }
 

@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { DieFace } from 'src/app/model/die-face.type';
+import { DieFace } from '../../../../../../model/die-face.type';
 
 @Component({
   selector: 'app-die-score',

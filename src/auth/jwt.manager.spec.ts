@@ -3,8 +3,8 @@ import jwtManager, { TOKEN_PREFIX } from "./jwt.manager";
 import jwt from "jsonwebtoken";
 import fs from "fs";
 import env from "../config/env";
-import { CreateGamePayload } from "../client/src/app/model/create-game.payload";
 import { FORBIDDEN } from "../error/error.util";
+import { CreateGamePayload } from "../model/create-game.payload";
 
 describe("JWT Manager Unit Tests", () => {
   describe("JWT Generation Unit Tests", () => {
@@ -35,6 +35,8 @@ describe("JWT Manager Unit Tests", () => {
         nick: "nick",
         password: "password",
         maxPlayers: 4,
+        room: "",
+        maxPoints: 3000,
       };
 
       const token = jwtManager.generateJwt(joinPayload);
@@ -111,6 +113,8 @@ describe("JWT Manager Unit Tests", () => {
         nick: "nick",
         password: "password",
         maxPlayers: 4,
+        room: "",
+        maxPoints: 3000,
       };
       const token = jwtManager.generateJwt(createPayload);
       const socket: any = {
@@ -127,7 +131,7 @@ describe("JWT Manager Unit Tests", () => {
       expect(socket.handshake.auth.nick).toEqual(createPayload.nick);
       expect(socket.handshake.auth.password).toEqual(createPayload.password);
       expect(socket.handshake.auth.maxPlayers).toEqual(
-        createPayload.maxPlayers
+        createPayload.maxPlayers,
       );
       expect(next).toHaveBeenCalled();
       expect(next).not.toHaveBeenCalledWith(new Error(FORBIDDEN));

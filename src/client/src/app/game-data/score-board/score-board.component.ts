@@ -6,12 +6,9 @@ import {
   Output,
   EventEmitter,
 } from '@angular/core';
-import { Player } from 'src/app/model/player.model';
-import { GeneralDialogDefinition } from 'src/app/shared/dialog/model/general-dialog.definition';
-import { GeneralDialogType } from 'src/app/shared/dialog/model/general-dialog.type';
-import { MatDialogData } from 'src/app/shared/dialog/model/mat-dialog.data';
+import { Player } from '../../../../../model/player.model';
 import { DialogService } from 'src/app/shared/dialog/service/dialog.service';
-import { GamePhase } from 'src/app/model/game.phase.model';
+import { GamePhase } from '../../../../../model/game.phase.model';
 
 @Component({
   selector: 'app-score-board',

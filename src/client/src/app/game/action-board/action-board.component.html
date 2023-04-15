@@ -14,6 +14,7 @@
       mat-raised-button
       fxFlex="50"
       [disabled]="
+        !response ||
         (gamePhase != _gamePhaseConstant.PICK &&
           gamePhase != _gamePhaseConstant.ROLL) ||
         (gamePhase == _gamePhaseConstant.PICK && !confirmable) ||
@@ -31,6 +32,7 @@
       mat-raised-button
       fxFlex="50"
       [disabled]="
+        !response ||
         ((gamePhase != _gamePhaseConstant.ROLL || firstRoll) && !bust) ||
         !playing ||
         gameWon
@@ -46,17 +48,19 @@
     <ng-container
       *ngIf="host; then startButton; else waitMessage"
     ></ng-container>
+    <!-- Start Button -->
     <ng-template #startButton>
-      <!-- [disabled]="!startAllowed" REMEMBER TO PUT THIS BACK -->
       <button
         mat-raised-button
         fxFlex
         class="action-button"
         (click)="onStartGameClick()"
+        [disabled]="!response || !startAllowed"
       >
         Start Game
       </button>
     </ng-template>
+    <!-- Wainting for Players Banner -->
     <ng-template #waitMessage
       ><mat-card class="mat-elevation-z0" fxFlex fxLayoutAlign="center center">
         <span style="text-align: center" fxFlex

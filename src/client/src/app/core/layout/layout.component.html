@@ -16,7 +16,8 @@
     (themeToggle)="themeToggleChanged()"
     (menuToggle)="menuToggleChanged()"
     (timeChange)="timeChanged($event)"
-  ></app-header>
+  >
+  </app-header>
   <mat-drawer-container fxFlex>
     <mat-drawer
       style="width: 70%"
@@ -30,12 +31,14 @@
         [selectedIndex]="(roomUrl | async) ? 0 : 1"
         [dynamicHeight]="true"
       >
+        <!-- Game Data Tab -->
         <mat-tab [disabled]="!(roomUrl | async) || false">
           <ng-template mat-tab-label
             ><mat-icon>videogame_asset</mat-icon></ng-template
           >
           <app-game-menu (newGameClick)="onNewGame($event)"></app-game-menu>
         </mat-tab>
+        <!-- Game Settings Tab -->
         <mat-tab>
           <ng-template mat-tab-label><mat-icon>settings</mat-icon></ng-template>
           <app-settings-menu
@@ -47,6 +50,7 @@
             (timeChange)="timeChanged($event)"
           ></app-settings-menu>
         </mat-tab>
+        <!-- Game Info Tab -->
         <mat-tab fxFill fxLayout="column" fxLayoutAlign="space-between">
           <ng-template mat-tab-label><mat-icon>info</mat-icon></ng-template>
           <app-option-menu></app-option-menu

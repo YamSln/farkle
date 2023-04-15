@@ -8,8 +8,8 @@ import {
 import { Observable } from 'rxjs';
 import { GameFacade } from 'src/app/game/state/game.facade';
 import { GameState } from 'src/app/game/state/game.state';
-import { GamePhase } from 'src/app/model/game.phase.model';
-import { Player } from 'src/app/model/player.model';
+import { GamePhase } from '../../../../../model/game.phase.model';
+import { Player } from '../../../../../model/player.model';
 
 @Component({
   selector: 'app-game-menu',

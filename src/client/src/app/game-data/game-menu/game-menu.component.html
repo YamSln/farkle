@@ -1,4 +1,5 @@
 <mat-list *ngIf="gameState | async as game">
+  <!-- Menu Score Board -->
   <app-score-board
     [players]="game.players"
     [playing]="game.players[game.currentPlayer].nick"
@@ -8,6 +9,7 @@
     [restartable]="game.gamePhase != _gamePhaseConstant.WAIT"
     (newGameClick)="onNewGameClick(game.gameWon)"
   ></app-score-board>
+  <!-- Menu Plays -->
   <app-plays
     [currentThrowPicks]="game.currentThrowPicks"
     [currentTurnScores]="game.currentTurnScores"

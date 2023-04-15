@@ -1,4 +1,4 @@
-import { DieFace } from './die-face.type';
+import { DieFace } from '../../../../model/die-face.type';
 
 export interface Die {
   number: DieFace;

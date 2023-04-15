@@ -10,7 +10,6 @@ import { ScorePotentialComponent } from './score-potential/score-potential.compo
 import { DieComponent } from './die/die.component';
 import { DiceBoardComponent } from './dice-board/dice-board.component';
 import { ActionBoardComponent } from './action-board/action-board.component';
-import { ChatComponent } from './chat/chat.component';
 import { ConfettiComponent } from './confetti/confetti.component';
 import { GameDataModule } from '../game-data/game-data.module';
 
@@ -22,7 +21,6 @@ import { GameDataModule } from '../game-data/game-data.module';
     DieComponent,
     DiceBoardComponent,
     ActionBoardComponent,
-    ChatComponent,
     ConfettiComponent,
   ],
   imports: [

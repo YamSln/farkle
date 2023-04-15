@@ -14,7 +14,7 @@ import { GameState } from '../state/game.state';
   providedIn: 'root',
 })
 export class GameGuard implements CanActivate {
-  constructor(private facade: GameFacade) {}
+  constructor(private gameFacade: GameFacade) {}
   gameState!: Observable<GameState>;
   canActivate(
     route: ActivatedRouteSnapshot,
@@ -24,13 +24,13 @@ export class GameGuard implements CanActivate {
     | Promise<boolean | UrlTree>
     | boolean
     | UrlTree {
-    this.gameState = this.facade.getGameState();
+    this.gameState = this.gameFacade.getGameState();
     return this.gameState.pipe(
       map((state) => {
         if (state.roomId) {
           return true;
         } else {
-          this.facade.navigateToMain();
+          this.gameFacade.navigateToMain();
           return false;
         }
       })

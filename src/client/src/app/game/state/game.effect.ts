@@ -46,8 +46,8 @@ import {
   PASSWORD_MIN_LENGTH,
   PASSWORD_REQUIRED,
 } from '../../../../../validation/validation.messages';
-import { PlayerAction } from 'src/app/model/player.action.payload';
-import { Player } from 'src/app/model/player.model';
+import { PlayerAction } from '../../../../../model/player.action.payload';
+import { Player } from '../../../../../model/player.model';
 import { Die } from 'src/app/model/die.model';
 import { Console } from 'console';
 
@@ -99,7 +99,7 @@ export class GameEffect {
     () =>
       this.action$.pipe(
         ofType(startGame),
-        throttleTime(1500),
+        throttleTime(2000),
         tap(() => {
           this.socket.emit(GameEvent.START_GAME);
         })
@@ -111,6 +111,7 @@ export class GameEffect {
     () =>
       this.action$.pipe(
         ofType(newGame),
+        throttleTime(2000),
         tap(() => {
           this.socket.emit(GameEvent.NEW_GAME);
         })
@@ -122,6 +123,7 @@ export class GameEffect {
     () =>
       this.action$.pipe(
         ofType(roll),
+        throttleTime(1000),
         tap((action) => this.socket.emit(GameEvent.ROLL))
       ),
     { dispatch: false }
@@ -141,6 +143,7 @@ export class GameEffect {
     () =>
       this.action$.pipe(
         ofType(confirm),
+        throttleTime(1000),
         tap((action) => this.socket.emit(GameEvent.CONFIRM))
       ),
     { dispatch: false }
@@ -150,6 +153,7 @@ export class GameEffect {
     () =>
       this.action$.pipe(
         ofType(bankBust),
+        throttleTime(1000),
         tap((action) => this.socket.emit(GameEvent.BANK_BUST))
       ),
     { dispatch: false }
@@ -308,7 +312,10 @@ export class GameEffect {
   }
 
   private handleError(err: any): Observable<any> {
-    let message = err.error.errors[0];
+    let message = err.error.message;
+    if (!message) {
+      message = err.error.errors[0];
+    }
     switch (message) {
       case INCORRECT_PASSWORD:
         message = 'Incorrect Password';

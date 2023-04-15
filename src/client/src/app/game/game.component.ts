@@ -4,11 +4,11 @@ import {
   flipOutXOnLeaveAnimation,
 } from 'angular-animations';
 import { Observable } from 'rxjs';
-import { DieIndex } from '../model/die-index.type';
-import { Player } from '../model/player.model';
+import { DieIndex } from '../../../../model/die-index.type';
+import { Player } from '../../../../model/player.model';
 import { GameFacade } from './state/game.facade';
 import { GameState } from './state/game.state';
-import { GamePhase } from '../model/game.phase.model';
+import { GamePhase } from '../../../../model/game.phase.model';
 
 @Component({
   selector: 'app-game',

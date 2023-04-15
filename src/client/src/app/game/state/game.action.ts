@@ -1,15 +1,15 @@
 import { createAction, props } from '@ngrx/store';
-import { Player } from 'src/app/model/player.model';
-import { CreateGamePayload } from '../../model/create-game.payload';
+import { Player } from '../../../../../model/player.model';
+import { CreateGamePayload } from '../../../../../model/create-game.payload';
 import { CreateGameResponse } from '../../model/create-game.response';
-import { JoinGamePayload } from '../../model/join-game.payload';
+import { JoinPayload } from '../../../../../model/join.payload';
 import { GameState } from './game.state';
 import { Die } from 'src/app/model/die.model';
-import { DieIndex } from 'src/app/model/die-index.type';
+import { DieIndex } from '../../../../../model/die-index.type';
 import { SelectPayload } from '../../../../../payload/select.payload';
 import { ConfirmPayload } from '../../../../../payload/confirm.payload';
 import { BankBustPayload } from '../../../../../payload/bankbust.payload';
-import { PlayerAction } from 'src/app/model/player.action.payload';
+import { PlayerAction } from '../../../../../model/player.action.payload';
 
 const GAME_PAGE = '[game page]';
 
@@ -51,7 +51,7 @@ export const BANK_BUST = `${GAME_PAGE} bank_bust`;
 export const BANK_SUCCESS = `${GAME_PAGE} bank success`;
 export const BUST_SUCCESS = `${GAME_PAGE} bust success`;
 
-export const joinGame = createAction(JOIN_GAME, props<JoinGamePayload>());
+export const joinGame = createAction(JOIN_GAME, props<JoinPayload>());
 export const joinGameApproved = createAction(
   JOIN_GAME_APPROVED,
   props<{ token: string }>()

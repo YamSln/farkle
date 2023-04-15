@@ -6,6 +6,7 @@ import { Die } from 'src/app/model/die.model';
 })
 export class DieFacePipe implements PipeTransform {
   basePath: string = 'assets/dice/';
+  // Translates a die to its image url
   transform(die: Die, ...args: string[]): string {
     return `${this.basePath}${die.joker ? 'j' : ''}dice_${die.number}${
       die.selected ? '_selected' : ''

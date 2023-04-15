@@ -3,10 +3,12 @@ import {
   Component,
   EventEmitter,
   Input,
+  OnChanges,
   OnInit,
   Output,
+  SimpleChanges,
 } from '@angular/core';
-import { GamePhase } from 'src/app/model/game.phase.model';
+import { GamePhase } from '../../../../../model/game.phase.model';
 
 @Component({
   selector: 'app-action-board',
@@ -14,7 +16,7 @@ import { GamePhase } from 'src/app/model/game.phase.model';
   styleUrls: ['./action-board.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ActionBoardComponent implements OnInit {
+export class ActionBoardComponent implements OnInit, OnChanges {
   @Input() playing!: boolean;
   @Input() bust!: boolean;
   @Input() gamePhase!: GamePhase;
@@ -31,13 +33,20 @@ export class ActionBoardComponent implements OnInit {
 
   _gamePhaseConstant = GamePhase;
 
+  response: boolean = true;
+
   constructor() {}
 
   ngOnInit(): void {}
 
+  ngOnChanges(changes: SimpleChanges): void {
+    this.responseReceived();
+  }
+
   onConfirmClick(): void {
     if (this.gamePhase == GamePhase.PICK && this.playing) {
       this.confirmClick.emit();
+      this.responseSent();
     }
   }
 
@@ -47,18 +56,21 @@ export class ActionBoardComponent implements OnInit {
       this.playing
     ) {
       this.bankBustClick.emit();
+      this.responseSent();
     }
   }
 
   onRollClick(): void {
     if (this.gamePhase == GamePhase.ROLL && this.playing) {
       this.rollClick.emit();
+      this.responseSent();
     }
   }
 
   onStartGameClick(): void {
     if (this.gamePhase == GamePhase.WAIT && this.host) {
       this.startGameClick.emit();
+      this.responseSent();
     }
   }
 
@@ -69,5 +81,13 @@ export class ActionBoardComponent implements OnInit {
     if (this.gamePhase === GamePhase.PICK) {
       this.onConfirmClick();
     }
+  }
+
+  private responseSent(): void {
+    this.response = false;
+  }
+
+  private responseReceived(): void {
+    this.response = true;
   }
 }

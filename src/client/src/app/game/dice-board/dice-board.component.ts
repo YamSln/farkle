@@ -10,9 +10,9 @@ import {
   zoomInOnEnterAnimation,
   zoomOutOnLeaveAnimation,
 } from 'angular-animations';
-import { DieIndex } from 'src/app/model/die-index.type';
+import { DieIndex } from '../../../../../model/die-index.type';
 import { Die } from 'src/app/model/die.model';
-import { Player } from 'src/app/model/player.model';
+import { Player } from '../../../../../model/player.model';
 
 @Component({
   selector: 'app-dice-board',

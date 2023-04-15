@@ -1,5 +1,5 @@
 import { Die } from 'src/app/model/die.model';
-import { Player } from 'src/app/model/player.model';
+import { Player } from '../../../../../model/player.model';
 import { GamePhase } from '../../../../../model/game.phase.model';
 
 export interface GameState {
@@ -12,7 +12,8 @@ export interface GameState {
   // Game fields
   players: Player[];
   dice: Die[];
-  currentThrowPicks: Die[][]; // Plays confirmed by current player
+  // Plays confirmed by current player
+  currentThrowPicks: Die[][];
   currentTurnScores: number[];
   potentialScore: number;
   currentPlayer: number;
@@ -33,9 +34,9 @@ export const initialState: GameState = {
   maxPlayers: 2,
   maxPoints: 3000,
   players: [
-    { host: true, id: '1', nick: 'bob', points: 0 },
-    { host: false, id: '1', nick: 'jam', points: 0 },
-    { host: false, id: '1', nick: 'niv', points: 0 },
+    { host: true, id: '1', nick: 'aaa', points: 0 },
+    { host: false, id: '1', nick: 'bbb', points: 0 },
+    { host: false, id: '1', nick: 'ccc', points: 0 },
   ],
   dice: [
     {

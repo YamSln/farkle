@@ -27,7 +27,9 @@ export class ConfettiComponent implements OnChanges, OnDestroy, OnInit {
 
   winningConfetti: any;
   bustConfetti: any;
+
   confettiInterval: any;
+
   @ViewChildren('confetti') confettiCanvas: any;
 
   constructor() {}
@@ -43,8 +45,10 @@ export class ConfettiComponent implements OnChanges, OnDestroy, OnInit {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.gameWon && changes.gameWon.currentValue) {
+      // Trigger win confetti
       this.triggerConfetti(ConfettiType.WIN);
     } else if (changes.bust && changes.bust.currentValue) {
+      // Trigger bust confett
       this.triggerConfetti(ConfettiType.BUST);
     } else {
       this.clearConfetti();
@@ -56,6 +60,7 @@ export class ConfettiComponent implements OnChanges, OnDestroy, OnInit {
     switch (type) {
       case ConfettiType.WIN:
         let i = 1;
+        // Repeat 3 times
         this.confettiInterval = setInterval(() => {
           this.throwConfetti(type);
           i++;

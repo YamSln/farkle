@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { GameFormComponent } from './game-form/game-form.component';
 import { LayoutComponent } from './layout/layout.component';
+import { GameGuard } from '../game/guard/game.guard';
 
 const routes: Routes = [
   {
@@ -13,6 +14,7 @@ const routes: Routes = [
       {
         path: 'game',
         loadChildren: () =>
+          // Transfer to game module on route change
           import('../game/game.module').then((m) => m.GameModule),
       },
       { path: '**', pathMatch: 'full', redirectTo: '' },

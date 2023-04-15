@@ -1,3 +1,4 @@
+<!-- Game Header -->
 <mat-toolbar
   fxLayout="row"
   fxLayoutAlign="end center"
@@ -5,6 +6,7 @@
 >
   <!-- Home / Invitation Link Button -->
   <div *ngIf="roomUrl; then url; else home"></div>
+  <!-- Invitation Link Button -->
   <ng-template #url>
     <button
       *ngIf="roomUrl"
@@ -15,6 +17,7 @@
       <mat-icon matSuffix>link</mat-icon>
     </button>
   </ng-template>
+  <!-- Home Button -->
   <ng-template #home>
     <button mat-icon-button [matTooltip]="'Home'" routerLink="/">
       <img src="assets/logo.svg" alt="logo" style="max-width: 100%" />

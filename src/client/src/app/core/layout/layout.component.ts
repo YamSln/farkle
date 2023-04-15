@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { GameFacade } from 'src/app/game/state/game.facade';
 import { GameState } from 'src/app/game/state/game.state';
-import { GamePhase } from 'src/app/model/game.phase.model';
+import { GamePhase } from '../../../../../model/game.phase.model';
 import { SharedFacade } from 'src/app/shared/state/shared.facade';
 import { environment } from 'src/environments/environment';
 

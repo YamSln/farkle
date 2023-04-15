@@ -7,7 +7,6 @@ import {
   Output,
 } from '@angular/core';
 import { ClipboardService } from 'ngx-clipboard';
-import { Observable, of } from 'rxjs';
 
 @Component({
   selector: 'app-header',

@@ -2,14 +2,30 @@
 
 .winFlip {
   transition: transform 500ms linear;
+  -webkit-transform: rotateX(180deg);
+  -moz-transform: rotateX(180deg);
+  -o-transform: rotateX(180deg);
+  -ms-transform: rotateX(180deg);
   transform: rotateX(180deg);
+  -webkit-animation: hidden 250ms ease-in;
+  -moz-animation: hidden 250ms ease-in;
+  -o-animation: hidden 250ms ease-in;
+  -ms-animation: hidden 250ms ease-in;
   animation: hidden 250ms ease-in;
   opacity: 0;
 }
 
 .default {
   transition: transform 500ms linear;
+  -webkit-transform: rotateX(0deg);
+  -moz-transform: rotateX(0deg);
+  -o-transform: rotateX(0deg);
+  -ms-transform: rotateX(0deg);
   transform: rotateX(0deg);
+  -webkit-animation: visible 250ms ease-in 250ms forwards;
+  -moz-animation: visible 250ms ease-in 250ms forwards;
+  -o-animation: visible 250ms ease-in 250ms forwards;
+  -ms-animation: visible 250ms ease-in 250ms forwards;
   animation: visible 250ms ease-in 250ms forwards;
   opacity: 0;
 }
@@ -31,7 +47,79 @@
   }
 }
 
+@-webkit-keyframes visible {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@-moz-keyframes visible {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@-o-keyframes visible {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@-ms-keyframes visible {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
 @keyframes hidden {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@-webkit-keyframes hidden {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@-moz-keyframes hidden {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@-o-keyframes hidden {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@-ms-keyframes hidden {
   0% {
     opacity: 1;
   }

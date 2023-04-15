@@ -2,8 +2,15 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { GameFacade } from 'src/app/game/state/game.facade';
-import { CreateGamePayload } from 'src/app/model/create-game.payload';
-import { JoinGamePayload } from 'src/app/model/join-game.payload';
+import { CreateGamePayload } from '../../../../../model/create-game.payload';
+import { JoinPayload } from '../../../../../model/join.payload';
+import { MIN_PLAYERS, MIN_POINTS } from '../../../../../util/game.constants';
+import {
+  MIN_NICK_LENGTH,
+  MAX_NICK_LENGTH,
+  MIN_PASSWORD_LENGTH,
+  MAX_PASSWORD_LENGTH,
+} from '../../../../../validation/game.validation';
 
 @Component({
   selector: 'app-game-form',
@@ -15,8 +22,8 @@ export class GameFormComponent implements OnInit {
   create!: boolean;
   formHeading!: string;
   formButtonText!: string;
-  maxPlayersSlider: number = 2;
-  maxPointsSlider: number = 3000;
+  maxPlayersSlider: number = MIN_PLAYERS;
+  maxPointsSlider: number = MIN_POINTS;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -31,14 +38,18 @@ export class GameFormComponent implements OnInit {
     this.gameForm = this.formBuilder.group({
       nick: [
         '',
-        [Validators.required, Validators.minLength(2), Validators.maxLength(8)],
+        [
+          Validators.required,
+          Validators.minLength(MIN_NICK_LENGTH),
+          Validators.maxLength(MAX_NICK_LENGTH),
+        ],
       ],
       password: [
         '',
         [
           Validators.required,
-          Validators.minLength(3),
-          Validators.maxLength(10),
+          Validators.minLength(MIN_PASSWORD_LENGTH),
+          Validators.maxLength(MAX_PASSWORD_LENGTH),
         ],
       ],
     });
@@ -54,10 +65,11 @@ export class GameFormComponent implements OnInit {
         password: this.gameForm.controls['password'].value,
         maxPlayers: this.maxPlayersSlider,
         maxPoints: this.maxPointsSlider,
+        room: '',
       };
       this.gameFacade.createGame(game);
     } else {
-      const game: JoinGamePayload = {
+      const game: JoinPayload = {
         nick: this.gameForm.controls['nick'].value,
         password: this.gameForm.controls['password'].value,
         room: this.activatedRoute.snapshot.params['roomId'],

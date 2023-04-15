@@ -1,4 +1,5 @@
 <mat-list>
+  <!-- Menu Theme Toggle -->
   <mat-list-item class="list-item" fxLayoutAlign="center">
     <app-theme-toggle
       [lightTheme]="isLightTheme"
@@ -6,6 +7,7 @@
     ></app-theme-toggle>
   </mat-list-item>
   <mat-divider></mat-divider>
+  <!-- Menu Time Selector -->
   <app-time-selector
     [menu]="true"
     [host]="host && timeChangable"
@@ -13,6 +15,7 @@
     (timeSet)="onTimeChange($event)"
   ></app-time-selector>
   <mat-divider></mat-divider>
+  <!-- Menu Decorations Toggle -->
   <mat-list-item class="list-item">
     <app-decorations-toggle
       [decorations]="true"
@@ -20,6 +23,7 @@
     ></app-decorations-toggle>
   </mat-list-item>
   <mat-divider></mat-divider>
+  <!-- Menu Popups Toggle -->
   <mat-list-item class="list-item">
     <app-popups-toggle
       [popups]="true"
