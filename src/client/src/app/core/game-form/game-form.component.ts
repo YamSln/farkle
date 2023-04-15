@@ -10,7 +10,7 @@ import {
   MAX_NICK_LENGTH,
   MIN_PASSWORD_LENGTH,
   MAX_PASSWORD_LENGTH,
-} from '../../../../../validation/game.validation';
+} from '../../../../../validation/validation.constants';
 
 @Component({
   selector: 'app-game-form',

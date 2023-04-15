@@ -19,11 +19,13 @@ import {
   MAX_POINTS_MIN,
   MAX_POINTS_MAX,
 } from "./validation.messages";
+import {
+  MAX_NICK_LENGTH,
+  MAX_PASSWORD_LENGTH,
+  MIN_NICK_LENGTH,
+  MIN_PASSWORD_LENGTH,
+} from "./validation.constants";
 
-export const MIN_NICK_LENGTH = 2;
-export const MAX_NICK_LENGTH = 8;
-export const MIN_PASSWORD_LENGTH = 3;
-export const MAX_PASSWORD_LENGTH = 10;
 export const MAXIMUM_POINTS_MAX = MAX_POINTS;
 export const MAXIMUM_POINTS_MIN = MIN_POINTS;
 export const MINIMUM_MAX_PLAYERS = MIN_PLAYERS;
