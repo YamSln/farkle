@@ -14,7 +14,6 @@
       mat-raised-button
       fxFlex="50"
       [disabled]="
-        !response ||
         (gamePhase != _gamePhaseConstant.PICK &&
           gamePhase != _gamePhaseConstant.ROLL) ||
         (gamePhase == _gamePhaseConstant.PICK && !confirmable) ||
@@ -32,7 +31,6 @@
       mat-raised-button
       fxFlex="50"
       [disabled]="
-        !response ||
         ((gamePhase != _gamePhaseConstant.ROLL || firstRoll) && !bust) ||
         !playing ||
         gameWon
@@ -55,7 +53,7 @@
         fxFlex
         class="action-button"
         (click)="onStartGameClick()"
-        [disabled]="!response || !startAllowed"
+        [disabled]="!startAllowed"
       >
         Start Game
       </button>

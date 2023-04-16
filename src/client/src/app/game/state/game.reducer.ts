@@ -184,6 +184,7 @@ const _gameReducer = createReducer(
       ...state,
       players: action.playerAction.updatedPlayers,
       selfIndex: findSelf(action.playerAction.updatedPlayers, state.playerId),
+      currentPlayer: action.playerAction.playerIndex,
     };
   }),
   on(clearState, (state: GameState, action: any): GameState => {

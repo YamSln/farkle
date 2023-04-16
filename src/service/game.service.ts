@@ -157,6 +157,7 @@ const disconnect = (
   if (index !== -1) {
     // Remove the player that left
     const player = state.players[index];
+    const currentPlayer = state.players[state.currentPlayer];
     state.players.splice(index, 1);
     const numberOfPlayers = state.players.length;
     // Game is empty
@@ -165,20 +166,20 @@ const disconnect = (
       return null;
     } // Reset turn if the current player left
     let playerIndex: number = -1;
-    if (state.currentPlayer == index) {
+    if (state.currentPlayer === index) {
       playerIndex = state.resetTurn();
+    } else {
+      state.currentPlayer = state.playerIndex(currentPlayer.id);
     }
-    const nextPlayer: number =
-      playerIndex === -1 ? state.currentPlayer : playerIndex;
     // If host left set a new one
     if (player.host) {
-      state.players[nextPlayer].host = true;
+      state.players[index >= numberOfPlayers ? 0 : index].host = true;
     }
     return {
       nick: player.nick,
       updatedPlayers: Array.from(state.players),
       reset: playerIndex !== -1,
-      playerIndex: nextPlayer,
+      playerIndex: state.currentPlayer,
     };
   }
   return null;
