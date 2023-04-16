@@ -37,11 +37,11 @@
           <mat-error *ngIf="gameForm.controls['nick'].hasError('required')">
             Nick is <b>required</b>
           </mat-error>
-          <mat-error *ngIf="gameForm.controls['nick'].hasError('minLength')">
-            Nick must contain at least 2 characters
+          <mat-error *ngIf="gameForm.controls['nick'].hasError('minlength')">
+            Nick must contain <b>at least 2</b> characters
           </mat-error>
-          <mat-error *ngIf="gameForm.controls['nick'].hasError('maxLength')">
-            Nick cannot contain more than 8 characters
+          <mat-error *ngIf="gameForm.controls['nick'].hasError('maxlength')">
+            Nick cannot contain <b>more than 8</b> characters
           </mat-error>
         </mat-form-field>
         <!-- Room Password Input -->

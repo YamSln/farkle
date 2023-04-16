@@ -56,15 +56,19 @@ const onConnection = (socket: Socket, io: Server) => {
   });
 
   socket.on(GameEvent.START_GAME, () => {
-    const start = handler.onGameStart(socket.id, room, io);
-    io.to(room).emit(GameEvent.START_GAME, start);
+    try {
+      const start = handler.onGameStart(socket.id, room, io);
+      io.to(room).emit(GameEvent.START_GAME, start);
+    } catch (err) {
+      sendIllegal(socket);
+    }
   });
 
   socket.on(GameEvent.ROLL, () => {
     try {
       const rollPayload: RollPayload = handler.onRoll(socket.id, room);
       io.to(room).emit(GameEvent.ROLL, rollPayload.dice, rollPayload.bust);
-    } catch {
+    } catch (err) {
       sendIllegal(socket);
     }
   });
@@ -120,36 +124,35 @@ const onConnection = (socket: Socket, io: Server) => {
   });
 
   socket.on(GameEvent.DISCONNECTING, () => {
-    const room = getSocketRoom(socket);
-    // Disconnect player from its room
-    let playerAction: PlayerAction | null = null;
     try {
-      playerAction = handler.onDisconnectGame(socket.id, room);
-    } catch {
-      return;
-    }
-    // Emit player disconnected event
-    if (playerAction) {
-      socket.broadcast
-        .to(room)
-        .emit(GameEvent.PLAYER_DISCONNECTED, playerAction);
-    } else {
-      // Close the lobby if the host left
-      socket.broadcast.disconnectSockets(true);
+      const room = getSocketRoom(socket);
+      let playerAction: PlayerAction | null = handler.onDisconnectGame(
+        socket.id,
+        room,
+      );
+      if (playerAction) {
+        socket.broadcast
+          .to(room)
+          .emit(GameEvent.PLAYER_DISCONNECTED, playerAction);
+      }
+    } catch (err) {
+      sendIllegal(socket);
     }
   });
 };
 
 const joinGame = (socket: Socket, joinPayload: JoinPayload) => {
   try {
+    // Send state to joined player
     const event: JoinEvent = handler.onJoinGame(socket.id, joinPayload);
     socket.join(joinPayload.room);
     socket.emit(
       GameEvent.JOIN_GAME,
-      { ...event.state, turnInterval: "", playerId: socket.id },
+      { ...event.state, turnInterval: "", password: "", playerId: socket.id },
       joinPayload.room,
       event.joined,
     );
+    // Broadcast joined event to other players
     socket.broadcast.to(joinPayload.room).emit(GameEvent.PLAYER_JOINED, {
       nick: event.joined.nick,
       updatedPlayers: event.state.players,
@@ -165,7 +168,7 @@ const createGame = (socket: Socket, payload: CreateGamePayload) => {
     const game = handler.onCreateGame(socket.id, payload);
     socket.emit(
       GameEvent.CREATE_GAME,
-      { ...game, playerId: socket.id },
+      { ...game, password: "", playerId: socket.id },
       payload.room,
       game.players[0],
     );

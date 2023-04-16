@@ -3,6 +3,7 @@ import { GameEvent } from "../event/game.event";
 import { DieIndex } from "../model/die-index.type";
 import { Game, GameState } from "../model/game.model";
 import { GamePhase } from "../model/game.phase.model";
+import { PlayerAction } from "../model/player.action.payload";
 import { Player } from "../model/player.model";
 import { BankBustPayload } from "../payload/bankbust.payload";
 import { ConfirmPayload } from "../payload/confirm.payload";
@@ -148,8 +149,39 @@ const startTimer = (state: GameState, io: any): void => {
   }
 };
 
-const resetTurn = (state: GameState): number => {
-  return state.resetTurn();
+const disconnect = (
+  socketId: string,
+  state: GameState,
+): PlayerAction | null => {
+  const index = state.playerIndex(socketId);
+  if (index !== -1) {
+    // Remove the player that left
+    const player = state.players[index];
+    state.players.splice(index, 1);
+    const numberOfPlayers = state.players.length;
+    // Game is empty
+    if (numberOfPlayers === 0) {
+      state.clearTimer(true);
+      return null;
+    } // Reset turn if the current player left
+    let playerIndex: number = -1;
+    if (state.currentPlayer == index) {
+      playerIndex = state.resetTurn();
+    }
+    const nextPlayer: number =
+      playerIndex === -1 ? state.currentPlayer : playerIndex;
+    // If host left set a new one
+    if (player.host) {
+      state.players[nextPlayer].host = true;
+    }
+    return {
+      nick: player.nick,
+      updatedPlayers: Array.from(state.players),
+      reset: playerIndex !== -1,
+      playerIndex: nextPlayer,
+    };
+  }
+  return null;
 };
 
 export default {
@@ -161,5 +193,5 @@ export default {
   select,
   confirm,
   setTime,
-  resetTurn,
+  disconnect,
 };

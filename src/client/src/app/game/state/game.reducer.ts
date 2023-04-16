@@ -167,7 +167,6 @@ const _gameReducer = createReducer(
     };
   }),
   on(playerDisconnect, (state: GameState, action: any): GameState => {
-    console.log(action);
     if (action.playerAction.reset) {
       return {
         ...state,

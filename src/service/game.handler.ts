@@ -161,43 +161,21 @@ const onDisconnectGame = (
   socketId: string,
   room: string,
 ): PlayerAction | null => {
-  const game = rooms.get(room);
-  if (game) {
-    // Find and remove participant, decrease players count
-    const index = game.playerIndex(socketId);
-    if (index !== -1) {
-      const player = game.players[index];
-      game.players.splice(index, 1);
-      const numberOfPlayers = game.players.length;
-      if (numberOfPlayers === 0 || player.host) {
-        // Remove game upon 0 participants or host left
-        clearTimer(game, true);
-        rooms.delete(room);
-        log.info(REQUESTOR, `Room ${room} removed`);
-        return null;
-      }
-      let playerIndex: number = -1;
-      if (game.currentPlayer == index) {
-        playerIndex = service.resetTurn(game);
-      } // -1 if not reset
-      return {
-        nick: player.nick,
-        updatedPlayers: Array.from(game.players),
-        reset: playerIndex != -1,
-        playerIndex: playerIndex == -1 ? index : playerIndex,
-      };
+  try {
+    const state = getGame(room);
+    const playerAction: PlayerAction | null = service.disconnect(
+      socketId,
+      state,
+    );
+    if (!playerAction) {
+      rooms.delete(room);
+      log.info(REQUESTOR, `Room ${room} removed`);
+      return null;
     }
+    return playerAction;
+  } catch (err) {
+    return null;
   }
-  throw new Error(ILLEGAL);
-};
-
-const nextTurn = (room: GameState): number => {
-  // Reset timer if exists
-  if (room.turnTime) {
-    room.currentTime = room.turnTime;
-  }
-  const nextIndex = room.currentPlayer + 1;
-  return nextIndex > room.players.length - 1 ? 0 : nextIndex;
 };
 
 const getGame = (room: string): GameState => {
@@ -206,14 +184,6 @@ const getGame = (room: string): GameState => {
     throw new Error(NOT_FOUND);
   }
   return state;
-};
-
-const getPlayer = (playerId: string, game: GameState): Player => {
-  const player = game.players.find((player) => player.id === playerId);
-  if (!player) {
-    throw new Error(NOT_FOUND);
-  }
-  return player;
 };
 
 export default {

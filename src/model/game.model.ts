@@ -255,11 +255,6 @@ export class Game implements GameState {
     this.players = util.shuffleArray(this.players);
   }
 
-  private winGame(): number {
-    this.gameWon = true;
-    return this.currentPlayer;
-  }
-
   private nextTurn(): void {
     if (!this.gameWon) {
       this.currentPlayer++;

@@ -49,7 +49,6 @@ import {
 import { PlayerAction } from '../../../../../model/player.action.payload';
 import { Player } from '../../../../../model/player.model';
 import { Die } from 'src/app/model/die.model';
-import { Console } from 'console';
 
 @Injectable()
 export class GameEffect {
@@ -99,7 +98,6 @@ export class GameEffect {
     () =>
       this.action$.pipe(
         ofType(startGame),
-        throttleTime(2000),
         tap(() => {
           this.socket.emit(GameEvent.START_GAME);
         })
@@ -111,7 +109,7 @@ export class GameEffect {
     () =>
       this.action$.pipe(
         ofType(newGame),
-        throttleTime(2000),
+        throttleTime(1000),
         tap(() => {
           this.socket.emit(GameEvent.NEW_GAME);
         })
@@ -143,7 +141,6 @@ export class GameEffect {
     () =>
       this.action$.pipe(
         ofType(confirm),
-        throttleTime(1000),
         tap((action) => this.socket.emit(GameEvent.CONFIRM))
       ),
     { dispatch: false }
@@ -153,7 +150,6 @@ export class GameEffect {
     () =>
       this.action$.pipe(
         ofType(bankBust),
-        throttleTime(1000),
         tap((action) => this.socket.emit(GameEvent.BANK_BUST))
       ),
     { dispatch: false }
@@ -289,9 +285,6 @@ export class GameEffect {
     socket.io.on('reconnect_error', (err: Error) => {
       this.errorDisconnection(socket);
     });
-    socket.io.on('close', () => {
-      this.handleDisconnection();
-    });
     this.socket = socket;
   }
 
@@ -301,26 +294,13 @@ export class GameEffect {
     socket.disconnect();
   }
 
-  private handleDisconnection(): void {
-    this.gameExit();
-    this.sharedFacade.displayError('Lobby Disbanded');
-  }
-
   private gameExit(): void {
     this.gameFacade.navigateToMain();
     this.gameFacade.clearGame();
   }
 
   private handleError(err: any): Observable<any> {
-    let message = '';
-    try {
-      message = err.error.message;
-      if (!message) {
-        message = err.error.errors[0];
-      }
-    } catch {
-      return this.resolveError(message);
-    }
+    let message: string = err.error.message;
     switch (message) {
       case INCORRECT_PASSWORD:
         message = 'Incorrect Password';
@@ -367,15 +347,7 @@ export class GameEffect {
       default:
         message = 'An unexpected error occurred';
     }
-    return this.resolveError(message);
-  }
-
-  private resolveError(message: string): Observable<any> {
     this.sharedFacade.hideLoading();
-    return of(
-      displayErrorMessage({
-        message: message || 'An unexpected error occurred',
-      })
-    );
+    return of(displayErrorMessage({ message }));
   }
 }
