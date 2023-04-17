@@ -1,6 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 import { JoinPayload } from "../model/join.payload";
 import handler from "../service/game.handler";
+import { HttpStatusCode } from "../util/http-status-code";
+import { MIN_PLAYERS } from "../util/game.constants";
 
 const createGame = async (
   request: Request,
@@ -12,7 +14,9 @@ const createGame = async (
   // Generate token
   const token = handler.createGame(nick, password, maxPlayers, maxPoints);
   // Return response
-  return response.status(201).json({ token, maxPlayers: maxPlayers || 4 });
+  return response
+    .status(HttpStatusCode.CREATED)
+    .json({ token, maxPlayers: maxPlayers || MIN_PLAYERS });
 };
 
 const joinGame = async (
@@ -25,7 +29,7 @@ const joinGame = async (
   // Generate token
   const token = handler.joinGame(joinPayload);
   // Return response
-  return response.status(200).json(token);
+  return response.status(HttpStatusCode.OK).json(token);
 };
 
 export default {

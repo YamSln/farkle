@@ -13,13 +13,13 @@ router.post(
   "/create",
   validateCreatePayload,
   validator.makeValidation,
-  catchErrors(middleware.createGame)
+  catchErrors(middleware.createGame),
 );
 router.post(
   "/join",
   validateJoinPayload,
   validator.makeValidation,
-  catchErrors(middleware.joinGame)
+  catchErrors(middleware.joinGame),
 );
 
 export = router;

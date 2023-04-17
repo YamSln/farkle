@@ -273,10 +273,10 @@ export class GameEffect {
     socket.on(GameEvent.PLAYER_DISCONNECTED, (playerAction: PlayerAction) => {
       this.gameFacade.playerDisconnected(playerAction);
     });
-    socket.io.on('reconnect_attempt', (err) => {
+    socket.io.on('reconnect_attempt', (reconnectNo: number) => {
       this.sharedFacade.displayLoading();
     });
-    socket.on(GameEvent.ERROR, (err) => {
+    socket.on(GameEvent.ERROR, (err: Error) => {
       this.errorDisconnection(socket);
     });
     socket.on('connect_error', (err: Error) => {

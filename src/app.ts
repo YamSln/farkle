@@ -1,22 +1,21 @@
 import express, { NextFunction, Request, Response } from "express";
 import http from "http";
-import cors from "cors";
 import { Server, Socket } from "socket.io";
 import { GameEvent } from "./event/game.event";
 import socketHandler from "./service/socket.handler";
-import gameRoutes from "./routes/game.route";
+import gameRoutes, { options } from "./routes/game.route";
 import jwtManager from "./auth/jwt.manager";
 import { handleErrors } from "./error/error.handler";
 import morgan from "morgan";
 import { serverConfig } from "./config/server-config";
 import path from "path";
 import env from "./config/env";
+import optionsMiddleware from "./middleware/options.middleware";
 
 export const app = express();
 
 // CORS and options request
-app.use(cors(serverConfig.server.corsOptions));
-app.options("*", (request, response, next) => response.end());
+app.options("*", optionsMiddleware);
 
 // Body and url parsing
 app.use(express.json());
