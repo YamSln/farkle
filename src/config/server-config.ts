@@ -11,22 +11,21 @@ export const allowedHeaders = [
   "Authorization",
 ];
 export const methods = ["GET", "OPTIONS", "POST", "PUT", "PATCH", "DELETE"];
+const corsOptions = {
+  allowedHeaders,
+  methods,
+  origin: ALLOWED_ORIGIN,
+};
 
 const SERVER = {
   hostName: SERVER_HOST,
   port: SERVER_PORT,
   allowedOrigin: ALLOWED_ORIGIN,
-  corsOptions: env.devEnv()
-    ? {
-        allowedHeaders,
-        methods: ["GET", "OPTIONS", "POST", "PUT", "PATCH", "DELETE"],
-        origin: ALLOWED_ORIGIN,
-      }
-    : undefined,
+  corsOptions,
   ioOptions: {
     pingInterval: 2000,
     pingTimeout: 5000,
-    cors: env.devEnv() ? { origin: ALLOWED_ORIGIN } : undefined,
+    cors: corsOptions,
   },
 };
 

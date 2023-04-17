@@ -3,7 +3,7 @@ import http from "http";
 import { Server, Socket } from "socket.io";
 import { GameEvent } from "./event/game.event";
 import socketHandler from "./service/socket.handler";
-import gameRoutes, { options } from "./routes/game.route";
+import gameRoutes from "./routes/game.route";
 import jwtManager from "./auth/jwt.manager";
 import { handleErrors } from "./error/error.handler";
 import morgan from "morgan";
