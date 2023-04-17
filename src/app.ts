@@ -15,7 +15,7 @@ import optionsMiddleware from "./middleware/options.middleware";
 export const app = express();
 
 // CORS and options request
-app.options("*", optionsMiddleware);
+app.use(optionsMiddleware);
 
 // Body and url parsing
 app.use(express.json());

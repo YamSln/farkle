@@ -11,7 +11,8 @@ const options = (
   response.header("Access-Control-Allow-Origin", env.allowedOrigin());
   response.header("Access-Control-Allow-Methods", methods.toString());
   response.header("Access-Control-Allow-Headers", allowedHeaders.toString());
-  response.sendStatus(HttpStatusCode.OK);
+  response.status(HttpStatusCode.OK);
+  next();
 };
 
 export default options;
