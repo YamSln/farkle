@@ -29,6 +29,7 @@
         fxHide.gt-sm="true"
         style="text-align: center"
         class="mat-elevation-z0"
+        *ngIf="game.gamePhase != _gamePhaseConstant.WAIT"
       >
         {{
           game.currentPlayer == game.selfIndex
