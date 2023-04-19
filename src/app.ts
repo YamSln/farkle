@@ -10,7 +10,7 @@ import morgan from "morgan";
 import serverConfig from "./config/server-config";
 import path from "path";
 import env from "./config/env";
-import options from "./middleware/options.middleware";
+import { options } from "./middleware/options.middleware";
 
 export const app = express();
 

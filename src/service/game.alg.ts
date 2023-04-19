@@ -1,6 +1,5 @@
 import { DieFace } from "../model/die-face.type";
 import { Die } from "../model/die.model";
-import { SelectPayload } from "../payload/select.payload";
 import { JOKER_INDEX } from "../util/game.constants";
 
 interface Histogram {
@@ -10,19 +9,19 @@ interface Histogram {
 
 // before allowing player to select dice, the array goes through the bust check algo
 const checkBust = (dice: Die[]): boolean => {
-  const move_checker: Histogram = {
+  const moveChecker: Histogram = {
     array: ([] = [0, 0, 0, 0, 0, 0, 0]),
     joker: 0,
   };
   for (let i = 0; i < 6; i++) {
     if (!dice[i].confirmed) {
-      move_checker.array[dice[i].number]++;
+      moveChecker.array[dice[i].number]++;
     }
   }
 
-  if (move_checker.array[1] > 0 || move_checker.array[5] > 0) return false;
+  if (moveChecker.array[1] > 0 || moveChecker.array[5] > 0) return false;
   for (let i = 2; i <= 6; i++) {
-    if (i != 5 && move_checker.array[i] >= 3) return false;
+    if (i != 5 && moveChecker.array[i] >= 3) return false;
   }
   return true;
 };

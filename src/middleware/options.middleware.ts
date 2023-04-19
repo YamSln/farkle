@@ -22,4 +22,4 @@ const options = (
   next();
 };
 
-export default { options };
+export { options };
