@@ -4,7 +4,7 @@
     [players]="game.players"
     [playing]="game.players[game.currentPlayer].nick"
     [selfIndex]="game.selfIndex"
-    [host]="game.players[game.currentPlayer].host"
+    [host]="game.players[game.selfIndex].host"
     [gameWon]="game.gameWon"
     [restartable]="game.gamePhase != _gamePhaseConstant.WAIT"
     (newGameClick)="onNewGameClick(game.gameWon)"
