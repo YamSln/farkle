@@ -10,7 +10,12 @@ describe("Game Middleware Unit Tests", () => {
     });
     it("should create game", () => {
       const request = httpMocks.createRequest({
-        body: { nick: "player", password: "password", maxPlayers: 5 },
+        body: {
+          nick: "player",
+          password: "password",
+          maxPlayers: 5,
+          maxPoints: 3000,
+        },
       });
       const response = httpMocks.createResponse();
       const next = jest.fn();
@@ -21,7 +26,12 @@ describe("Game Middleware Unit Tests", () => {
 
       middleware.createGame(request, response, next);
 
-      expect(gameCreationSpy).toHaveBeenCalledWith("player", "password", 5);
+      expect(gameCreationSpy).toHaveBeenCalledWith(
+        "player",
+        "password",
+        5,
+        3000,
+      );
       expect(response.statusCode).toEqual(201);
       expect(response._getJSONData()).toEqual({
         token: "token",
