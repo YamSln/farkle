@@ -16,6 +16,7 @@ const CORS_OPTIONS = {
   methods: METHODS,
   origin: ALLOWED_ORIGIN,
 };
+
 const IO_OPTIONS = {
   pingInterval: 2000,
   pingTimeout: 5000,

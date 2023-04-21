@@ -70,6 +70,5 @@
     "resolveJsonModule": true,
     "noImplicitAny": false
   },
-
   "exclude": ["node_modules", "./src/client", "**/*.spec.ts", "jest.config.ts"]
 }
