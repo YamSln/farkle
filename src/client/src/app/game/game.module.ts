@@ -12,6 +12,7 @@ import { DiceBoardComponent } from './dice-board/dice-board.component';
 import { ActionBoardComponent } from './action-board/action-board.component';
 import { ConfettiComponent } from './confetti/confetti.component';
 import { GameDataModule } from '../game-data/game-data.module';
+import { PlayBannerComponent } from './play-banner/play-banner.component';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { GameDataModule } from '../game-data/game-data.module';
     DiceBoardComponent,
     ActionBoardComponent,
     ConfettiComponent,
+    PlayBannerComponent,
   ],
   imports: [
     CommonModule,

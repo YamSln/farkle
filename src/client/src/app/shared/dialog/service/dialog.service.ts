@@ -20,6 +20,6 @@ export class DialogService {
   }
 
   openRulesDialog(): void {
-    this.dialog.open(RulesDialogComponent);
+    this.dialog.open(RulesDialogComponent, { maxWidth: 800 });
   }
 }

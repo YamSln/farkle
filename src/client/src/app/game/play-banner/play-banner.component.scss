@@ -1,0 +1,6 @@
+@use "../../../theme.scss" as theme;
+
+.playing-color {
+  background-color: theme.$accent-color;
+  color: #2c2c2c;
+}

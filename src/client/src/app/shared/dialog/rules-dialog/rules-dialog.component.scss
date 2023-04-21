@@ -1,13 +1,29 @@
-@use '../../../../theme.scss' as theme;
+@use "../../../../theme.scss" as theme;
 
 mat-dialog-content {
-    scrollbar-width: none; 
+  scrollbar-width: none;
 }
 
 mat-dialog-content::-webkit-scrollbar {
-    display: none;
-} 
+  display: none;
+}
 
 .bust {
-    color: theme.$accent-color;
+  color: theme.$accent-color;
+}
+
+p,
+ul {
+  font-size: 1rem;
+}
+
+.text-center {
+  width: 100%;
+  text-align: center;
+}
+
+td,
+tr {
+  text-align: center;
+  vertical-align: middle;
 }

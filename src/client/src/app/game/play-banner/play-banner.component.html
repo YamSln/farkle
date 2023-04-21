@@ -1,0 +1,14 @@
+<mat-card
+  [@.disabled]="!playing && !bounceIn"
+  [@jello]="playing"
+  [@bounceInOnEnter]
+  [@bounceOutOnLeave]
+  fxHide.gt-sm="true"
+  style="text-align: center"
+  class="mat-elevation-z0"
+  [ngClass]="{ 'playing-color': playing }"
+  *ngIf="gamePhase != _gamePhaseConstant.WAIT"
+>
+  {{ playing ? "You are " : nick + " is " }}
+  playing
+</mat-card>

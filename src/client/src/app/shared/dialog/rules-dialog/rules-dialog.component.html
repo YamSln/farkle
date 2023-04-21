@@ -4,209 +4,114 @@
   <br />
   <br />
   <!-- Scrollable Rules Display -->
-  <h2 style="text-align: center">
+  <h2 class="text-center">
     <u>Objective of the game </u>
   </h2>
   <br />
-  <h3 style="text-align: center">
+  <h3 class="text-center">
     Gain points and reach the goal before other players!
   </h3>
   <br />
 
   <ul>
-    <li>Whoever starts is randomly determined</li>
-    <li>Each player plays starts his turn with all 6 dice.</li>
-    <li>Player rolls them in order to make combinations to obtain points.</li>
+    <li>Whoever starts is randomly determined.</li>
+    <li>Each player starts his turn with all 6 dice.</li>
+    <li>Score earned is determined by dice combination / series.</li>
   </ul>
   <br />
-
-  1 and 5 are the only numbers that can be picked up as points from as
-  individuals (1 die) or pairs (2 similar dice)<br /><br />
-
-  <u>Singles:</u><br /><br />
-
-  <app-die-score [dieFace]="1" [dieScore]="100"></app-die-score>
-  <app-die-score [dieFace]="5" [dieScore]="500"></app-die-score><br />
-
-  <u>2 of a kind:</u><br /><br />
-
-  <div fxLayout="row" fxLayoutGap="5px">
-    <span>of </span>
-    <app-die-score [dieFace]="1" [dieScore]="200"></app-die-score>
-  </div>
-  <div fxLayout="row" fxLayoutGap="5px">
-    <span>of </span>
-    <app-die-score [dieFace]="5" [dieScore]="1000"></app-die-score>
+  <p>
+    1 and 5 are the only numbers that can be picked up as points from as
+    individuals (1 die) or pairs (2 similar dice)
+  </p>
+  <br /><br />
+  <h3 class="text-center"><u>Dice Cobinations</u></h3>
+  <table class="text-center">
+    <tr>
+      <th>No.</th>
+      <th *ngFor="let dieScore of dataSource">
+        {{ dieScore.number }}
+      </th>
+    </tr>
+    <tr *ngFor="let dieScore of dataSource">
+      <app-die-score [dieFace]="dieScore.number"></app-die-score>
+      <td *ngFor="let score of dieScore.scores">{{ score || "-" }}</td>
+    </tr>
+  </table>
+  <br />
+  <h4 class="text-center"><u>Straight:</u></h4>
+  <br />
+  <div
+    style="width: 100%"
+    fxLayout.gt-sm="row"
+    fxLayoutAlign.gt-sm="space-evenly center"
+  >
+    <div fxLayout="row" fxLayoutGap="5px">
+      <app-die-score [dieFace]="1"></app-die-score>
+      <mat-icon>arrow_right_alt</mat-icon>
+      <app-die-score [dieFace]="5"></app-die-score>
+      = 500p
+    </div>
+    <div fxLayout="row" fxLayoutGap="5px">
+      <app-die-score [dieFace]="2"></app-die-score>
+      <mat-icon>arrow_right_alt</mat-icon>
+      <app-die-score [dieFace]="6"></app-die-score>
+      = 750p
+    </div>
+    <div fxLayout="row" fxLayoutGap="5px">
+      <app-die-score [dieFace]="1"></app-die-score>
+      <mat-icon>arrow_right_alt</mat-icon>
+      <app-die-score [dieFace]="6"></app-die-score>
+      = 1500p
+    </div>
   </div>
   <br />
 
-  <u>3 of a kind:</u><br /><br />
+  <h3 class="text-center"><u class="bust">Bust</u></h3>
+  <br />
+  <p>
+    If at any point in your turn you roll a throw with no available "legal"
+    moves you lose all the points you accumulated during your current turn and
+    the turn will proceed to the next player
+  </p>
+  <br /><br />
 
-  <div fxLayout="row" fxLayoutGap="5px">
-    <span>of </span>
-    <app-die-score [dieFace]="2" [dieScore]="200"></app-die-score>
-  </div>
-  <div fxLayout="row" fxLayoutGap="5px">
-    <span>of </span>
-    <app-die-score [dieFace]="3" [dieScore]="300"></app-die-score>
-  </div>
-  <div fxLayout="row" fxLayoutGap="5px">
-    <span>of </span>
-    <app-die-score [dieFace]="4" [dieScore]="400"></app-die-score>
-  </div>
-  <div fxLayout="row" fxLayoutGap="5px">
-    <span>of </span>
-    <app-die-score [dieFace]="5" [dieScore]="500"></app-die-score>
-  </div>
-  <div fxLayout="row" fxLayoutGap="5px">
-    <span>of </span>
-    <app-die-score [dieFace]="6" [dieScore]="600"></app-die-score>
-  </div>
-  <div fxLayout="row" fxLayoutGap="5px">
-    <span>of </span>
-    <app-die-score [dieFace]="1" [dieScore]="1000"></app-die-score>
+  <div fxLayout="column" fxLayoutGap="5px">
+    <h3 class="text-center"><u>Joker</u></h3>
+    <div fxFlex fxLayout="row" fxLayoutAlign="center center">
+      <app-die-score [dieFace]="1" [joker]="true"></app-die-score>
+      <app-die-score [dieFace]="2" [joker]="true"></app-die-score>
+      <app-die-score [dieFace]="3" [joker]="true"></app-die-score>
+      <app-die-score [dieFace]="4" [joker]="true"></app-die-score>
+      <app-die-score [dieFace]="5" [joker]="true"></app-die-score>
+      <app-die-score [dieFace]="6" [joker]="true"></app-die-score>
+    </div>
   </div>
   <br />
-
-  <u>4 of a kind:</u><br /><br />
-
-  <div fxLayout="row" fxLayoutGap="5px">
-    <span>of </span>
-    <app-die-score [dieFace]="2" [dieScore]="400"></app-die-score>
-  </div>
-  <div fxLayout="row" fxLayoutGap="5px">
-    <span>of </span>
-    <app-die-score [dieFace]="3" [dieScore]="500"></app-die-score>
-  </div>
-  <div fxLayout="row" fxLayoutGap="5px">
-    <span>of </span>
-    <app-die-score [dieFace]="4" [dieScore]="800"></app-die-score>
-  </div>
-  <div fxLayout="row" fxLayoutGap="5px">
-    <span>of </span>
-    <app-die-score [dieFace]="5" [dieScore]="1000"></app-die-score>
-  </div>
-  <div fxLayout="row" fxLayoutGap="5px">
-    <span>of </span>
-    <app-die-score [dieFace]="6" [dieScore]="1200"></app-die-score>
-  </div>
-  <div fxLayout="row" fxLayoutGap="5px">
-    <span>of </span>
-    <app-die-score [dieFace]="1" [dieScore]="2000"></app-die-score>
-  </div>
-  <br />
-
-  <u>5 of a kind:</u><br /><br />
-
-  <div fxLayout="row" fxLayoutGap="5px">
-    <span>of </span>
-    <app-die-score [dieFace]="2" [dieScore]="800"></app-die-score>
-  </div>
-  <div fxLayout="row" fxLayoutGap="5px">
-    <span>of </span>
-    <app-die-score [dieFace]="3" [dieScore]="1200"></app-die-score>
-  </div>
-  <div fxLayout="row" fxLayoutGap="5px">
-    <span>of </span>
-    <app-die-score [dieFace]="4" [dieScore]="1600"></app-die-score>
-  </div>
-  <div fxLayout="row" fxLayoutGap="5px">
-    <span>of </span>
-    <app-die-score [dieFace]="5" [dieScore]="2000"></app-die-score>
-  </div>
-  <div fxLayout="row" fxLayoutGap="5px">
-    <span>of </span>
-    <app-die-score [dieFace]="6" [dieScore]="2400"></app-die-score>
-  </div>
-  <div fxLayout="row" fxLayoutGap="5px">
-    <span>of </span>
-    <app-die-score [dieFace]="1" [dieScore]="4000"></app-die-score>
-  </div>
-  <br />
-
-  <u>6 of a kind:</u><br /><br />
-
-  <div fxLayout="row" fxLayoutGap="5px">
-    <span>of </span>
-    <app-die-score [dieFace]="2" [dieScore]="1600"></app-die-score>
-  </div>
-  <div fxLayout="row" fxLayoutGap="5px">
-    <span>of </span>
-    <app-die-score [dieFace]="3" [dieScore]="2400"></app-die-score>
-  </div>
-  <div fxLayout="row" fxLayoutGap="5px">
-    <span>of </span>
-    <app-die-score [dieFace]="4" [dieScore]="3200"></app-die-score>
-  </div>
-  <div fxLayout="row" fxLayoutGap="5px">
-    <span>of </span>
-    <app-die-score [dieFace]="5" [dieScore]="4000"></app-die-score>
-  </div>
-  <div fxLayout="row" fxLayoutGap="5px">
-    <span>of </span>
-    <app-die-score [dieFace]="6" [dieScore]="4800"></app-die-score>
-  </div>
-  <div fxLayout="row" fxLayoutGap="5px">
-    <span>of </span>
-    <app-die-score [dieFace]="1" [dieScore]="8000"></app-die-score>
-  </div>
-  <br />
-
-  <u>Straight:</u><br /><br />
-
-  <div fxLayout="row" fxLayoutGap="5px">
-    <app-die-score [dieFace]="1"></app-die-score>
-    <mat-icon>arrow_right_alt</mat-icon>
-    <app-die-score [dieFace]="5"></app-die-score>
-    = 500p
-  </div>
-  <div fxLayout="row" fxLayoutGap="5px">
-    <app-die-score [dieFace]="2"></app-die-score>
-    <mat-icon>arrow_right_alt</mat-icon>
-    <app-die-score [dieFace]="6"></app-die-score>
-    = 750p
-  </div>
-  <div fxLayout="row" fxLayoutGap="5px">
-    <app-die-score [dieFace]="1"></app-die-score>
-    <mat-icon>arrow_right_alt</mat-icon>
-    <app-die-score [dieFace]="6"></app-die-score>
-    = 1500p
-  </div>
-  <br />
-
-  Anything other than the plays listed above is considered an "illegal" move and
-  cannot be "confirmed" by the player.<br /><br />
-
-  <u class="bust">Bust:</u><br />
-  If at any point in your turn you roll a throw with no available "legal" moves
-  you lose all the points you accumulated during your current turn and the turn
-  will proceed to the next player<br /><br />
-
-  <div fxLayout="row" fxLayoutGap="5px">
-    <span><u>Joker: </u> </span>
-    <app-die-score [dieFace]="1" [joker]="true"></app-die-score>
-    <app-die-score [dieFace]="2" [joker]="true"></app-die-score>
-    <app-die-score [dieFace]="3" [joker]="true"></app-die-score>
-    <app-die-score [dieFace]="4" [joker]="true"></app-die-score>
-    <app-die-score [dieFace]="5" [joker]="true"></app-die-score>
-    <app-die-score [dieFace]="6" [joker]="true"></app-die-score>
-  </div>
-  One die out of the 6 is a joker die - the value 1 on that die is replaced by
-  the joker, other values on that die behaves the same as the others.<br />
-  if you get a joker - it will automatically change to a number that will
-  maximize your point output (it will also change in order to "legalize" the
-  move)<br /><br />
-
-  When you "confirm" a throw with a die/dice you gain the points they are worth
-  and not throw them again for that turn, now you can choose to either roll
-  another throw with the remaining dice you have or to stop your turn and bank
-  the points you gathered in this turn and the turn will proceed to the next
-  player<br /><br />
-
-  If you are able to pickup all the dice during your turn you can choose to
-  continue throwing with all the 6 dice becoming available again (essentially
-  starting another fresh turn with all the points you gathered up to now) -
-  Beware that you may still get a bust at any point during your turn!<br /><br />
+  <p>
+    One die out of the 6 is a joker die - the value 1 on that die is replaced by
+    the joker, other values on that die behaves the same as the others.<br />
+    if you get a joker - it will automatically change to a number that will
+    maximize your point output (it will also change in order to "legalize" the
+    move)
+  </p>
+  <br /><br />
+  <h3 class="text-center"><u>Confirmation</u></h3>
+  <p>
+    When you "confirm" a throw with a die/dice you gain the points they are
+    worth and not throw them again for that turn, now you can choose to either
+    roll another throw with the remaining dice you have or to stop your turn and
+    bank the points you gathered in this turn and the turn will proceed to the
+    next player
+  </p>
+  <br /><br />
+  <h3 class="text-center"><u>Turn Completion</u></h3>
+  <p>
+    If you are able to pickup all the dice during your turn you can choose to
+    continue throwing with all the 6 dice becoming available again (essentially
+    starting another fresh turn with all the points you gathered up to now) -
+    Beware that you may still get a bust at any point during your turn!
+  </p>
+  <br /><br />
 
   GOOD LUCK!
 </mat-dialog-content>

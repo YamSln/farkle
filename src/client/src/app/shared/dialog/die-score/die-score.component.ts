@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { DieFace } from '../../../../../../model/die-face.type';
+import { DieImageService } from '../../service/die-image.service';
 
 @Component({
   selector: 'app-die-score',
@@ -7,15 +8,17 @@ import { DieFace } from '../../../../../../model/die-face.type';
   styleUrls: ['./die-score.component.scss'],
 })
 export class DieScoreComponent implements OnInit {
-  @Input() dieFace!: DieFace;
+  @Input() dieFace: DieFace = 1;
   @Input() dieScore!: number;
   @Input() joker: boolean = false;
 
-  constructor() {}
+  constructor(private dieImageService: DieImageService) {}
 
   ngOnInit(): void {}
 
   dieImage(): string {
-    return `assets/dice/${this.joker ? 'j' : ''}dice_${this.dieFace || 1}.svg`;
+    return this.joker
+      ? this.dieImageService.getJokerImage(this.dieFace)
+      : this.dieImageService.getStandardImage(this.dieFace);
   }
 }

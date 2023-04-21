@@ -25,19 +25,11 @@
         (newGameClick)="onNewGame(game.gameWon)"
       ></app-score-board>
       <!-- Mobile Current Player -->
-      <mat-card
-        fxHide.gt-sm="true"
-        style="text-align: center"
-        class="mat-elevation-z0"
-        *ngIf="game.gamePhase != _gamePhaseConstant.WAIT"
-      >
-        {{
-          game.currentPlayer == game.selfIndex
-            ? "You are "
-            : game.players[game.currentPlayer].nick + " is "
-        }}
-        playing
-      </mat-card>
+      <app-play-banner
+        [playing]="game.currentPlayer == game.selfIndex"
+        [gamePhase]="game.gamePhase"
+        [nick]="game.players[game.currentPlayer].nick"
+      ></app-play-banner>
       <!-- Desktop Dice + Actions -->
       <div
         fxFlex.gt-sm="60"

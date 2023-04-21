@@ -105,7 +105,6 @@ import { MatListModule } from '@angular/material/list';
 })
 export class MaterialModule {
   private iconsUrl: string = 'assets/icons/';
-  private imagesUrl: string = 'assets/dice/';
 
   private icons: IconData[] = [
     {
@@ -116,32 +115,6 @@ export class MaterialModule {
       name: 'github_dark',
       path: `${this.iconsUrl}github_dark.svg`,
     },
-  ];
-  private images: string[] = [
-    `${this.imagesUrl}dice_1.svg`,
-    `${this.imagesUrl}dice_2.svg`,
-    `${this.imagesUrl}dice_3.svg`,
-    `${this.imagesUrl}dice_4.svg`,
-    `${this.imagesUrl}dice_5.svg`,
-    `${this.imagesUrl}dice_6.svg`,
-    `${this.imagesUrl}jdice_1.svg`,
-    `${this.imagesUrl}jdice_2.svg`,
-    `${this.imagesUrl}jdice_3.svg`,
-    `${this.imagesUrl}jdice_4.svg`,
-    `${this.imagesUrl}jdice_5.svg`,
-    `${this.imagesUrl}jdice_6.svg`,
-    `${this.imagesUrl}dice_1_selected.svg`,
-    `${this.imagesUrl}dice_2_selected.svg`,
-    `${this.imagesUrl}dice_3_selected.svg`,
-    `${this.imagesUrl}dice_4_selected.svg`,
-    `${this.imagesUrl}dice_5_selected.svg`,
-    `${this.imagesUrl}dice_6_selected.svg`,
-    `${this.imagesUrl}jdice_1_selected.svg`,
-    `${this.imagesUrl}jdice_2_selected.svg`,
-    `${this.imagesUrl}jdice_3_selected.svg`,
-    `${this.imagesUrl}jdice_4_selected.svg`,
-    `${this.imagesUrl}jdice_5_selected.svg`,
-    `${this.imagesUrl}jdice_6_selected.svg`,
   ];
 
   constructor(
@@ -154,7 +127,6 @@ export class MaterialModule {
         this.sanitizer.bypassSecurityTrustResourceUrl(iconData.path)
       );
     });
-    this.images.forEach((image) => (new Image().src = image));
   }
 }
 
