@@ -10,7 +10,7 @@ Farkle is an online successor to the farkle folk game.
 
 - Material design UI
 - Dark theme
-- In game action flow
+- Plays and score tracking
 - Timed turns
 
 ## About The Game
@@ -26,6 +26,7 @@ No. | 1 of a kind | 2 of a kind | 3 of a kind | 4 of a kind | 5 of a kind | 6 of
 <img src="https://github.com/YamSln/farkle/blob/main/src/client/src/assets/dice/dice_5.svg" width="20"> | 50 | 100 | 500 | 1000 | 2000 | 4000
 <img src="https://github.com/YamSln/farkle/blob/main/src/client/src/assets/dice/dice_6.svg" width="20"> | - | - | 600 | 1200 | 2400 | 4800
 
+(note that only 1 and 5 can be selected as a single or duo)<br/>
 Another options of earning score is to form a *straight*: <br/>
 1 --> 5 = 550 points <br/>
 2 --> 6 = 750 points <br/>
