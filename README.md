@@ -36,8 +36,3 @@ The joker die <kbd><img src="https://github.com/YamSln/farkle/blob/main/src/clie
 A *bust* is a situation when the current roll result did not yield any legal moves, the player will loose all points earned in the current turn and the game will proceed.
 
 The *host* of the game 亗 can change the timer and restart the game, if the host disconnects, one of the remaining players will be selected as a new host.
-
-### Installation and Running
-
-Run `npm run build` and `npm start` to build and start the app on your local machine. <br>
-The app is also heroku deployment ready and can be modified to run the build and start scripts automatticaly upon deploying.
