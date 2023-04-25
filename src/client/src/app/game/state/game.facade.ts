@@ -134,8 +134,26 @@ export class GameFacade implements OnDestroy {
     this.store.dispatch(confirmSuccess({ confirmPayload }));
   }
 
-  bankBust(): void {
-    this.store.dispatch(bankBust());
+  bankBust(allDiceConfirmed: boolean): void {
+    if (allDiceConfirmed) {
+      const dialogData: MatDialogData = {
+        data: {
+          dialogType: GeneralDialogType.INFO,
+          dialogDefinition: GeneralDialogDefinition.CONFIRMATION,
+          dialogMessage: 'You sure you want to bank?',
+        },
+        panelClass: 'dialog',
+      };
+      this.dialogSubscription = this.dialogService
+        .openGeneralDialog(dialogData)
+        .subscribe((value) => {
+          if (value) {
+            this.store.dispatch(bankBust());
+          }
+        });
+    } else {
+      this.store.dispatch(bankBust());
+    }
   }
 
   banked(bankBustPayload: BankBustPayload): void {

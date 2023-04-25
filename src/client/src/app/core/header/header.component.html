@@ -1,7 +1,8 @@
 <!-- Game Header -->
 <mat-toolbar
   fxLayout="row"
-  fxLayoutAlign="end center"
+  fxLayoutAlign.gt-sm="end center"
+  fxLayoutAlign.lt-md="space-between center"
   [color]="isLightTheme ? '' : 'primary'"
 >
   <!-- Home / Invitation Link Button -->
@@ -58,7 +59,8 @@
     <app-github></app-github>
   </div>
   <!-- Mobile Menu -->
-  <div fxFlex fxHide.gt-sm="true" fxLayout="row" fxLayoutAlign="end center">
+  <div fxHide.gt-sm="true" *ngIf="roomUrl && showScore">Score: {{ score }}</div>
+  <div fxHide.gt-sm="true">
     <button mat-icon-button (click)="onMenuToggleClick()">
       <mat-icon>menu</mat-icon>
     </button>
