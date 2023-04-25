@@ -3,6 +3,7 @@ import {
   displayErrorMessage,
   displayLoading,
   displayPlayerAction,
+  toggleMute,
   toggleTheme,
 } from './shared.action';
 import { sharedInitialState, SharedState } from './shared.state';
@@ -20,6 +21,9 @@ const _sharedReducer = createReducer(
   }),
   on(toggleTheme, (state: SharedState, action: any): SharedState => {
     return { ...state, isLightTheme: !state.isLightTheme };
+  }),
+  on(toggleMute, (state: SharedState, action: any): SharedState => {
+    return { ...state, muted: !state.muted };
   })
 );
 

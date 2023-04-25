@@ -52,6 +52,7 @@ import { MatDialogData } from 'src/app/shared/dialog/model/mat-dialog.data';
 import { GeneralDialogType } from 'src/app/shared/dialog/model/general-dialog.type';
 import { GeneralDialogDefinition } from 'src/app/shared/dialog/model/general-dialog.definition';
 import { GamePhase } from '../../../../../model/game.phase.model';
+import { SoundService } from 'src/app/shared/service/sound.service';
 
 @Injectable({ providedIn: 'root' })
 export class GameFacade implements OnDestroy {
@@ -59,7 +60,8 @@ export class GameFacade implements OnDestroy {
   constructor(
     private store: Store<GameState>,
     private router: Router,
-    private dialogService: DialogService
+    private dialogService: DialogService,
+    private soundService: SoundService
   ) {}
 
   createGame(game: CreateGamePayload): void {
@@ -111,6 +113,9 @@ export class GameFacade implements OnDestroy {
 
   rolled(dice: Die[], bust: boolean): void {
     this.store.dispatch(rollSuccess({ dice, bust }));
+    if (bust) {
+      this.soundService.playBustSoundEffect();
+    }
   }
 
   selectDie(index: DieIndex): void {
@@ -135,6 +140,9 @@ export class GameFacade implements OnDestroy {
 
   banked(bankBustPayload: BankBustPayload): void {
     this.store.dispatch(bankSuccess({ bankBustPayload }));
+    if (bankBustPayload.wonGame) {
+      this.soundService.playWinSoundEffect();
+    }
   }
 
   busted(bankBustPayload: BankBustPayload): void {

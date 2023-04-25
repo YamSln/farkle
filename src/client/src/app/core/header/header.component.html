@@ -42,6 +42,12 @@
     <!-- Rules Modal Button -->
     <app-rules></app-rules>
     <span>|</span>
+    <!-- Mute Button -->
+    <app-mute-toggle
+      [muted]="muted"
+      (muteToggle)="onMuteToggle()"
+    ></app-mute-toggle>
+    <span>|</span>
     <!-- Theme Toggle -->
     <app-theme-toggle
       [lightTheme]="isLightTheme"

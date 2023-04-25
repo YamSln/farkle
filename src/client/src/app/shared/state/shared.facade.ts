@@ -4,11 +4,13 @@ import { Observable } from 'rxjs';
 import {
   displayErrorMessage,
   displayLoading,
+  toggleMute,
   toggleTheme,
 } from './shared.action';
 import {
   getErrorMessage,
   getIsLightTheme,
+  getIsMuted,
   getLoadingStatus,
   getPlayerAction,
 } from './shared.selector';
@@ -32,6 +34,14 @@ export class SharedFacade {
 
   getIsLightTheme(): Observable<boolean> {
     return this.store.select(getIsLightTheme);
+  }
+
+  getIsMuted(): Observable<boolean> {
+    return this.store.select(getIsMuted);
+  }
+
+  toggleMute(): void {
+    this.store.dispatch(toggleMute());
   }
 
   displayLoading(): void {

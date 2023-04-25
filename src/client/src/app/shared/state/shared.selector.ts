@@ -24,3 +24,8 @@ export const getIsLightTheme = createSelector(
   getSharedState,
   (state: SharedState) => state.isLightTheme
 );
+
+export const getIsMuted = createSelector(
+  getSharedState,
+  (state: SharedState) => state.muted
+);

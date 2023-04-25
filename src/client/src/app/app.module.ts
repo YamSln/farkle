@@ -15,6 +15,7 @@ import { environment } from '../environments/environment';
 import { LocalStorageService } from './shared/service/localstorage.service';
 import { getMetaReducers } from './shared/state/shared.meta-reducer';
 import { SHARED_STATE_NAME } from './shared/state/shared.selector';
+import { SoundService } from './shared/service/sound.service';
 
 @NgModule({
   declarations: [AppComponent],
@@ -37,7 +38,7 @@ import { SHARED_STATE_NAME } from './shared/state/shared.selector';
   providers: [
     {
       provide: META_REDUCERS,
-      deps: [LocalStorageService],
+      deps: [LocalStorageService, SoundService],
       useFactory: getMetaReducers,
     },
   ],

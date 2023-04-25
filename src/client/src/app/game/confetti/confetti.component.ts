@@ -67,7 +67,7 @@ export class ConfettiComponent implements OnChanges, OnDestroy, OnInit {
           if (i > 2) {
             this.clearConfetti();
           }
-        }, 1500);
+        }, 1100);
         break;
       case ConfettiType.BUST:
         this.throwConfetti(ConfettiType.BUST);

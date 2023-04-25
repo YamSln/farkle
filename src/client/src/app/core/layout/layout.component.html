@@ -13,9 +13,11 @@
     [roomUrl]="(roomUrl | async) || ''"
     [host]="game.players[game.selfIndex].host"
     [time]="game.turnTime"
+    [muted]="(isMuted | async) || false"
     (themeToggle)="themeToggleChanged()"
     (menuToggle)="menuToggleChanged()"
     (timeChange)="timeChanged($event)"
+    (muteToggle)="muteToggleChanged()"
   >
   </app-header>
   <mat-drawer-container fxFlex>
@@ -46,8 +48,10 @@
             [time]="game.turnTime"
             [isLightTheme]="(isLightTheme | async) || false"
             [timeChangable]="!!(roomUrl | async) || false"
+            [muted]="(isMuted | async) || false"
             (themeToggle)="themeToggleChanged()"
             (timeChange)="timeChanged($event)"
+            (muteToggle)="muteToggleChanged()"
           ></app-settings-menu>
         </mat-tab>
         <!-- Game Info Tab -->
