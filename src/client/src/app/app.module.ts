@@ -5,13 +5,16 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CoreModule } from '@angular/flex-layout';
-import { StoreModule } from '@ngrx/store';
+import { META_REDUCERS, StoreModule } from '@ngrx/store';
 import { SharedModule } from './shared/shared.module';
 import { HttpClientModule } from '@angular/common/http';
 import { SharedReducer } from './shared/state/shared.reducer';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
+import { LocalStorageService } from './shared/service/localstorage.service';
+import { getMetaReducers } from './shared/state/shared.meta-reducer';
+import { SHARED_STATE_NAME } from './shared/state/shared.selector';
 
 @NgModule({
   declarations: [AppComponent],
@@ -23,7 +26,7 @@ import { environment } from '../environments/environment';
     HttpClientModule,
     SharedModule,
     EffectsModule.forRoot([]),
-    StoreModule.forRoot({ shared: SharedReducer }),
+    StoreModule.forRoot({ [SHARED_STATE_NAME]: SharedReducer }),
     !environment.production
       ? StoreDevtoolsModule.instrument({
           maxAge: 25,
@@ -31,7 +34,13 @@ import { environment } from '../environments/environment';
         })
       : [],
   ],
-  providers: [],
+  providers: [
+    {
+      provide: META_REDUCERS,
+      deps: [LocalStorageService],
+      useFactory: getMetaReducers,
+    },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
