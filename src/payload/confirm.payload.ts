@@ -5,4 +5,5 @@ export interface ConfirmPayload {
   currentThrowScore: number;
   currentThrowPick: Die[];
   diceIndices: DieIndex[];
+  allDiceConfirmed: boolean;
 }

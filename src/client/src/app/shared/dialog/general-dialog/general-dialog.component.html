@@ -7,7 +7,7 @@
 >
   <!-- Dialog Icon -->
   <mat-icon
-    color="warn"
+    [color]="dialogIcon == _dialogTypeConstant.INFO ? '' : 'warn'"
     style="font-size: 3rem; line-height: 1"
     [inline]="true"
     >{{ dialogIcon }}</mat-icon

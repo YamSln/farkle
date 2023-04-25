@@ -2,6 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { GeneralDialogData } from '../model/general-dialog.data';
 import { GeneralDialogDefinition } from '../model/general-dialog.definition';
+import { GeneralDialogType } from '../model/general-dialog.type';
 
 @Component({
   templateUrl: './general-dialog.component.html',
@@ -11,6 +12,8 @@ export class GeneralDialogComponent implements OnInit {
   dialogData: GeneralDialogData;
   dialogDefinition = GeneralDialogDefinition;
   dialogIcon: string;
+  _dialogTypeConstant = GeneralDialogType;
+
   constructor(
     private dialogRef: MatDialogRef<GeneralDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: GeneralDialogData

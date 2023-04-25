@@ -169,6 +169,7 @@ export class Game implements GameState {
       currentThrowScore: throwScore,
       currentThrowPick: confirmedDice,
       diceIndices,
+      allDiceConfirmed: this.allDiceConfirmed,
     };
   }
 

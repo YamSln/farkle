@@ -13,6 +13,8 @@
     [roomUrl]="(roomUrl | async) || ''"
     [host]="game.players[game.selfIndex].host"
     [time]="game.turnTime"
+    [score]="game.players[game.selfIndex].points"
+    [showScore]="game.gamePhase != _gamePhaseConstant.WAIT && !game.gameWon"
     [muted]="(isMuted | async) || false"
     (themeToggle)="themeToggleChanged()"
     (menuToggle)="menuToggleChanged()"

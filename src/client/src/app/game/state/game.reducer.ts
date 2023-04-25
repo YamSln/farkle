@@ -95,6 +95,7 @@ const _gameReducer = createReducer(
       ),
       potentialScore: 0,
       gamePhase: GamePhase.ROLL,
+      allDiceConfirmed: action.confirmPayload.allDiceConfirmed,
     };
   }),
   on(bankSuccess, (state: GameState, action: any): GameState => {

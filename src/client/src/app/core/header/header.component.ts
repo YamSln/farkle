@@ -19,6 +19,8 @@ export class HeaderComponent implements OnInit {
   @Input() roomUrl!: string;
   @Input() time!: number;
   @Input() host!: boolean;
+  @Input() showScore!: boolean;
+  @Input() score!: number;
   @Input() muted!: boolean;
 
   @Output() themeToggle: EventEmitter<any> = new EventEmitter<any>();
