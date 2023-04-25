@@ -1,23 +1,10 @@
 <mat-list>
-  <!-- Menu Theme / Mute Toggle -->
-  <mat-list-item
-    class="list-item"
-    style="width: 100%"
-    fxLayout="column"
-    fxLayoutAlign="space-between"
-  >
+  <!-- Menu Theme Toggle -->
+  <mat-list-item class="list-item" fxLayoutAlign="center">
     <app-theme-toggle
-      style="margin-left: 5px"
-      fxFlex
       [lightTheme]="isLightTheme"
       (themeToggle)="onThemeToggleClick()"
     ></app-theme-toggle>
-    <div fxFlex></div>
-    <app-mute-toggle
-      fxFlex
-      [muted]="muted"
-      (muteToggle)="onMuteToggle()"
-    ></app-mute-toggle>
   </mat-list-item>
   <mat-divider></mat-divider>
   <!-- Menu Time Selector -->

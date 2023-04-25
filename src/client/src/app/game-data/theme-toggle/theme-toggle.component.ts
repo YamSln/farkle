@@ -17,7 +17,6 @@ export class ThemeToggleComponent implements OnInit {
   @Input() lightTheme!: boolean;
 
   @Output() themeToggle: EventEmitter<any> = new EventEmitter<any>();
-
   constructor() {}
 
   ngOnInit(): void {}

@@ -18,10 +18,8 @@ export class SettingsMenuComponent implements OnInit {
   @Input() host!: boolean;
   @Input() time!: number;
   @Input() timeChangable!: boolean;
-  @Input() muted!: boolean;
 
   @Output() themeToggle: EventEmitter<any> = new EventEmitter<any>();
-  @Output() muteToggle: EventEmitter<any> = new EventEmitter<any>();
   @Output() decorationsToggle: EventEmitter<any> = new EventEmitter<any>();
   @Output() popupsToggle: EventEmitter<any> = new EventEmitter<any>();
   @Output() timeChange: EventEmitter<number> = new EventEmitter<number>();
@@ -32,10 +30,6 @@ export class SettingsMenuComponent implements OnInit {
 
   onThemeToggleClick(): void {
     this.themeToggle.emit();
-  }
-
-  onMuteToggle(): void {
-    this.muteToggle.emit();
   }
 
   onDecorationsToggleClick(): void {
