@@ -19,8 +19,10 @@ export class HeaderComponent implements OnInit {
   @Input() roomUrl!: string;
   @Input() time!: number;
   @Input() host!: boolean;
+  @Input() muted!: boolean;
 
   @Output() themeToggle: EventEmitter<any> = new EventEmitter<any>();
+  @Output() muteToggle: EventEmitter<any> = new EventEmitter<any>();
   @Output() menuToggle: EventEmitter<any> = new EventEmitter<any>();
   @Output() timeChange: EventEmitter<number> = new EventEmitter<number>();
 
@@ -42,5 +44,9 @@ export class HeaderComponent implements OnInit {
 
   onTimeChange($event: any): void {
     this.timeChange.emit($event);
+  }
+
+  onMuteToggle(): void {
+    this.muteToggle.emit();
   }
 }

@@ -14,6 +14,7 @@ import { DecorationsToggleComponent } from './decorations-toggle/decorations-tog
 import { PopupsToggleComponent } from './popups-toggle/popups-toggle.component';
 import { SumPipe } from './pipe/sum.pipe';
 import { DieSortPipe } from './pipe/die-sort.pipe';
+import { MuteToggleComponent } from './mute-toggle/mute-toggle.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { DieSortPipe } from './pipe/die-sort.pipe';
     DecorationsToggleComponent,
     PopupsToggleComponent,
     SumPipe,
+    MuteToggleComponent,
   ],
   imports: [CommonModule, MaterialModule, FormsModule],
   exports: [
@@ -40,6 +42,7 @@ import { DieSortPipe } from './pipe/die-sort.pipe';
     DieFacePipe,
     SettingsMenuComponent,
     ThemeToggleComponent,
+    MuteToggleComponent,
     SumPipe,
   ],
 })

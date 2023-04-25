@@ -17,6 +17,7 @@ export class LayoutComponent implements OnInit {
   gameState!: Observable<GameState>;
   isLightTheme!: Observable<boolean>;
   roomUrl!: Observable<string>;
+  isMuted!: Observable<boolean>;
 
   _gamePhaseConstant = GamePhase;
 
@@ -28,6 +29,7 @@ export class LayoutComponent implements OnInit {
   ngOnInit(): void {
     this.roomUrl = this.gameFacade.getRoomUrl();
     this.isLightTheme = this.sharedFacade.getIsLightTheme();
+    this.isMuted = this.sharedFacade.getIsMuted();
     this.gameState = this.gameFacade.getGameState();
   }
 
@@ -45,6 +47,10 @@ export class LayoutComponent implements OnInit {
 
   timeChanged($event: any): void {
     this.gameFacade.setTime($event);
+  }
+
+  muteToggleChanged(): void {
+    this.sharedFacade.toggleMute();
   }
 
   onNewGame($event: boolean): void {
