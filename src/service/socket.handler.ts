@@ -1,5 +1,6 @@
 import { Server, Socket } from "socket.io";
 import { JoinType } from "../auth/join.type";
+import log from "../config/log";
 import {
   FORBIDDEN,
   ILLEGAL,
@@ -8,31 +9,32 @@ import {
 } from "../error/error.util";
 import { GameEvent } from "../event/game.event";
 import { JoinEvent } from "../event/join.event";
-import { CreateGamePayload } from "../model/create-game.payload";
-import { JoinPayload } from "../model/join.payload";
-import handler from "./game.handler";
-import log from "../config/log";
+import { CreateGamePayload } from "../payload/create-game.payload";
 import { DieIndex } from "../model/die-index.type";
+import { GameState } from "../model/game.model";
+import { JoinPayload } from "../payload/join.payload";
+import { PlayerAction } from "../model/player.action.payload";
+import { BankBustPayload } from "../payload/bankbust.payload";
+import { ConfirmPayload } from "../payload/confirm.payload";
 import { RollPayload } from "../payload/roll.payload";
 import { SelectPayload } from "../payload/select.payload";
-import { ConfirmPayload } from "../payload/confirm.payload";
-import { BankBustPayload } from "../payload/bankbust.payload";
-import { GameState } from "../model/game.model";
-import { PlayerAction } from "../model/player.action.payload";
+import handler from "./game.handler";
 
 const REQUESTOR = "SOCKET_HANDLER";
 
+// Initialize socket actions
 const onConnection = (socket: Socket, io: Server) => {
   log.debug(REQUESTOR, `${socket.id} connected!`);
   // On socket connection
   const auth: CreateGamePayload = socket.handshake.auth as CreateGamePayload;
+  // Perform join actin according to its type
   const joinType = socket.handshake.query.join;
   if (!auth) {
     disconnect(socket, UNAUTHORIZED);
-  } // Check join type
+  }
   if (!joinType) {
     disconnect(socket, FORBIDDEN);
-  } // Create / Join
+  }
   switch (joinType) {
     case JoinType.CREATE:
       createGame(socket, auth);
@@ -46,57 +48,61 @@ const onConnection = (socket: Socket, io: Server) => {
 
   const room = getSocketRoom(socket);
 
-  socket.on(GameEvent.NEW_GAME, () => {
-    try {
+  // Socket events handling
+
+  socket.on(GameEvent.NEW_GAME, onNewGame);
+
+  function onNewGame(): void {
+    catchErrors(socket, () => {
       const newGame: GameState = handler.onNewGame(socket.id, room);
       io.to(room).emit(GameEvent.NEW_GAME, newGame);
-    } catch {
-      sendIllegal(socket);
-    }
-  });
+    });
+  }
 
-  socket.on(GameEvent.START_GAME, () => {
-    try {
+  socket.on(GameEvent.START_GAME, onStartGame);
+
+  function onStartGame(): void {
+    catchErrors(socket, () => {
       const start = handler.onGameStart(socket.id, room, io);
       io.to(room).emit(GameEvent.START_GAME, start);
-    } catch (err) {
-      sendIllegal(socket);
-    }
-  });
+    });
+  }
 
-  socket.on(GameEvent.ROLL, () => {
-    try {
+  socket.on(GameEvent.ROLL, onRoll);
+
+  function onRoll(): void {
+    catchErrors(socket, () => {
       const rollPayload: RollPayload = handler.onRoll(socket.id, room);
       io.to(room).emit(GameEvent.ROLL, rollPayload.dice, rollPayload.bust);
-    } catch (err) {
-      sendIllegal(socket);
-    }
-  });
+    });
+  }
 
-  socket.on(GameEvent.SELECT, (dieIndex: DieIndex) => {
-    try {
+  socket.on(GameEvent.SELECT, onSelect);
+
+  function onSelect(dieIndex: DieIndex): void {
+    catchErrors(socket, () => {
       const selectPayload: SelectPayload = handler.onSelect(
         socket.id,
         room,
         dieIndex,
       );
       io.to(room).emit(GameEvent.SELECT, selectPayload);
-    } catch {
-      sendIllegal(socket);
-    }
-  });
+    });
+  }
 
-  socket.on(GameEvent.CONFIRM, () => {
-    try {
+  socket.on(GameEvent.CONFIRM, onConfirm);
+
+  function onConfirm(): void {
+    catchErrors(socket, () => {
       const confirmPayload: ConfirmPayload = handler.onConfirm(socket.id, room);
       io.to(room).emit(GameEvent.CONFIRM, confirmPayload);
-    } catch {
-      sendIllegal(socket);
-    }
-  });
+    });
+  }
 
-  socket.on(GameEvent.BANK_BUST, () => {
-    try {
+  socket.on(GameEvent.BANK_BUST, onBankBust);
+
+  function onBankBust(): void {
+    catchErrors(socket, () => {
       const bankBustPayload: BankBustPayload = handler.onBankBust(
         socket.id,
         room,
@@ -105,26 +111,26 @@ const onConnection = (socket: Socket, io: Server) => {
         bankBustPayload.bust ? GameEvent.BUST : GameEvent.BANK,
         bankBustPayload,
       );
-    } catch {
-      sendIllegal(socket);
-    }
-  });
+    });
+  }
 
-  socket.on(GameEvent.TIME_SET, (timeSpan: number) => {
-    try {
+  socket.on(GameEvent.TIME_SET, onTimeSet);
+
+  function onTimeSet(timeSpan: number): void {
+    catchErrors(socket, () => {
       const time = handler.onTimerSet(socket.id, room, timeSpan, io);
       io.to(room).emit(GameEvent.TIME_SET, time);
-    } catch {
-      sendIllegal(socket);
-    }
-  });
+    });
+  }
 
   socket.on(GameEvent.DISCONNECT_SELF, () => {
     disconnect(socket);
   });
 
-  socket.on(GameEvent.DISCONNECTING, () => {
-    try {
+  socket.on(GameEvent.DISCONNECTING, onDisconnecting);
+
+  function onDisconnecting(): void {
+    catchErrors(socket, () => {
       const room = getSocketRoom(socket);
       let playerAction: PlayerAction | null = handler.onDisconnectGame(
         socket.id,
@@ -135,48 +141,29 @@ const onConnection = (socket: Socket, io: Server) => {
           .to(room)
           .emit(GameEvent.PLAYER_DISCONNECTED, playerAction);
       }
-    } catch (err) {
-      sendIllegal(socket);
-    }
-  });
+    });
+  }
 };
 
 const joinGame = (socket: Socket, joinPayload: JoinPayload) => {
-  try {
-    // Send state to joined player
+  handleConnectinError(socket, joinPayload.roomId, () => {
     const event: JoinEvent = handler.onJoinGame(socket.id, joinPayload);
-    socket.join(joinPayload.room);
-    socket.emit(
-      GameEvent.JOIN_GAME,
-      { ...event.state, turnInterval: "", password: "", playerId: socket.id },
-      joinPayload.room,
-      event.joined,
-    );
+    socket.join(joinPayload.roomId);
+    socket.emit(GameEvent.JOIN_GAME, event.state, event.player);
     // Broadcast joined event to other players
-    socket.broadcast.to(joinPayload.room).emit(GameEvent.PLAYER_JOINED, {
-      nick: event.joined.nick,
+    socket.broadcast.to(joinPayload.roomId).emit(GameEvent.PLAYER_JOINED, {
+      nick: event.player.nick,
       updatedPlayers: event.state.players,
     });
-  } catch (err: any) {
-    handler.onDisconnectGame(socket.id, joinPayload.room);
-    disconnect(socket, err.message);
-  }
+  });
 };
 
-const createGame = (socket: Socket, payload: CreateGamePayload) => {
-  try {
-    const game = handler.onCreateGame(socket.id, payload);
-    socket.emit(
-      GameEvent.CREATE_GAME,
-      { ...game, password: "", playerId: socket.id },
-      payload.room,
-      game.players[0],
-    );
-    socket.join(payload.room);
-  } catch (err: any) {
-    handler.onDisconnectGame(socket.id, payload.room);
-    disconnect(socket, err.message);
-  }
+const createGame = (socket: Socket, createPayload: CreateGamePayload) => {
+  handleConnectinError(socket, createPayload.roomId, () => {
+    const game = handler.onCreateGame(socket.id, createPayload);
+    socket.emit(GameEvent.CREATE_GAME, game);
+    socket.join(createPayload.roomId);
+  });
 };
 
 const disconnect = (socket: Socket, message?: string) => {
@@ -188,6 +175,27 @@ const disconnect = (socket: Socket, message?: string) => {
     );
   }
   socket.disconnect(true);
+};
+
+const catchErrors = (socket: Socket, consumer: () => void): void => {
+  try {
+    consumer();
+  } catch {
+    sendIllegal(socket);
+  }
+};
+
+const handleConnectinError = (
+  socket: Socket,
+  roomId: string,
+  consumer: () => void,
+): void => {
+  try {
+    consumer();
+  } catch (err: any) {
+    handler.onDisconnectGame(socket.id, roomId);
+    disconnect(socket, err.message);
+  }
 };
 
 const sendError = (socket: Socket, message: string) => {

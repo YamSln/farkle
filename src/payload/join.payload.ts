@@ -1,5 +1,5 @@
 export interface JoinPayload {
   nick: string;
-  room: string;
+  roomId: string;
   password: string;
 }

@@ -3,10 +3,10 @@ import { SignOptions } from "jsonwebtoken";
 import jwt from "jsonwebtoken";
 import { Socket } from "socket.io";
 import { FORBIDDEN } from "../error/error.util";
-import { JoinPayload } from "../model/join.payload";
+import { JoinPayload } from "../payload/join.payload";
 import { ExtendedError } from "socket.io/dist/namespace";
 import env from "../config/env";
-import { CreateGamePayload } from "../model/create-game.payload";
+import { CreateGamePayload } from "../payload/create-game.payload";
 
 export const TOKEN_PREFIX = "Bearer";
 

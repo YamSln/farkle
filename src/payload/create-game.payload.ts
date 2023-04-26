@@ -1,5 +1,5 @@
 export interface CreateGamePayload {
-  room: string;
+  roomId: string;
   nick: string;
   password: string;
   maxPlayers: number;

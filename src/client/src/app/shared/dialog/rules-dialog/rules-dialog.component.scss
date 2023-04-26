@@ -22,8 +22,13 @@ ul {
   text-align: center;
 }
 
+table {
+  border-collapse: collapse;
+}
+
 td,
 tr {
   text-align: center;
   vertical-align: middle;
+  border: 1px solid;
 }

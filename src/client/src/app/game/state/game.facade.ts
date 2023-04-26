@@ -2,8 +2,8 @@ import { Injectable, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
-import { CreateGamePayload } from '../../../../../model/create-game.payload';
-import { JoinPayload } from '../../../../../model/join.payload';
+import { CreateGamePayload } from '../../../../../payload/create-game.payload';
+import { JoinPayload } from '../../../../../payload/join.payload';
 import { PlayerAction } from '../../../../../model/player.action.payload';
 import { Player } from '../../../../../model/player.model';
 import { displayPlayerAction } from 'src/app/shared/state/shared.action';
@@ -212,14 +212,14 @@ export class GameFacade implements OnDestroy {
     this.store.dispatch(timeout({ nextPlayerIndex }));
   }
 
-  gameLoaded(game: GameState, room: string, player: Player): void {
+  gameLoaded(game: GameState): void {
     this.navigateToGame();
-    this.store.dispatch(createGameSuccess({ game, room, player }));
+    this.store.dispatch(createGameSuccess({ game }));
   }
 
-  gameReceived(game: GameState, room: string, player: Player): void {
+  gameReceived(game: GameState, player: Player): void {
     this.navigateToGame();
-    this.store.dispatch(joinGameSuccess({ game, room, player }));
+    this.store.dispatch(joinGameSuccess({ game, player }));
   }
 
   gameStarted(players: Player[]): void {

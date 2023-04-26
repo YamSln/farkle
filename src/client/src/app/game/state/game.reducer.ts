@@ -26,16 +26,15 @@ const _gameReducer = createReducer(
   on(createGameSuccess, (state: GameState, action: any): GameState => {
     return {
       ...action.game,
-      roomId: action.room,
+      playerId: action.game.players[0].id,
       selfIndex: 0,
-      currentPlayer: 0,
       dice: initialDice,
     };
   }),
   on(joinGameSuccess, (state: GameState, action: any): GameState => {
     return {
       ...action.game,
-      roomId: action.room,
+      playerId: action.player.id,
       selfIndex: findSelf(action.game.players, action.player.id),
       dice: initialDice,
     };
