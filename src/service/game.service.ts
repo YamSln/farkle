@@ -1,24 +1,36 @@
-import { ILLEGAL } from "../error/error.util";
+import {
+  GAME_STARTED,
+  ILLEGAL,
+  INCORRECT_PASSWORD,
+  NICK_TAKEN,
+  NOT_FOUND,
+  ROOM_FULL,
+} from "../error/error.util";
 import { GameEvent } from "../event/game.event";
+import { JoinEvent } from "../event/join.event";
 import { DieIndex } from "../model/die-index.type";
-import { Game, GameState } from "../model/game.model";
+import { Game, GameState, transferable } from "../model/game.model";
 import { GamePhase } from "../model/game.phase.model";
 import { PlayerAction } from "../model/player.action.payload";
 import { Player } from "../model/player.model";
 import { BankBustPayload } from "../payload/bankbust.payload";
 import { ConfirmPayload } from "../payload/confirm.payload";
+import { CreateGamePayload } from "../payload/create-game.payload";
+import { JoinPayload } from "../payload/join.payload";
 import { RollPayload } from "../payload/roll.payload";
 import { SelectPayload } from "../payload/select.payload";
 
 const newGame = (socketId: string, currentGame: GameState): GameState => {
+  // Only the host can start a new game
   if (!currentGame.isHost(socketId)) {
     throw new Error(ILLEGAL);
   }
-  currentGame.clearTimer(true);
-  const newGame = createGame(
+  currentGame.clearTimer(true); // Just in case to avoid memory leak
+  const newGame = freshGame(
     currentGame.password,
     currentGame.maxPlayers,
     currentGame.maxPoints,
+    // Reset players points
     currentGame.players.map((player) => {
       return { ...player, points: 0 };
     }),
@@ -27,7 +39,66 @@ const newGame = (socketId: string, currentGame: GameState): GameState => {
   return newGame;
 };
 
+const joinGame = (
+  playerId: string,
+  state: GameState,
+  joinPayload: JoinPayload,
+): JoinEvent => {
+  if (!state || state.password !== joinPayload.password) {
+    throw new Error(NOT_FOUND);
+  }
+  const player: Player = {
+    id: playerId,
+    nick: joinPayload.nick,
+    points: 0,
+    host: false,
+  };
+  state.players.push(player);
+  return { state: transferable(state), player };
+};
+
+const verifyJoinPayload = (
+  state: GameState,
+  joinPayload: JoinPayload,
+): boolean => {
+  if (state.password !== joinPayload.password) {
+    throw new Error(INCORRECT_PASSWORD);
+  }
+  if (state.players.length >= state.maxPlayers) {
+    throw new Error(ROOM_FULL);
+  }
+  if (state.gamePhase !== GamePhase.WAIT) {
+    throw new Error(GAME_STARTED);
+  }
+  for (let player of state.players) {
+    if (player.nick === joinPayload.nick) {
+      throw new Error(NICK_TAKEN);
+    }
+  }
+  return true;
+};
+
 const createGame = (
+  hostId: string,
+  createGamePayload: CreateGamePayload,
+): GameState => {
+  const host: Player = {
+    id: hostId,
+    nick: createGamePayload.nick,
+    points: 0,
+    host: true,
+  };
+  const state = freshGame(
+    createGamePayload.password,
+    createGamePayload.maxPlayers,
+    createGamePayload.maxPoints,
+    [host],
+  );
+  state.roomId = createGamePayload.roomId;
+  return state;
+};
+
+const freshGame = (
   password: string,
   maxPlayers: number,
   maxPoints: number,
@@ -187,6 +258,9 @@ const disconnect = (
 
 export default {
   newGame,
+  verifyJoinPayload,
+  joinGame,
+  freshGame,
   createGame,
   startGame,
   roll,

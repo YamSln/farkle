@@ -1,43 +1,16 @@
-import { Die } from 'src/app/model/die.model';
-import { Player } from '../../../../../model/player.model';
 import { GamePhase } from '../../../../../model/game.phase.model';
+import { GameDTO } from '../../../../../model/game.dto';
 
-export interface GameState {
+export interface GameState extends GameDTO {
   playerId: string;
-  roomId: string;
   selfIndex: number;
-  password: string;
-  maxPlayers: number;
-  maxPoints: number;
-  // Game fields
-  players: Player[];
-  dice: Die[];
-  // Plays confirmed by current player
-  currentThrowPicks: Die[][];
-  currentTurnScores: number[];
-  potentialScore: number;
-  currentPlayer: number;
-  gamePhase: GamePhase;
-  bust: boolean;
-  gameWon: boolean;
-  allDiceConfirmed: boolean;
-  // Timing
-  turnTime: number;
-  currentTime: number;
 }
 
 export const initialState: GameState = {
   playerId: '',
   roomId: '',
   selfIndex: 0,
-  password: '',
-  maxPlayers: 2,
-  maxPoints: 3000,
-  players: [
-    { host: true, id: '1', nick: 'aaa', points: 0 },
-    { host: false, id: '1', nick: 'bbb', points: 0 },
-    { host: false, id: '1', nick: 'ccc', points: 0 },
-  ],
+  players: [{ host: true, id: '1', nick: 'aaa', points: 0 }],
   dice: [
     {
       number: 1,

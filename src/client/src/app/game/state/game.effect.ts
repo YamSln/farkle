@@ -219,18 +219,12 @@ export class GameEffect {
   );
 
   private handleSocketActions(socket: Socket): void {
-    socket.on(
-      GameEvent.CREATE_GAME,
-      (game: GameState, room: string, player: Player) => {
-        this.gameFacade.gameLoaded(game, room, player);
-      }
-    );
-    socket.on(
-      GameEvent.JOIN_GAME,
-      (game: GameState, room: string, player: Player) => {
-        this.gameFacade.gameReceived(game, room, player);
-      }
-    );
+    socket.on(GameEvent.CREATE_GAME, (game: GameState) => {
+      this.gameFacade.gameLoaded(game);
+    });
+    socket.on(GameEvent.JOIN_GAME, (game: GameState, player: Player) => {
+      this.gameFacade.gameReceived(game, player);
+    });
     socket.on(GameEvent.START_GAME, (players: Player[]) => {
       this.gameFacade.gameStarted(players);
     });

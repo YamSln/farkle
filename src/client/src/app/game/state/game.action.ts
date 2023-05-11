@@ -1,8 +1,8 @@
 import { createAction, props } from '@ngrx/store';
 import { Player } from '../../../../../model/player.model';
-import { CreateGamePayload } from '../../../../../model/create-game.payload';
+import { CreateGamePayload } from '../../../../../payload/create-game.payload';
 import { CreateGameResponse } from '../../model/create-game.response';
-import { JoinPayload } from '../../../../../model/join.payload';
+import { JoinPayload } from '../../../../../payload/join.payload';
 import { GameState } from './game.state';
 import { Die } from 'src/app/model/die.model';
 import { DieIndex } from '../../../../../model/die-index.type';
@@ -58,7 +58,7 @@ export const joinGameApproved = createAction(
 );
 export const joinGameSuccess = createAction(
   JOIN_GAME_SUCCESS,
-  props<{ game: GameState; room: string; player: Player }>()
+  props<{ game: GameState; player: Player }>()
 );
 export const playerJoinedGame = createAction(
   PLAYER_JOINED,
@@ -72,7 +72,7 @@ export const createGameApproved = createAction(
 );
 export const createGameSuccess = createAction(
   CREATE_GAME_SUCCESS,
-  props<{ game: GameState; room: string; player: Player }>()
+  props<{ game: GameState }>()
 );
 
 export const roll = createAction(ROLL);

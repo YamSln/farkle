@@ -10,36 +10,18 @@ import { SelectPayload } from "../payload/select.payload";
 import { ConfirmPayload } from "../payload/confirm.payload";
 import { DieFace } from "./die-face.type";
 import { BankBustPayload } from "../payload/bankbust.payload";
+import { GameDTO } from "./game.dto";
 
-export interface GameState {
+export interface GameState extends GameDTO {
   // Room properties
-  roomId: string;
   password: string;
   maxPlayers: number;
   maxPoints: number;
   // Game fields
-  players: Player[];
-  dice: Die[];
-  currentThrowPicks: Die[][]; // Plays confirmed by current player
-  currentTurnScores: number[];
-  potentialScore: number;
-  currentPlayer: number;
-  gamePhase: GamePhase;
-  bust: boolean;
-  gameWon: boolean;
-  allDiceConfirmed: boolean;
-  // Timing
-  turnTime: number;
-  currentTime: number;
   turnInterval?: NodeJS.Timeout;
 
   start(): Player[] | null;
   newGame(): Game | null;
-  /**
-   * Performs roll action on the game state:
-   * rolls all unconfirmed/unselected dice and moves to pick phase.
-   * Returns null if roll is not allowed i.e. game is not in ROLL phase
-   */
   roll(): RollPayload | null;
   select(dieIndex: DieIndex): SelectPayload | null;
   confirm(): ConfirmPayload | null;
@@ -53,6 +35,12 @@ export interface GameState {
   playerIndex(playerId: string): number;
   resetTurn(): number;
 }
+
+export const transferable = (state: GameState): GameDTO => {
+  const { turnInterval, password, maxPlayers, maxPoints, ...transferable } =
+    state;
+  return transferable;
+};
 
 export class Game implements GameState {
   roomId = "";

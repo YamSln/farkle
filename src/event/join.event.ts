@@ -1,7 +1,7 @@
-import { GameState } from "../model/game.model";
+import { GameDTO } from "../model/game.dto";
 import { Player } from "../model/player.model";
 
 export interface JoinEvent {
-  state: GameState;
-  joined: Player;
+  state: GameDTO;
+  player: Player;
 }

@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { GameFacade } from 'src/app/game/state/game.facade';
-import { CreateGamePayload } from '../../../../../model/create-game.payload';
-import { JoinPayload } from '../../../../../model/join.payload';
+import { CreateGamePayload } from '../../../../../payload/create-game.payload';
+import { JoinPayload } from '../../../../../payload/join.payload';
 import { MIN_PLAYERS, MIN_POINTS } from '../../../../../util/game.constants';
 import {
   MIN_NICK_LENGTH,
@@ -65,14 +65,14 @@ export class GameFormComponent implements OnInit {
         password: this.gameForm.controls['password'].value,
         maxPlayers: this.maxPlayersSlider,
         maxPoints: this.maxPointsSlider,
-        room: '',
+        roomId: '',
       };
       this.gameFacade.createGame(game);
     } else {
       const game: JoinPayload = {
         nick: this.gameForm.controls['nick'].value,
         password: this.gameForm.controls['password'].value,
-        room: this.activatedRoute.snapshot.params['roomId'],
+        roomId: this.activatedRoute.snapshot.params['roomId'],
       };
       this.gameFacade.joinGame(game);
     }
