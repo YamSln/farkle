@@ -39,8 +39,8 @@ export class GameComponent implements OnInit {
     this.gameFacade.confirm();
   }
 
-  onBankBust(allDiceConfirmed: boolean): void {
-    this.gameFacade.bankBust(allDiceConfirmed);
+  onBankBust(allDiceConfirmed: boolean, bust: boolean): void {
+    this.gameFacade.bankBust(allDiceConfirmed, bust);
   }
 
   onGameStart(): void {
